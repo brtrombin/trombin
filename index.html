@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tromb.in</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #1a2a1e;
+  --film-black: #162318;
+  --ektar-red: #c8341a;
+  --ektar-orange: #d4621e;
+  --ektar-blue: #1a3a5c;
+  --ektar-sky: #2e6a9e;
+  --ektar-warm: #e8c87a;
+  --strip-bg: #1e2e22;
+  --frame-border: #0f1a12;
+  --perf-hole: #0a1209;
+  --text-dim: #7a6a52;
+  --cream: #f0e8d0;
+  --mono: 'Share Tech Mono', monospace;
+  --serif: 'Playfair Display', serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--cream);
+  font-family: var(--mono);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* grain */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: .06;
+  mix-blend-mode: screen;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .9rem 2rem;
+  background: rgba(26,42,30,.94);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid #243a28;
+}
+
+.logo {
+  font-family: var(--mono);
+  font-size: .95rem;
+  letter-spacing: .2em;
+  color: var(--cream);
+  text-decoration: none;
+}
+.logo em { color: var(--ektar-red); font-style: normal; }
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-right a {
+  font-family: var(--mono);
+  font-size: .65rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color .2s;
+}
+.nav-right a:hover { color: var(--cream); }
+
+.nav-pill {
+  border: 1px solid #333;
+  padding: .22rem .7rem;
+  color: var(--ektar-red) !important;
+  border-color: var(--ektar-red) !important;
+}
+
+/* HERO — contact sheet strip */
+.hero {
+  padding-top: 52px;
+  background: var(--strip-bg);
+  position: relative;
+  overflow: hidden;
+}
+
+/* film perforations top/bottom */
+.perfs {
+  height: 22px;
+  background: var(--strip-bg);
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 4px;
+  position: relative;
+  z-index: 2;
+}
+
+.perf {
+  width: 14px;
+  height: 10px;
+  background: var(--perf-hole);
+  border: 1px solid #222;
+  border-radius: 2px;
+  margin-right: 18px;
+  flex-shrink: 0;
+}
+
+/* main film frame */
+.hero-frame {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  min-height: calc(100vh - 100px);
+  border-top: 2px solid var(--frame-border);
+  border-bottom: 2px solid var(--frame-border);
+  position: relative;
+}
+
+/* frame number label */
+.frame-label {
+  position: absolute;
+  bottom: -20px;
+  left: 12px;
+  font-size: .58rem;
+  letter-spacing: .22em;
+  color: #ff8c00;
+  opacity: .85;
+  font-family: var(--mono);
+  z-index: 10;
+}
+
+.hero-photo {
+  position: relative;
+  overflow: hidden;
+  background: #1a2e20;
+  border-right: 2px solid var(--frame-border);
+}
+
+/* placeholder com gradiente Ektar */
+.hero-photo-inner {
+  width: 100%;
+  height: 100%;
+  min-height: calc(100vh - 100px);
+  background:
+    linear-gradient(180deg, var(--ektar-blue) 0%, var(--ektar-sky) 35%, #8aaa6a 58%, var(--ektar-orange) 80%, var(--ektar-red) 100%);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  filter: contrast(1.12) saturate(1.3);
+}
+
+.hero-photo-inner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(1.1) saturate(1.25);
+  display: block;
+}
+
+/* Ektar timestamp no canto */
+.ektar-stamp {
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  font-family: var(--mono);
+  font-size: .62rem;
+  color: #ff8c00;
+  letter-spacing: .12em;
+  text-shadow: 0 0 8px rgba(255,140,0,.6);
+  z-index: 2;
+  line-height: 1.5;
+  text-align: right;
+}
+
+.hero-info {
+  padding: 3.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--strip-bg);
+  position: relative;
+}
+
+.strip-index {
+  font-size: .6rem;
+  letter-spacing: .28em;
+  color: var(--ektar-red);
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  line-height: 1.05;
+  color: var(--cream);
+  font-style: italic;
+  margin-bottom: 1.8rem;
+  font-weight: 400;
+}
+
+.hero-excerpt {
+  font-family: var(--serif);
+  font-size: .9rem;
+  line-height: 1.85;
+  color: #b0a080;
+  max-width: 36ch;
+  margin-bottom: 2.5rem;
+  font-style: italic;
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  font-size: .62rem;
+  letter-spacing: .15em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.meta-dot {
+  width: 3px;
+  height: 3px;
+  background: var(--ektar-red);
+  border-radius: 50%;
+}
+
+.btn-read {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: .65rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--black);
+  background: var(--ektar-red);
+  padding: .7rem 1.6rem;
+  text-decoration: none;
+  align-self: flex-start;
+  transition: background .2s;
+}
+.btn-read:hover { background: var(--ektar-orange); }
+
+/* exposure data sidebar */
+.exposure-data {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: .55rem;
+  letter-spacing: .15em;
+  color: #3a3020;
+  writing-mode: vertical-rl;
+  text-transform: uppercase;
+  line-height: 2;
+}
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+.hero-info > * { animation: fadeUp .7s ease both; }
+.strip-index { animation-delay: .1s; }
+.hero-title { animation-delay: .22s; }
+.hero-excerpt { animation-delay: .35s; }
+.meta-row { animation-delay: .44s; }
+.btn-read { animation-delay: .54s; }
+
+/* CONTACT SHEET grid */
+.sheet-header {
+  padding: 3rem 2rem 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  border-top: 1px solid #243a28;
+}
+
+.sheet-header h2 {
+  font-family: var(--mono);
+  font-size: .62rem;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--ektar-red);
+  white-space: nowrap;
+}
+
+.sheet-header-line {
+  flex: 1;
+  height: 1px;
+  background: #2a2218;
+}
+
+.sheet-header-right {
+  font-size: .58rem;
+  letter-spacing: .15em;
+  color: #3a3020;
+  text-transform: uppercase;
+}
+
+/* contact sheet */
+.contact-sheet {
+  background: #131e15;
+  padding: 1.5rem 2rem 3rem;
+  border-top: 3px solid #000;
+  border-bottom: 3px solid #000;
+}
+
+/* film strip row */
+.strip-row {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+
+/* perfurations sidebar */
+.strip-perfs-side {
+  width: 20px;
+  background: #162318;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 6px 0;
+  flex-shrink: 0;
+}
+
+.perf-v {
+  width: 10px;
+  height: 7px;
+  background: #080f0a;
+  border: 1px solid #1e2e22;
+  border-radius: 1px;
+}
+
+/* frames inside strip */
+.strip-frames {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+  flex: 1;
+  background: #0d1510;
+  padding: 3px;
+}
+
+.film-frame {
+  position: relative;
+  aspect-ratio: 3/2;
+  overflow: hidden;
+  background: #1e2e22;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+}
+
+.film-frame:hover .frame-overlay { opacity: 1; }
+.film-frame:hover .frame-ph { filter: contrast(1.2) saturate(1.4) brightness(.85); }
+
+.frame-ph {
+  width: 100%;
+  height: 100%;
+  transition: filter .3s;
+}
+
+.frame-ph img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: contrast(1.1) saturate(1.2);
+}
+
+.frame-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(200,52,26,.08);
+  opacity: 0;
+  transition: opacity .3s;
+  display: flex;
+  align-items: flex-end;
+  padding: .4rem;
+}
+
+.frame-title-overlay {
+  font-family: var(--serif);
+  font-size: .65rem;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1.3;
+  text-shadow: 0 1px 4px rgba(0,0,0,.8);
+}
+
+.frame-idx {
+  position: absolute;
+  top: 3px;
+  left: 4px;
+  font-size: .5rem;
+  color: rgba(255,140,0,.7);
+  font-family: var(--mono);
+  letter-spacing: .05em;
+}
+
+/* strip info below */
+.strip-info {
+  width: 20px;
+  background: #162318;
+  flex-shrink: 0;
+}
+
+.strip-label {
+  margin-top: 6px;
+  font-size: .52rem;
+  letter-spacing: .1em;
+  color: #2a3a2c;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  padding-left: .3rem;
+}
+
+/* caption row below strip */
+.caption-row {
+  display: grid;
+  grid-template-columns: 20px repeat(4, 1fr) 20px;
+  gap: 3px;
+  padding: 0 0 0 0;
+  margin-top: 4px;
+}
+
+.caption-row .spacer { background: transparent; }
+
+.frame-caption {
+  padding: 4px 2px 0;
+}
+
+.fc-title {
+  font-family: var(--serif);
+  font-size: .72rem;
+  font-style: italic;
+  color: #c0a870;
+  line-height: 1.3;
+  margin-bottom: 2px;
+}
+
+.fc-date {
+  font-size: .52rem;
+  letter-spacing: .12em;
+  color: #3a3020;
+  text-transform: uppercase;
+}
+
+/* footer */
+footer {
+  border-top: 1px solid #243a28;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-logo {
+  font-family: var(--mono);
+  font-size: .85rem;
+  letter-spacing: .15em;
+  color: var(--cream);
+}
+.footer-logo em { color: var(--ektar-red); font-style: normal; }
+
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a {
+  font-size: .6rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color .2s;
+}
+.footer-links a:hover { color: var(--cream); }
+
+.footer-copy {
+  font-size: .52rem;
+  letter-spacing: .1em;
+  color: #2a3a2c;
+  text-transform: uppercase;
+}
+
+/* placeholder color swatches for frames */
+.c1 { background: linear-gradient(135deg, var(--ektar-blue) 0%, #6a8a6a 60%, var(--ektar-orange) 100%); }
+.c2 { background: linear-gradient(135deg, #4a6040 0%, #8a9a5a 50%, var(--ektar-warm) 100%); }
+.c3 { background: linear-gradient(135deg, #3a2820 0%, var(--ektar-red) 60%, var(--ektar-orange) 100%); }
+.c4 { background: linear-gradient(135deg, var(--ektar-sky) 0%, #7aaa8a 50%, #c8a060 100%); }
+.c5 { background: linear-gradient(135deg, #1a2030 0%, var(--ektar-blue) 40%, #8aaa7a 100%); }
+.c6 { background: linear-gradient(135deg, #6a4030 0%, #a87050 60%, var(--ektar-warm) 100%); }
+.c7 { background: linear-gradient(135deg, #2a4020 0%, #5a8040 60%, var(--ektar-warm) 100%); }
+.c8 { background: linear-gradient(135deg, var(--ektar-red) 0%, #6a3020 50%, #2a1810 100%); }
+
+@media (max-width: 768px) {
+  .hero-frame { grid-template-columns: 1fr; }
+  .hero-photo-inner { min-height: 60vw; }
+  .hero-info { padding: 2rem 1.5rem; }
+  nav { padding: .8rem 1.2rem; }
+  .strip-frames { grid-template-columns: repeat(2, 1fr); }
+  .caption-row { grid-template-columns: 20px repeat(2, 1fr) 20px; }
+  .caption-row .fc3, .caption-row .fc4 { display: none; }
+  footer { flex-direction: column; gap: 1rem; text-align: center; }
+  .footer-copy { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo">tromb<em>.</em>in</a>
+  <div class="nav-right">
+    <a href="index.html#arquivo">arquivo</a>
+    <a href="index.html#sobre">sobre</a>
+    <a href="https://naocabe.substack.com" target="_blank" class="nav-pill">Substack</a>
+    <a href="https://instagram.com" target="_blank" class="nav-pill">Instagram</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="perfs" id="perfs-top"></div>
+
+  <div class="hero-frame">
+    <div class="hero-photo">
+      <div class="hero-photo-inner">
+        <!-- substitua por <img src="sua-foto.jpg" alt=""> -->
+        <div class="ektar-stamp">
+          POA RS BR<br>
+          2025 03 15<br>
+          f/5.6 &nbsp;1/125
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-info">
+      <p class="strip-index">tromb.in &mdash; frame 001</p>
+      <h1 class="hero-title">O que não<br>coube aqui<br>ficou em mim</h1>
+      <p class="hero-excerpt">Coloque aqui um trecho do seu texto mais recente — algo que dê o tom antes mesmo de começar a ler.</p>
+      <div class="meta-row">
+        <span>março 2025</span>
+        <span class="meta-dot"></span>
+        <span>leitura</span>
+        <span class="meta-dot"></span>
+        <span>Olympus Trip 35</span>
+      </div>
+      <a href="texto.html" class="btn-read">abrir texto</a>
+      <div class="exposure-data">KODAK EKTAR 100 &nbsp;&middot;&nbsp; 36exp &nbsp;&middot;&nbsp; ISO 100</div>
+    </div>
+
+    <span class="frame-label">▷ 001 &nbsp; EKTAR 100 &nbsp; 36exp</span>
+  </div>
+
+  <div class="perfs" id="perfs-bot"></div>
+</section>
+
+<!-- CONTACT SHEET -->
+<div class="sheet-header" id="arquivo">
+  <h2>contact sheet</h2>
+  <div class="sheet-header-line"></div>
+  <span class="sheet-header-right">tromb.in &nbsp; 2024&ndash;2025</span>
+</div>
+
+<div class="contact-sheet">
+
+  <!-- strip row 1 -->
+  <div class="strip-row">
+    <div class="strip-perfs-side">
+      <div class="perf-v"></div><div class="perf-v"></div><div class="perf-v"></div>
+      <div class="perf-v"></div><div class="perf-v"></div><div class="perf-v"></div>
+    </div>
+    <div class="strip-frames">
+      <a class="film-frame" href="#">
+        <div class="frame-ph c1"></div>
+        <span class="frame-idx">002</span>
+        <div class="frame-overlay"><span class="frame-title-overlay">As enchentes que carrego</span></div>
+      </a>
+      <a class="film-frame" href="#">
+        <div class="frame-ph c2"></div>
+        <span class="frame-idx">003</span>
+        <div class="frame-overlay"><span class="frame-title-overlay">Bombinhas, janeiro</span></div>
+      </a>
+      <a class="film-frame" href="#">
+        <div class="frame-ph c3"></div>
+        <span class="frame-idx">004</span>
+        <div class="frame-overlay"><span class="frame-title-overlay">O silêncio que a Raquel trouxe</span></div>
+      </a>
+      <a class="film-frame" href="#">
+        <div class="frame-ph c4"></div>
+        <span class="frame-idx">005</span>
+        <div class="frame-overlay"><span class="frame-title-overlay">Padaria do meu pai</span></div>
+      </a>
+    </div>
+    <div class="strip-info"></div>
+  </div>
+  <div class="caption-row">
+    <div class="spacer"></div>
+    <div class="frame-caption">
+      <p class="fc-title">As enchentes que carrego</p>
+      <p class="fc-date">fev 2025 &middot; leitura</p>
+    </div>
+    <div class="frame-caption">
+      <p class="fc-title">Bombinhas, janeiro</p>
+      <p class="fc-date">jan 2025 &middot; fotografia</p>
+    </div>
+    <div class="frame-caption fc3">
+      <p class="fc-title">O silêncio que a Raquel trouxe</p>
+      <p class="fc-date">dez 2024 &middot; leitura</p>
+    </div>
+    <div class="frame-caption fc4">
+      <p class="fc-title">Padaria do meu pai</p>
+      <p class="fc-date">nov 2024 &middot; leitura + foto</p>
+    </div>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- strip row 2 -->
+  <div class="strip-row" style="margin-top:2rem">
+    <div class="strip-perfs-side">
+      <div class="perf-v"></div><div class="perf-v"></div><div class="perf-v"></div>
+      <div class="perf-v"></div><div class="perf-v"></div><div class="perf-v"></div>
+    </div>
+    <div class="strip-frames">
+      <a class="film-frame" href="#">
+        <div class="frame-ph c5"></div>
+        <span class="frame-idx">006</span>
+        <div class="frame-overlay"><span class="frame-title-overlay">Olympus Trip, outono</span></div>
+      </a>
+      <a class="film-frame" href="#">
+        <div class="frame-ph c6"></div>
+        <span class="frame-idx">007</span>
+        <div class="frame-overlay"><span class="frame-title-overlay">Skorpius, antes das paredes</span></div>
+      </a>
+      <a class="film-frame" href="#">
+        <div class="frame-ph c7"></div>
+        <span class="frame-idx">008</span>
+        <div class="frame-overlay"><span class="frame-title-overlay">Mont Serrat ao entardecer</span></div>
+      </a>
+      <a class="film-frame" href="#">
+        <div class="frame-ph c8"></div>
+        <span class="frame-idx">009</span>
+        <div class="frame-overlay"><span class="frame-title-overlay">O que não coube no verão</span></div>
+      </a>
+    </div>
+    <div class="strip-info"></div>
+  </div>
+  <div class="caption-row">
+    <div class="spacer"></div>
+    <div class="frame-caption">
+      <p class="fc-title">Olympus Trip, outono</p>
+      <p class="fc-date">out 2024 &middot; fotografia</p>
+    </div>
+    <div class="frame-caption">
+      <p class="fc-title">Skorpius, antes das paredes</p>
+      <p class="fc-date">set 2024 &middot; leitura + foto</p>
+    </div>
+    <div class="frame-caption fc3">
+      <p class="fc-title">Mont Serrat ao entardecer</p>
+      <p class="fc-date">ago 2024 &middot; fotografia</p>
+    </div>
+    <div class="frame-caption fc4">
+      <p class="fc-title">O que não coube no verão</p>
+      <p class="fc-date">jan 2024 &middot; leitura</p>
+    </div>
+    <div class="spacer"></div>
+  </div>
+
+</div>
+
+<footer id="sobre">
+  <span class="footer-logo">tromb<em>.</em>in</span>
+  <div class="footer-links">
+    <a href="https://naocabe.substack.com" target="_blank">Não Cabia</a>
+    <a href="https://instagram.com" target="_blank">Instagram</a>
+    <a href="index.html#sobre">sobre</a>
+  </div>
+  <span class="footer-copy">Kodak Ektar 100 &nbsp;&middot;&nbsp; Porto Alegre RS &nbsp;&middot;&nbsp; 2024&ndash;2025</span>
+</footer>
+
+<script>
+// gera perfurações dinamicamente
+function makePerfs(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const n = Math.ceil(window.innerWidth / 32) + 2;
+  el.innerHTML = Array(n).fill('<div class="perf"></div>').join('');
+}
+makePerfs('perfs-top');
+makePerfs('perfs-bot');
+window.addEventListener('resize', () => { makePerfs('perfs-top'); makePerfs('perfs-bot'); });
+</script>
+</body>
+</html>

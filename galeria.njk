@@ -617,10 +617,13 @@ const fromArticles = [
 //   aperture, speed, date ("YYYY MM DD"), loc, themes: [], collection: "", textLink: null }
 const fromGallery = {{ gallery | dump | safe }};
 
-// ── Combinar e re-indexar sequencialmente ───────────────────────────────────
-const photos = [...fromArticles, ...fromGallery].map((p, i) => ({
+// ── Combinar e re-indexar ────────────────────────────────────────────────────
+// Ordem visual: mais recente no topo (fromArticles já vem newest→oldest)
+// Numeração: 001 = mais antigo, N = mais recente
+const _all = [...fromArticles, ...fromGallery];
+const photos = _all.map((p, i) => ({
   ...p,
-  idx: String(i + 2).padStart(3, "0"),
+  idx: String(_all.length - i).padStart(3, "0"),
   themes: p.themes || [],
   collection: p.collection || "",
   textLink: p.textLink || null

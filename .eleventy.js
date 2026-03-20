@@ -49,7 +49,8 @@ module.exports = function(eleventyConfig) {
     const colors = ["c1","c2","c3","c4","c5","c6","c7","c8"];
 
     articles.forEach((article, i) => {
-      article.data.frameNumber = String(i + 2).padStart(3, "0");
+      // 001 = mais antigo, N = mais recente
+      article.data.frameNumber = String(articles.length - i).padStart(3, "0");
       article.data.colorClass  = colors[i % 8];
       // prev = older article, next = more recent article
       article.data.prevArticle = articles[i + 1] || null;

@@ -1,4 +1,5 @@
 ---
+draft: false
 title: "O dia que passou pela janela"
 date: 2025-08-30
 type: leitura

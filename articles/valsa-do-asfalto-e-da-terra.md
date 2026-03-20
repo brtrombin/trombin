@@ -1,4 +1,5 @@
 ---
+draft: false
 title: "Valsa do Asfalto e da Terra"
 date: 2025-08-18
 type: leitura

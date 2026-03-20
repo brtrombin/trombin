@@ -1,4 +1,5 @@
 ---
+draft: false
 title: "Depois do clique"
 date: 2025-07-20
 type: leitura

@@ -1,4 +1,5 @@
 ---
+draft: false
 title: "Quando o cuidado vira mercadoria"
 date: 2025-07-06
 type: leitura

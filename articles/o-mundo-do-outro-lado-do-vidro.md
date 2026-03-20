@@ -1,4 +1,5 @@
 ---
+draft: false
 title: "O mundo do outro lado do vidro"
 date: 2025-07-31
 type: leitura

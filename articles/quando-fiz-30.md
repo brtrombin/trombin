@@ -1,4 +1,5 @@
 ---
+draft: false
 title: "Quando fiz 30"
 date: 2025-07-29
 type: leitura

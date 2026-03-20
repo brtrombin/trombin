@@ -1,4 +1,5 @@
 ---
+draft: false
 title: "A Profundidade Era Só uma Poça"
 date: 2025-07-23
 type: leitura

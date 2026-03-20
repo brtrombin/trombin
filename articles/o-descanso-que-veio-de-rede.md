@@ -1,4 +1,5 @@
 ---
+draft: false
 title: "O descanso que veio de rede"
 date: 2026-03-11
 type: leitura

@@ -1,4 +1,5 @@
 {
   "tags": "articles",
-  "layout": "article.njk"
+  "layout": "article.njk",
+  "draft": true
 }

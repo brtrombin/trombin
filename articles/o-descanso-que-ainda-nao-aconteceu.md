@@ -1,4 +1,5 @@
 ---
+draft: false
 title: "O descanso que ainda não aconteceu"
 date: 2025-12-15
 type: leitura

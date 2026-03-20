@@ -412,12 +412,12 @@ nav {
 
 .tag {
   font-family: var(--mono);
-  font-size: .58rem;
-  letter-spacing: .12em;
+  font-size: .65rem;
+  letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--cream-ghost);
+  color: var(--cream-dim);
   border: 1px solid var(--green-border);
-  padding: .2rem .5rem;
+  padding: .28rem .7rem;
   text-decoration: none;
   cursor: pointer;
   transition: color .2s, border-color .2s;
@@ -430,9 +430,11 @@ nav {
 .tag.red {
   color: var(--ektar-red);
   border-color: var(--ektar-red);
-  opacity: .7;
 }
-.tag.red:hover { opacity: 1; }
+.tag.red:hover {
+  color: var(--cream);
+  border-color: var(--cream-dim);
+}
 
 /* nav entre textos */
 .article-nav {

@@ -5,6 +5,7 @@ type: leitura
 lead: "Para os corpos que pedem pausa, mesmo quando o mundo não deixa."
 substack_url: "https://naocabe.substack.com/p/o-descanso-que-ainda-nao-aconteceu"
 location: "Porto Alegre RS"
+hero_image: "/img/descanso-nao-aconteceu.jpg"
 author_note: "Escrito em dezembro, quando o corpo pedia pausa e o mundo continuava exigindo entrega."
 themes:
   - descanso

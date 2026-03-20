@@ -5,6 +5,7 @@ type: leitura
 lead: "Três meses se passaram desde que escrevi sobre o descanso que ainda não tinha acontecido."
 substack_url: "https://naocabe.substack.com/p/o-descanso-que-veio-de-rede"
 location: "Litoral RS"
+hero_image: "/img/descanso-rede.jpg"
 author_note: "Escrito de uma rede, com as ondas abafando o barulho dos carros na beiramar. O descanso chegou."
 themes:
   - descanso

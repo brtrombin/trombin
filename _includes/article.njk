@@ -473,9 +473,8 @@ footer {
     {% endif %}
     <span class="hero-frame-n">{{ frameNumber }}</span>
     <div class="hero-stamp">
-      {{ location }}<br>
-      {{ date | dateStamp }}<br>
-      {{ aperture }}&nbsp;&nbsp;{{ speed }}
+      {% if location %}{{ location }}<br>{% endif %}
+      {{ date | dateStamp }}{% if aperture or speed %}<br>{{ aperture }}{% if aperture and speed %}&nbsp;&nbsp;{% endif %}{{ speed }}{% endif %}
     </div>
   </div>
   <div class="hero-film-strip-bot" id="perfs-bot"></div>

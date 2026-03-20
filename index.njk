@@ -540,7 +540,7 @@ footer {
     </div>
 
     <div class="hero-info">
-      <p class="strip-index">tromb.in &mdash; frame 001</p>
+      <p class="strip-index">tromb.in &mdash; frame {{ featured.data.frameNumber }}</p>
       <h1 class="hero-title">{{ featured.data.title }}</h1>
       {% if featured.data.lead %}
       <p class="hero-excerpt">{{ featured.data.lead }}</p>
@@ -556,7 +556,7 @@ footer {
       <div class="exposure-data">{{ featured.data.film }} &nbsp;&middot;&nbsp; ISO 100</div>
     </div>
 
-    <span class="frame-label">▷ 001 &nbsp; {{ featured.data.film }} &nbsp; 36exp</span>
+    <span class="frame-label">▷ {{ featured.data.frameNumber }} &nbsp; {{ featured.data.film }} &nbsp; 99exp</span>
   </div>
 
   <div class="perfs" id="perfs-bot"></div>
@@ -618,7 +618,7 @@ footer {
       </div>
     </div>
     <div class="hero-info">
-      <p class="strip-index">tromb.in &mdash; frame 001</p>
+      <p class="strip-index">tromb.in &mdash; frame 000</p>
       <h1 class="hero-title">O que não<br>coube aqui<br>ficou em mim</h1>
     </div>
   </div>

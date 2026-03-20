@@ -4,7 +4,7 @@ date: 2026-03-11
 type: leitura
 lead: "Três meses se passaram desde que escrevi sobre o descanso que ainda não tinha acontecido."
 substack_url: "https://naocabe.substack.com/p/o-descanso-que-veio-de-rede"
-location: "Litoral RS"
+location: "Bombinhas SC · Praia das Quatro Ilhas"
 hero_image: "/img/descanso-rede.jpg"
 camera: "iPhone 15"
 author_note: "Escrito de uma rede, com as ondas abafando o barulho dos carros na beiramar. O descanso chegou."

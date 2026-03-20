@@ -4,7 +4,7 @@ date: 2025-12-15
 type: leitura
 lead: "Para os corpos que pedem pausa, mesmo quando o mundo não deixa."
 substack_url: "https://naocabe.substack.com/p/o-descanso-que-ainda-nao-aconteceu"
-location: "Porto Alegre RS"
+location: "São Francisco do Sul SC · Rota das Barragens"
 hero_image: "/img/descanso-nao-aconteceu.jpg"
 camera: "iPhone 15"
 aperture: "f/1.6"

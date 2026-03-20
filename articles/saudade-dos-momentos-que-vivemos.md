@@ -7,7 +7,7 @@ substack_url: "https://naocabe.substack.com/p/saudade-dos-momentos-que-vivemos"
 camera: "Fujifilm X100F"
 aperture: "f/10.0"
 speed: "1/900"
-location: "Porto Alegre RS"
+location: "Porto Alegre RS · CCMQ"
 hero_image: "/img/saudade-momentos.jpg"
 author_note: "Escrito enquanto Raquel viajava. Voltei a fotografar, não por solidão, mas por vontade de mais presença."
 themes:

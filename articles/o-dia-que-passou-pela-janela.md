@@ -7,7 +7,7 @@ substack_url: "https://naocabe.substack.com/p/o-dia-que-passou-pela-janela"
 camera: "iPhone 15"
 aperture: "f/1.6"
 speed: "1/30"
-location: "Porto Alegre RS"
+location: "Canoas RS · Janela do apartamento"
 hero_image: "/img/dia-passou-janela.jpg"
 author_note: "Escrito depois de perder um show e inventar tarefas no lugar do descanso. A culpa que ninguém ensinou a questionar."
 themes:

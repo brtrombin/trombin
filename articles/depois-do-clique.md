@@ -7,7 +7,7 @@ substack_url: "https://naocabe.substack.com/p/depois-do-clique"
 camera: "Fujifilm X100F"
 aperture: "f/5.6"
 speed: "1/750"
-location: "Porto Alegre RS"
+location: "Porto Alegre RS · Parque Farroupilha"
 hero_image: "/img/depois-do-clique.jpg"
 author_note: "Escrito numa varanda, esperando Raquel chegar, com a câmera em silêncio do lado. Uma continuação de Saudade dos momentos que vivemos."
 themes:

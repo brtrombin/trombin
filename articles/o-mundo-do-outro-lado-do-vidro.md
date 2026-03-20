@@ -7,7 +7,7 @@ substack_url: "https://naocabe.substack.com/p/o-mundo-do-outro-lado-do-vidro"
 camera: "Fujifilm X100F"
 aperture: "f/4.0"
 speed: "1/240"
-location: "Porto Alegre RS"
+location: "Porto Alegre RS · Parque Farroupilha"
 hero_image: "/img/mundo-outro-lado-do-vidro.jpg"
 author_note: "Escrito pensando na lan house de Canoas onde a internet era novidade e promessa. E no que ficou pelo caminho."
 themes:

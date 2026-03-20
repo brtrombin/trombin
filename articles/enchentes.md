@@ -1,4 +1,6 @@
 ---
+draft: true
+permalink: false
 title: "As enchentes que carrego"
 date: 2025-02-10
 type: leitura

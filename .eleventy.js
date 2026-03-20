@@ -43,6 +43,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addCollection("articles", function(collection) {
     // sort descending: most recent first
     const articles = collection.getFilteredByTag("articles")
+      .filter(a => !a.data.draft)
       .sort((a, b) => b.date - a.date);
 
     const colors = ["c1","c2","c3","c4","c5","c6","c7","c8"];

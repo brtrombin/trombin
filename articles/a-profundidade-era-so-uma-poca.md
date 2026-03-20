@@ -4,7 +4,7 @@ date: 2025-07-23
 type: leitura
 lead: "Sobre filmes, reencontros e o que a arte ainda pode nos fazer sentir mesmo quando decepciona."
 substack_url: "https://naocabe.substack.com/p/a-profundidade-era-so-uma-poca"
-location: "Porto Alegre RS"
+location: "Porto Alegre RS · Parque Farroupilha"
 hero_image: "/img/profundidade-poca.jpg"
 author_note: "Escrito depois de rever A Chegada com Raquel no sofá. O frio e a serração pediam um filme. O que veio foi outra coisa."
 themes:

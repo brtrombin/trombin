@@ -5,7 +5,6 @@ module.exports = function(eleventyConfig) {
 
   // ── Passthrough ──────────────────────────────────────────────────────────
   eleventyConfig.addPassthroughCopy("img");
-  eleventyConfig.addPassthroughCopy("galeria.html");
 
   // ── Filters ──────────────────────────────────────────────────────────────
 

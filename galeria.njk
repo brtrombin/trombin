@@ -1,0 +1,766 @@
+---
+permalink: /galeria.html
+---
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>galeria — tromb.in</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #1e2e22;
+  --bg-dark: #162318;
+  --bg-deeper: #0f1a12;
+  --green-border: #2e4a32;
+  --green-mid: #243a28;
+  --ektar-red: #c8341a;
+  --ektar-orange: #d4621e;
+  --ektar-amber: #e8a830;
+  --cream: #f0e8d0;
+  --cream-dim: #b8a880;
+  --cream-ghost: #6a5a40;
+  --mono: 'Share Tech Mono', monospace;
+  --serif: 'Playfair Display', serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: var(--mono);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: .05;
+  mix-blend-mode: screen;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .9rem 2rem;
+  background: rgba(30,46,34,.94);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--green-border);
+}
+
+.logo {
+  font-family: var(--mono);
+  font-size: .9rem;
+  letter-spacing: .2em;
+  color: var(--cream);
+  text-decoration: none;
+}
+.logo em { color: var(--ektar-red); font-style: normal; }
+
+.nav-right { display: flex; align-items: center; gap: 1.5rem; }
+.nav-right a {
+  font-family: var(--mono);
+  font-size: .62rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  text-decoration: none;
+  transition: color .2s;
+}
+.nav-right a:hover { color: var(--cream); }
+.nav-right a.active { color: var(--ektar-red); }
+.nav-pill {
+  border: 1px solid var(--ektar-red);
+  padding: .22rem .7rem;
+  color: var(--ektar-red) !important;
+}
+
+/* HEADER */
+.page-header {
+  padding: 90px 2rem 0;
+  background: var(--bg-deeper);
+  border-bottom: 1px solid var(--green-border);
+}
+
+.film-strip {
+  height: 24px;
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  overflow: hidden;
+}
+
+.perf {
+  width: 13px;
+  height: 9px;
+  background: #080f0a;
+  border: 1px solid var(--green-mid);
+  border-radius: 2px;
+  margin-right: 17px;
+  flex-shrink: 0;
+}
+
+.page-title-row {
+  padding: 2rem 0 1.5rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.page-title {
+  font-family: var(--mono);
+  font-size: .65rem;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--ektar-red);
+}
+
+.page-count {
+  font-family: var(--mono);
+  font-size: .58rem;
+  letter-spacing: .15em;
+  color: var(--cream-ghost);
+  text-transform: uppercase;
+}
+
+/* FILTER BAR */
+.filter-bar {
+  display: flex;
+  gap: .5rem;
+  padding-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  font-family: var(--mono);
+  font-size: .55rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--cream-ghost);
+  background: transparent;
+  border: 1px solid var(--green-border);
+  padding: .25rem .7rem;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.filter-btn:hover, .filter-btn.active {
+  color: var(--cream);
+  border-color: var(--cream-ghost);
+}
+
+.filter-btn.active {
+  color: var(--ektar-red);
+  border-color: var(--ektar-red);
+}
+
+/* GRID */
+.gallery-wrap {
+  padding: 2rem;
+}
+
+/* FILM ROLL: faixas de perfuração + frames */
+.film-roll {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.roll-strip {
+  display: grid;
+  grid-template-columns: 28px 1fr 28px;
+  background: var(--bg-deeper);
+  border-top: 1px solid var(--green-border);
+}
+
+.roll-strip:last-child {
+  border-bottom: 1px solid var(--green-border);
+}
+
+.roll-perfs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 8px 0;
+  background: #0d160f;
+  border-right: 1px solid var(--green-border);
+  border-left: 1px solid var(--green-border);
+  gap: 10px;
+}
+
+.roll-perfs.right {
+  border-right: none;
+  border-left: 1px solid var(--green-border);
+}
+
+.roll-perf {
+  width: 12px;
+  height: 9px;
+  background: #080f0a;
+  border: 1px solid #1e3022;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.roll-frames {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  padding: 8px 4px;
+}
+
+/* FRAME CELL */
+.frame-cell {
+  position: relative;
+  aspect-ratio: 3/2;
+  overflow: hidden;
+  background: var(--bg-deeper);
+  cursor: pointer;
+}
+
+.frame-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: contrast(1.08) saturate(1.15);
+  transition: filter .35s, transform .35s;
+}
+
+/* sempre visível: metadados no canto */
+.frame-meta {
+  position: absolute;
+  bottom: 6px;
+  left: 7px;
+  font-family: var(--mono);
+  font-size: .5rem;
+  color: rgba(255,140,0,.7);
+  letter-spacing: .08em;
+  line-height: 1.5;
+  text-shadow: 0 0 6px rgba(0,0,0,.8);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.frame-idx {
+  position: absolute;
+  top: 6px;
+  left: 7px;
+  font-family: var(--mono);
+  font-size: .48rem;
+  color: rgba(255,140,0,.45);
+  letter-spacing: .08em;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* hover overlay com legenda */
+.frame-hover {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15,26,18,.9) 0%, rgba(15,26,18,.3) 50%, transparent 100%);
+  opacity: 0;
+  transition: opacity .3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: .7rem;
+  z-index: 3;
+}
+
+.frame-cell:hover .frame-hover { opacity: 1; }
+.frame-cell:hover img {
+  filter: contrast(1.15) saturate(1.3) brightness(.88);
+  transform: scale(1.03);
+}
+
+.hover-title {
+  font-family: var(--serif);
+  font-size: .8rem;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1.3;
+  margin-bottom: .25rem;
+}
+
+.hover-caption {
+  font-family: var(--mono);
+  font-size: .5rem;
+  letter-spacing: .1em;
+  color: var(--cream-dim);
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+/* LIGHTBOX */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(10,16,11,.96);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s;
+}
+
+.lightbox.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.lb-inner {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  max-width: 1100px;
+  width: 95vw;
+  max-height: 90vh;
+  background: var(--bg-dark);
+  border: 1px solid var(--green-border);
+  position: relative;
+  overflow: hidden;
+}
+
+.lb-photo {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-deeper);
+  min-height: 400px;
+}
+
+.lb-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: contrast(1.1) saturate(1.2);
+}
+
+.lb-stamp {
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  font-family: var(--mono);
+  font-size: .6rem;
+  color: #ff8c00;
+  letter-spacing: .1em;
+  text-shadow: 0 0 8px rgba(255,140,0,.5);
+  line-height: 1.6;
+  text-align: right;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.lb-frame-n {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  font-family: var(--mono);
+  font-size: .55rem;
+  color: rgba(255,140,0,.5);
+  letter-spacing: .1em;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.lb-info {
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  border-left: 1px solid var(--green-border);
+}
+
+.lb-eyebrow {
+  font-family: var(--mono);
+  font-size: .55rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ektar-red);
+  margin-bottom: 1rem;
+}
+
+.lb-title {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  font-weight: 400;
+}
+
+.lb-caption {
+  font-family: var(--serif);
+  font-size: .85rem;
+  line-height: 1.75;
+  color: var(--cream-dim);
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+.lb-meta {
+  border-top: 1px solid var(--green-border);
+  padding-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.lb-meta-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: .4rem;
+}
+
+.lb-meta-key {
+  font-size: .52rem;
+  letter-spacing: .1em;
+  color: var(--cream-ghost);
+  text-transform: uppercase;
+}
+
+.lb-meta-val {
+  font-size: .54rem;
+  letter-spacing: .08em;
+  color: var(--cream-dim);
+}
+
+.lb-text-link {
+  display: block;
+  font-family: var(--mono);
+  font-size: .58rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--cream);
+  background: var(--ektar-red);
+  padding: .65rem 1rem;
+  text-decoration: none;
+  text-align: center;
+  transition: background .2s;
+}
+.lb-text-link:hover { background: var(--ektar-orange); }
+
+.lb-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: 1px solid var(--green-border);
+  color: var(--cream-dim);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all .2s;
+  font-family: var(--mono);
+}
+.lb-close:hover { border-color: var(--cream); color: var(--cream); }
+
+.lb-nav {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  gap: .4rem;
+}
+
+.lb-nav-btn {
+  width: 30px;
+  height: 30px;
+  background: rgba(30,46,34,.8);
+  border: 1px solid var(--green-border);
+  color: var(--cream-dim);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: .8rem;
+  transition: all .2s;
+}
+.lb-nav-btn:hover { border-color: var(--cream-ghost); color: var(--cream); }
+
+footer {
+  border-top: 1px solid var(--green-border);
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-logo { font-family: var(--mono); font-size: .82rem; letter-spacing: .15em; color: var(--cream); }
+.footer-logo em { color: var(--ektar-red); font-style: normal; }
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a { font-family: var(--mono); font-size: .58rem; letter-spacing: .14em; text-transform: uppercase; color: var(--cream-ghost); text-decoration: none; transition: color .2s; }
+.footer-links a:hover { color: var(--cream); }
+
+@media (max-width: 900px) {
+  .roll-frames { grid-template-columns: repeat(3, 1fr); }
+  .lb-inner { grid-template-columns: 1fr; max-height: 95vh; overflow-y: auto; }
+  .lb-photo { min-height: 50vw; }
+  .lb-info { border-left: none; border-top: 1px solid var(--green-border); }
+}
+
+@media (max-width: 600px) {
+  nav { padding: .8rem 1.2rem; }
+  .nav-right { gap: .8rem; }
+  .roll-frames { grid-template-columns: repeat(2, 1fr); }
+  .gallery-wrap { padding: 1rem; }
+  .page-header { padding: 80px 1rem 0; }
+  footer { flex-direction: column; gap: 1rem; text-align: center; }
+  .roll-strip { grid-template-columns: 18px 1fr 18px; }
+  .roll-perfs { gap: 6px; }
+  .roll-perf { width: 10px; height: 7px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">tromb<em>.</em>in</a>
+  <div class="nav-right">
+    <a href="/">arquivo</a>
+    <a href="/galeria.html" class="active">galeria</a>
+    <a href="https://naocabe.substack.com" target="_blank" class="nav-pill">Substack</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="film-strip" id="perfs"></div>
+  <div class="page-title-row">
+    <span class="page-title">galeria fotográfica</span>
+    <span class="page-count" id="count-label">— frames</span>
+  </div>
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all">todos</button>
+    <button class="filter-btn" data-filter="porto-alegre">porto alegre</button>
+    <button class="filter-btn" data-filter="cotidiano">cotidiano</button>
+    <button class="filter-btn" data-filter="natureza">natureza</button>
+    <button class="filter-btn" data-filter="memoria">memória</button>
+  </div>
+</div>
+
+<div class="gallery-wrap">
+  <div class="film-roll" id="roll"></div>
+</div>
+
+<footer>
+  <span class="footer-logo">tromb<em>.</em>in</span>
+  <div class="footer-links">
+    <a href="/">contact sheet</a>
+    <a href="https://naocabe.substack.com" target="_blank">Substack</a>
+    <a href="https://www.instagram.com/brtrombin" target="_blank">Instagram</a>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <div class="lb-inner">
+    <div class="lb-photo" id="lb-photo">
+      <span class="lb-frame-n" id="lb-fn"></span>
+      <div class="lb-stamp" id="lb-stamp"></div>
+      <div class="lb-nav">
+        <button class="lb-nav-btn" id="lb-prev">&#8592;</button>
+        <button class="lb-nav-btn" id="lb-next">&#8594;</button>
+      </div>
+    </div>
+    <div class="lb-info">
+      <p class="lb-eyebrow" id="lb-eyebrow"></p>
+      <h2 class="lb-title" id="lb-title"></h2>
+      <p class="lb-caption" id="lb-caption"></p>
+      <div class="lb-meta" id="lb-meta"></div>
+      <a href="#" class="lb-text-link" id="lb-link">ler texto →</a>
+    </div>
+  </div>
+  <button class="lb-close" id="lb-close">&#215;</button>
+</div>
+
+<script>
+const photos = [
+  {% for article in collections.articles %}{% if article.data.hero_image %}
+  {
+    idx: {{ article.data.frameNumber | dump | safe }},
+    img: {{ article.data.hero_image | dump | safe }},
+    title: {{ article.data.title | dump | safe }},
+    caption: {{ (article.data.lead or "") | dump | safe }},
+    camera: {{ (article.data.camera or "") | dump | safe }},
+    film: {{ (article.data.film or "") | dump | safe }},
+    aperture: {{ (article.data.aperture or "") | dump | safe }},
+    speed: {{ (article.data.speed or "") | dump | safe }},
+    date: {{ article.date | dateStamp | dump | safe }},
+    loc: {{ (article.data.location or "") | dump | safe }},
+    themes: {{ (article.data.themes or []) | dump | safe }},
+    textLink: {{ article.url | dump | safe }}
+  },
+  {% endif %}{% endfor %}
+];
+
+let current = 0;
+let filtered = [...photos];
+
+const roll = document.getElementById('roll');
+const lightbox = document.getElementById('lightbox');
+
+function buildCat(p) {
+  const cats = [];
+  if (p.loc && p.loc.includes('Porto Alegre')) cats.push('porto-alegre');
+  if (p.themes.includes('cotidiano')) cats.push('cotidiano');
+  if (p.themes.includes('natureza')) cats.push('natureza');
+  if (p.themes.includes('memoria') || p.themes.includes('memória')) cats.push('memoria');
+  return cats;
+}
+
+function chunk(arr, size) {
+  const out = [];
+  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
+  return out;
+}
+
+function renderRoll(list) {
+  roll.innerHTML = '';
+  const rows = chunk(list, 4);
+  rows.forEach(row => {
+    const strip = document.createElement('div');
+    strip.className = 'roll-strip';
+
+    const leftPerfs = document.createElement('div');
+    leftPerfs.className = 'roll-perfs';
+    const rightPerfs = document.createElement('div');
+    rightPerfs.className = 'roll-perfs right';
+
+    const nPerfs = 6;
+    for (let i = 0; i < nPerfs; i++) {
+      leftPerfs.innerHTML += '<div class="roll-perf"></div>';
+      rightPerfs.innerHTML += '<div class="roll-perf"></div>';
+    }
+
+    const frames = document.createElement('div');
+    frames.className = 'roll-frames';
+
+    row.forEach(p => {
+      const globalIdx = list.indexOf(p);
+      const cell = document.createElement('div');
+      cell.className = 'frame-cell';
+      const shortDate = p.date.slice(0, 7);
+      const cameraShort = p.camera ? p.camera.split(' ').pop() : '';
+      const metaLine = [shortDate, cameraShort].filter(Boolean).join(' · ');
+      cell.innerHTML = `
+        <img src="${p.img}" alt="${p.title}" loading="lazy">
+        <span class="frame-idx">${p.idx}</span>
+        ${metaLine ? `<div class="frame-meta">${metaLine}</div>` : ''}
+        <div class="frame-hover">
+          <p class="hover-title">${p.title}</p>
+          <p class="hover-caption">${p.loc}${p.film ? ' &middot; ' + p.film : ''}</p>
+        </div>
+      `;
+      cell.addEventListener('click', () => openLightbox(globalIdx, list));
+      frames.appendChild(cell);
+    });
+
+    strip.appendChild(leftPerfs);
+    strip.appendChild(frames);
+    strip.appendChild(rightPerfs);
+    roll.appendChild(strip);
+  });
+  document.getElementById('count-label').textContent = list.length + ' frames';
+}
+
+function openLightbox(i, list) {
+  current = i;
+  const p = list[i];
+
+  const lbPhoto = document.getElementById('lb-photo');
+  const existingImg = lbPhoto.querySelector('img');
+  if (existingImg) existingImg.remove();
+  const img = document.createElement('img');
+  img.src = p.img;
+  img.alt = p.title;
+  lbPhoto.insertBefore(img, lbPhoto.firstChild);
+
+  document.getElementById('lb-fn').textContent = p.idx;
+
+  const stampParts = [p.loc, p.date];
+  if (p.aperture || p.speed) stampParts.push([p.aperture, p.speed].filter(Boolean).join('  '));
+  document.getElementById('lb-stamp').innerHTML = stampParts.filter(Boolean).join('<br>');
+
+  document.getElementById('lb-eyebrow').textContent = `frame ${p.idx}${p.film ? ' · ' + p.film : ''}`;
+  document.getElementById('lb-title').textContent = p.title;
+  document.getElementById('lb-caption').textContent = p.caption;
+
+  let metaHTML = '';
+  if (p.camera)   metaHTML += `<div class="lb-meta-row"><span class="lb-meta-key">câmera</span><span class="lb-meta-val">${p.camera}</span></div>`;
+  if (p.film)     metaHTML += `<div class="lb-meta-row"><span class="lb-meta-key">filme</span><span class="lb-meta-val">${p.film}</span></div>`;
+  if (p.aperture) metaHTML += `<div class="lb-meta-row"><span class="lb-meta-key">abertura</span><span class="lb-meta-val">${p.aperture}</span></div>`;
+  if (p.speed)    metaHTML += `<div class="lb-meta-row"><span class="lb-meta-key">veloc.</span><span class="lb-meta-val">${p.speed}</span></div>`;
+  if (p.loc)      metaHTML += `<div class="lb-meta-row"><span class="lb-meta-key">local</span><span class="lb-meta-val">${p.loc}</span></div>`;
+  metaHTML += `<div class="lb-meta-row"><span class="lb-meta-key">data</span><span class="lb-meta-val">${p.date}</span></div>`;
+  document.getElementById('lb-meta').innerHTML = metaHTML;
+
+  const link = document.getElementById('lb-link');
+  link.href = p.textLink;
+
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  document.getElementById('lb-prev').onclick = (e) => { e.stopPropagation(); if (current > 0) openLightbox(current - 1, list); };
+  document.getElementById('lb-next').onclick = (e) => { e.stopPropagation(); if (current < list.length - 1) openLightbox(current + 1, list); };
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('lb-close').addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', (e) => {
+  if (!lightbox.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft' && current > 0) openLightbox(current - 1, filtered);
+  if (e.key === 'ArrowRight' && current < filtered.length - 1) openLightbox(current + 1, filtered);
+});
+
+// filtros
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    filtered = f === 'all' ? [...photos] : photos.filter(p => buildCat(p).includes(f));
+    renderRoll(filtered);
+  });
+});
+
+// perfurações no header
+function makePerfs() {
+  const el = document.getElementById('perfs');
+  if (!el) return;
+  const n = Math.ceil(window.innerWidth / 30) + 2;
+  el.innerHTML = Array(n).fill('<div class="perf"></div>').join('');
+}
+makePerfs();
+window.addEventListener('resize', makePerfs);
+
+renderRoll(photos);
+</script>
+</body>
+</html>

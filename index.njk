@@ -319,9 +319,13 @@ nav {
 }
 
 .strip-row {
+  overflow-x: hidden;
+  margin-bottom: 1.2rem;
+}
+
+.strip-inner {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1.2rem;
 }
 
 /* faixa de furinhos horizontal — topo e base da tira */
@@ -484,13 +488,21 @@ footer {
   .hero-info { padding: 2rem 1.5rem; }
   .exposure-data { display: none; }
   .contact-sheet { padding: 1rem 0 2rem; }
-  /* tira rola horizontalmente no mobile — todos os frames em linha */
+  /* a tira inteira (perfs + frames) rola como unidade */
   .strip-row {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
   .strip-row::-webkit-scrollbar { display: none; }
+  .strip-inner {
+    display: inline-flex;
+    flex-direction: column;
+    min-width: max-content;
+  }
+  .strip-perfs-h {
+    width: 100%;
+  }
   .strip-frames {
     grid-template-columns: repeat(4, 70vw);
     gap: 4px;
@@ -574,26 +586,28 @@ footer {
 <div class="contact-sheet">
   {% for chunk in collections.articles | chunk(4) %}
   <div class="strip-row">
-    <div class="strip-perfs-h"></div>
-    <div class="strip-frames">
-      {% for article in chunk %}
-      <a class="film-frame" href="{{ article.url }}">
-        {% if article.data.hero_image %}
-        <div class="frame-ph"><img src="{{ article.data.hero_image }}" alt="{{ article.data.title }}"></div>
-        {% else %}
-        <div class="frame-ph {{ article.data.colorClass }}"></div>
-        {% endif %}
-        <span class="frame-idx">{{ article.data.frameNumber }}</span>
-        <div class="frame-meta">
-          {{ article.data.location | locShort }}<br>{{ article.data.date | dateYM }}
-        </div>
-        <div class="frame-overlay">
-          <span class="frame-title-overlay">{{ article.data.title }}</span>
-        </div>
-      </a>
-      {% endfor %}
+    <div class="strip-inner">
+      <div class="strip-perfs-h"></div>
+      <div class="strip-frames">
+        {% for article in chunk %}
+        <a class="film-frame" href="{{ article.url }}">
+          {% if article.data.hero_image %}
+          <div class="frame-ph"><img src="{{ article.data.hero_image }}" alt="{{ article.data.title }}"></div>
+          {% else %}
+          <div class="frame-ph {{ article.data.colorClass }}"></div>
+          {% endif %}
+          <span class="frame-idx">{{ article.data.frameNumber }}</span>
+          <div class="frame-meta">
+            {{ article.data.location | locShort }}<br>{{ article.data.date | dateYM }}
+          </div>
+          <div class="frame-overlay">
+            <span class="frame-title-overlay">{{ article.data.title }}</span>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      <div class="strip-perfs-h"></div>
     </div>
-    <div class="strip-perfs-h"></div>
   </div>
   {% endfor %}
 </div>

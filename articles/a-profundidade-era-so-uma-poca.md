@@ -9,7 +9,10 @@ location: "Porto Alegre RS · Parque Farroupilha"
 hero_image: "/img/profundidade-poca.jpg"
 author_note: "Escrito depois de rever A Chegada com Raquel no sofá. O frio e a serração pediam um filme. O que veio foi outra coisa."
 themes:
-
+  - "pensamentos"
+  - "reflexão"
+  - "capitalismo"
+  - "nostalgia"
 ---
 
 Empolgado, preparei a sala.

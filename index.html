@@ -513,10 +513,15 @@ footer {
 .c8 { background: linear-gradient(135deg, var(--ektar-red) 0%, #6a3020 50%, #2a1810 100%); }
 
 @media (max-width: 768px) {
-  .hero-frame { grid-template-columns: 1fr; }
-  .hero-photo-inner { min-height: 60vw; }
-  .hero-info { padding: 2rem 1.5rem; }
   nav { padding: .8rem 1.2rem; }
+  .nav-right { gap: .8rem; }
+  .nav-right a:not(.nav-pill) { display: none; }
+  .hero-frame { grid-template-columns: 1fr; min-height: auto; }
+  .hero-photo { border-right: none; border-bottom: 2px solid var(--frame-border); }
+  .hero-photo-inner { min-height: 56vw; }
+  .hero-info { padding: 2rem 1.5rem; }
+  .exposure-data { display: none; }
+  .contact-sheet { padding: 1rem 1rem 2rem; }
   .strip-frames { grid-template-columns: repeat(2, 1fr); }
   .caption-row { grid-template-columns: 20px repeat(2, 1fr) 20px; }
   .caption-row .fc3, .caption-row .fc4 { display: none; }
@@ -533,7 +538,7 @@ footer {
     <a href="index.html#arquivo">arquivo</a>
     <a href="index.html#sobre">sobre</a>
     <a href="https://naocabe.substack.com" target="_blank" class="nav-pill">Substack</a>
-    <a href="https://instagram.com" target="_blank" class="nav-pill">Instagram</a>
+    <a href="https://www.instagram.com/trombini" target="_blank" class="nav-pill">Instagram</a>
   </div>
 </nav>
 
@@ -556,7 +561,8 @@ footer {
     <div class="hero-info">
       <p class="strip-index">tromb.in &mdash; frame 001</p>
       <h1 class="hero-title">O que não<br>coube aqui<br>ficou em mim</h1>
-      <p class="hero-excerpt">Coloque aqui um trecho do seu texto mais recente — algo que dê o tom antes mesmo de começar a ler.</p>
+      <!-- trecho de abertura do texto em destaque -->
+      <p class="hero-excerpt"></p>
       <div class="meta-row">
         <span>março 2025</span>
         <span class="meta-dot"></span>
@@ -691,7 +697,7 @@ footer {
   <span class="footer-logo">tromb<em>.</em>in</span>
   <div class="footer-links">
     <a href="https://naocabe.substack.com" target="_blank">Não Cabia</a>
-    <a href="https://instagram.com" target="_blank">Instagram</a>
+    <a href="https://www.instagram.com/trombini" target="_blank">Instagram</a>
     <a href="index.html#sobre">sobre</a>
   </div>
   <span class="footer-copy">Kodak Ektar 100 &nbsp;&middot;&nbsp; Porto Alegre RS &nbsp;&middot;&nbsp; 2024&ndash;2025</span>

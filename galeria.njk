@@ -651,43 +651,31 @@ function shortCamera(cam) {
 
 // Categorias de um frame para filtrar
 function buildCat(p) {
-  const cats = [];
-  if (p.loc) {
-    const locKey = 'loc:' + p.loc.toLowerCase()
-      .replace(/\s*·\s*.*/,'')   // remove sufixos tipo "· MARGS"
-      .trim()
-      .replace(/\s+/g, '-')
-      .replace(/[^a-z0-9-]/g, '');
-    cats.push(locKey);
-  }
+  const cats = (p.themes || []).map(t => 'theme:' + t);
   if (p.collection) cats.push('col:' + p.collection);
   return cats;
 }
 
-// ── Filtros dinâmicos ────────────────────────────────────────────────────────
+// ── Filtros dinâmicos por tema ───────────────────────────────────────────────
 function buildFilterBar() {
   const bar = document.getElementById('filter-bar');
-  const locations = new Map();   // locKey → label
-  const collections = new Map(); // colKey → label
+  const themeCounts = new Map();
+  const collections = new Map();
 
   photos.forEach(p => {
-    if (p.loc) {
-      const label = p.loc.replace(/\s*·\s*.*/, '').trim(); // remove "· MARGS"
-      const key = 'loc:' + label.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-      if (!locations.has(key)) locations.set(key, label.toLowerCase());
-    }
-    if (p.collection) {
-      const key = 'col:' + p.collection;
-      if (!collections.has(key)) collections.set(key, p.collection);
-    }
+    (p.themes || []).forEach(t => themeCounts.set(t, (themeCounts.get(t) || 0) + 1));
+    if (p.collection) collections.set(p.collection, (collections.get(p.collection) || 0) + 1);
   });
 
+  // ordena por frequência, mostra todos os temas que aparecem em pelo menos 1 foto
+  const sortedThemes = [...themeCounts.entries()].sort((a, b) => b[1] - a[1]);
+
   bar.innerHTML = '<button class="filter-btn active" data-filter="all">todos</button>';
-  locations.forEach((label, key) => {
-    bar.innerHTML += `<button class="filter-btn" data-filter="${key}">${label}</button>`;
+  sortedThemes.forEach(([theme]) => {
+    bar.innerHTML += `<button class="filter-btn" data-filter="theme:${theme}">${theme}</button>`;
   });
-  collections.forEach((label, key) => {
-    bar.innerHTML += `<button class="filter-btn" data-filter="${key}">${label}</button>`;
+  collections.forEach((_, col) => {
+    bar.innerHTML += `<button class="filter-btn" data-filter="col:${col}">${col}</button>`;
   });
 
   bar.querySelectorAll('.filter-btn').forEach(btn => {

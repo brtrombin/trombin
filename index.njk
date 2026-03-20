@@ -650,6 +650,56 @@ function makePerfs(id) {
 makePerfs('perfs-top');
 makePerfs('perfs-bot');
 window.addEventListener('resize', () => { makePerfs('perfs-top'); makePerfs('perfs-bot'); });
+
+// Auto-scroll suave nas tiras — apenas mobile
+(function() {
+  if (window.innerWidth > 768) return;
+
+  const SPEED = 0.4; // px por frame (~24px/s em 60fps)
+  const PAUSE_AFTER_TOUCH = 3000; // ms de pausa após interação
+
+  document.querySelectorAll('.strip-row').forEach(row => {
+    let rafId = null;
+    let paused = false;
+    let resumeTimer = null;
+    let visible = false;
+
+    function scroll() {
+      if (!paused && visible) {
+        const inner = row.querySelector('.strip-inner') || row;
+        const maxScroll = inner.scrollWidth - row.clientWidth;
+        if (row.scrollLeft >= maxScroll) {
+          // chegou no fim: pausa 1s e volta pro início suavemente
+          paused = true;
+          setTimeout(() => {
+            row.scrollTo({ left: 0, behavior: 'smooth' });
+            setTimeout(() => { paused = false; }, 600);
+          }, 1000);
+        } else {
+          row.scrollLeft += SPEED;
+        }
+      }
+      rafId = requestAnimationFrame(scroll);
+    }
+
+    function pauseTemporarily() {
+      paused = true;
+      clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => { paused = false; }, PAUSE_AFTER_TOUCH);
+    }
+
+    row.addEventListener('touchstart', pauseTemporarily, { passive: true });
+    row.addEventListener('mouseenter', () => { paused = true; });
+    row.addEventListener('mouseleave', () => { paused = false; });
+
+    const observer = new IntersectionObserver(entries => {
+      visible = entries[0].isIntersecting;
+      if (visible && !rafId) rafId = requestAnimationFrame(scroll);
+    }, { threshold: 0.3 });
+
+    observer.observe(row);
+  });
+})();
 </script>
 </body>
 </html>

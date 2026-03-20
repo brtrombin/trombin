@@ -1,0 +1,11 @@
+{
+  "name": "trombin",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "eleventy",
+    "serve": "eleventy --serve"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1"
+  }
+}

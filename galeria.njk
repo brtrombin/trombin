@@ -514,7 +514,6 @@ footer {
 .footer-links a:hover { color: var(--cream); }
 
 @media (max-width: 900px) {
-  .roll-frames { grid-template-columns: repeat(3, 1fr); }
   .lb-inner { grid-template-columns: 1fr; max-height: 95vh; overflow-y: auto; }
   .lb-photo { min-height: 50vw; }
   .lb-info { border-left: none; border-top: 1px solid var(--green-border); }
@@ -637,7 +636,8 @@ function chunk(arr, size) {
 
 function renderRoll(list) {
   roll.innerHTML = '';
-  const rows = chunk(list, 4);
+  const cols = getColumns();
+  const rows = chunk(list, cols);
   rows.forEach(row => {
     const strip = document.createElement('div');
     strip.className = 'roll-strip';
@@ -647,7 +647,7 @@ function renderRoll(list) {
     const rightPerfs = document.createElement('div');
     rightPerfs.className = 'roll-perfs right';
 
-    const nPerfs = 6;
+    const nPerfs = cols === 2 ? 4 : 6;
     for (let i = 0; i < nPerfs; i++) {
       leftPerfs.innerHTML += '<div class="roll-perf"></div>';
       rightPerfs.innerHTML += '<div class="roll-perf"></div>';
@@ -760,7 +760,18 @@ function makePerfs() {
 makePerfs();
 window.addEventListener('resize', makePerfs);
 
+function getColumns() {
+  return window.innerWidth <= 600 ? 2 : 4;
+}
+
 renderRoll(photos);
+
+window.addEventListener('resize', () => {
+  const f = document.querySelector('.filter-btn.active');
+  const filter = f ? f.dataset.filter : 'all';
+  const list = filter === 'all' ? [...photos] : photos.filter(p => buildCat(p).includes(filter));
+  renderRoll(list);
+});
 </script>
 </body>
 </html>

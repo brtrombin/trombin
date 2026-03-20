@@ -6,7 +6,7 @@ type: leitura
 lead: "O sol me visita com aquele calor de quem sabe que vai se despedir e eu fico ali, imóvel por fora, remexido por dentro."
 substack_url: "https://naocabe.substack.com/p/sol-entre-alertas"
 location: "Porto Alegre RS"
-hero_image: ""
+hero_image: "/img/sol-entre-alertas.jpg"
 camera: ""
 film: ""
 aperture: ""

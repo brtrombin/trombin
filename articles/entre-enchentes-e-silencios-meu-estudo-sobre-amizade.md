@@ -6,7 +6,7 @@ type: leitura
 lead: "Quando a filosofia encontra o corpo molhado, o afeto vira um abrigo."
 substack_url: "https://naocabe.substack.com/p/entre-enchentes-e-silencios-meu-estudo-sobre-amizade"
 location: ""
-hero_image: ""
+hero_image: "/img/entre-enchentes-e-silencios-meu-estudo-sobre-amizade.jpg"
 camera: ""
 film: ""
 aperture: ""

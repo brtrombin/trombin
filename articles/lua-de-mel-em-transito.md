@@ -6,7 +6,7 @@ type: leitura
 lead: "A lua de mel começou em Porto Alegre. No São Pedro, Ian Ramil lançou o tetein. O teatro inteiro parecia pulsar junto."
 substack_url: "https://naocabe.substack.com/p/lua-de-mel-em-transito"
 location: "Porto Alegre · Roma"
-hero_image: ""
+hero_image: "/img/lua-de-mel-em-transito.jpg"
 camera: ""
 film: ""
 aperture: ""

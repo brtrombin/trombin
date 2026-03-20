@@ -6,7 +6,7 @@ type: leitura
 lead: "A rua ainda está deitada quando o portão do laboratório se abre."
 substack_url: "https://naocabe.substack.com/p/coleta"
 location: ""
-hero_image: ""
+hero_image: "/img/coleta.jpg"
 camera: ""
 film: ""
 aperture: ""

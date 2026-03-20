@@ -6,7 +6,7 @@ type: leitura
 lead: "Hoje caminhei pelo Palatino e pelo Fórum Romano."
 substack_url: "https://naocabe.substack.com/p/eco-do-marmore"
 location: ""
-hero_image: ""
+hero_image: "/img/eco-do-marmore.jpg"
 camera: ""
 film: ""
 aperture: ""

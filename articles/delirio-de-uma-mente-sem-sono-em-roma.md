@@ -6,7 +6,7 @@ type: leitura
 lead: "Roma foi linda, mas agora é barulho."
 substack_url: "https://naocabe.substack.com/p/delirio-de-uma-mente-sem-sono-em-roma"
 location: ""
-hero_image: ""
+hero_image: "/img/delirio-de-uma-mente-sem-sono-em-roma.jpg"
 camera: ""
 film: ""
 aperture: ""

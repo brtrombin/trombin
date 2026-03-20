@@ -515,10 +515,28 @@ footer {
 @media (max-width: 600px) {
   nav { padding: .8rem 1.2rem; }
   .nav-right { gap: .8rem; }
-  .roll-frames { grid-template-columns: repeat(2, 1fr); }
-  .gallery-wrap { padding: 1rem; }
+  .gallery-wrap { padding: 1rem 0; }
   .page-header { padding: 80px 1rem 0; }
   footer { flex-direction: column; gap: 1rem; text-align: center; }
+  .roll-strip {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .roll-strip::-webkit-scrollbar { display: none; }
+  .roll-frames {
+    grid-template-columns: repeat(4, 70vw);
+    gap: 4px;
+    padding: 4px;
+  }
+  .roll-perfs-h::before {
+    background: repeating-linear-gradient(
+      to right,
+      transparent 0, transparent 5px,
+      #000 5px, #000 13px,
+      transparent 13px, transparent 18px
+    );
+  }
 }
 </style>
 </head>

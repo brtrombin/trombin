@@ -29,6 +29,20 @@ module.exports = function(eleventyConfig) {
     return `${y} ${m} ${day}`;
   });
 
+  // "POA RS" — tudo antes do " · " no campo location
+  eleventyConfig.addFilter("locShort", (loc) => {
+    if (!loc) return "";
+    return loc.split(" · ")[0];
+  });
+
+  // "2025 02" — ano e mês do dateStamp
+  eleventyConfig.addFilter("dateYM", (date) => {
+    const d = new Date(date);
+    const y = d.getUTCFullYear();
+    const m = String(d.getUTCMonth() + 1).padStart(2, "0");
+    return `${y} ${m}`;
+  });
+
   // chunk array into arrays of N
   eleventyConfig.addFilter("chunk", (arr, size) => {
     const chunks = [];

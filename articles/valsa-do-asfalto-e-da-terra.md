@@ -12,12 +12,10 @@ location: "Porto Alegre RS · Parque Farroupilha"
 hero_image: "/img/valsa-asfalto-terra.jpg"
 author_note: "Escrito num festival na praça, sentado no meio do barulho, pensando no interior. Em não saber qual peso carregar."
 themes:
-  - cidade
-  - interior
-  - natureza
-  - contradição
-  - pertencimento
-  - cotidiano
+  - "pensamentos"
+  - "crônica"
+  - "reflexão"
+
 ---
 
 ## passo um: caos

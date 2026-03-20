@@ -12,12 +12,9 @@ location: "Porto Alegre RS · CCMQ"
 hero_image: "/img/saudade-momentos.jpg"
 author_note: "Escrito enquanto Raquel viajava. Voltei a fotografar, não por solidão, mas por vontade de mais presença."
 themes:
-  - fotografia
-  - memória
-  - redes sociais
-  - consumo
-  - amor
-  - resistência
+  - "pensamentos"
+  - "fotografia"
+
 ---
 
 Desde que a Raquel viajou, voltei a fotografar.

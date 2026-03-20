@@ -12,11 +12,10 @@ aperture: "f/1.6"
 speed: "1/978"
 author_note: "Escrito em dezembro, quando o corpo pedia pausa e o mundo continuava exigindo entrega."
 themes:
-  - descanso
-  - capitalismo
-  - tempo
-  - corpo
-  - produtividade
+  - "pensamentos"
+  - "corpo"
+  - "cansaço"
+
 ---
 
 Faz poucos meses que descansei.

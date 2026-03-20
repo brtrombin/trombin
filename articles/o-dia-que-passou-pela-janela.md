@@ -12,11 +12,9 @@ location: "Canoas RS · Janela do apartamento"
 hero_image: "/img/dia-passou-janela.jpg"
 author_note: "Escrito depois de perder um show e inventar tarefas no lugar do descanso. A culpa que ninguém ensinou a questionar."
 themes:
-  - cotidiano
-  - produtividade
-  - culpa
-  - descanso
-  - capitalismo
+  - "política"
+  - "reflexão"
+
 ---
 
 Era um dia bonito.

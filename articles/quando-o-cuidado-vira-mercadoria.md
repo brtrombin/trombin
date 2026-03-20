@@ -12,12 +12,8 @@ location: "Porto Alegre RS · MARGS"
 hero_image: "/img/margs-cuidado.jpg"
 author_note: "Escrito num sábado de julho, entre a feira do bom fim e o MARGS. Tentando entender por que o descanso ainda parece uma obrigação."
 themes:
-  - consumo
-  - capitalismo
-  - cuidado
-  - tempo
-  - cotidiano
-  - porto alegre
+  - "política"
+
 ---
 
 O corpo acorda sem pressa. Tomo banho, dou comida pros gatos, passo um café. É o mesmo de sempre: forte, encorpado, mas nunca amargo. Aquece as mãos, acorda a alma, convida o dia a começar.

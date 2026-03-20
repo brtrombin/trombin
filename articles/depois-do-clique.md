@@ -12,11 +12,9 @@ location: "Porto Alegre RS · Parque Farroupilha"
 hero_image: "/img/depois-do-clique.jpg"
 author_note: "Escrito numa varanda, esperando Raquel chegar, com a câmera em silêncio do lado. Uma continuação de Saudade dos momentos que vivemos."
 themes:
-  - fotografia
-  - consumo
-  - capitalismo
-  - memória
-  - resistência
+  - "fotografia"
+  - "política"
+
 ---
 
 Sento na varanda.

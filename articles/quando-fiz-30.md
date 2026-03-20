@@ -9,11 +9,10 @@ location: "Porto Alegre RS · Estreito da Chosen"
 hero_image: "/img/quando-fiz-30.jpg"
 author_note: "Escrito depois da virada dos 30 — num bar de drinks, bolo emo e unhas rosas. Um registro pra mim do futuro."
 themes:
-  - aniversário
-  - tempo
-  - reflexão
-  - amizade
-  - vida
+  - "reflexão"
+  - "desabafos"
+  - "amizade"
+
 ---
 
 Quando fiz 30 anos sabia que muita coisa me esperava.

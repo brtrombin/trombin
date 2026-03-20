@@ -5,6 +5,7 @@ module.exports = function(eleventyConfig) {
 
   // ── Passthrough ──────────────────────────────────────────────────────────
   eleventyConfig.addPassthroughCopy("img");
+  eleventyConfig.addPassthroughCopy("CNAME");
 
   // ── Filters ──────────────────────────────────────────────────────────────
 

@@ -6,7 +6,7 @@ type: leitura
 lead: "A amizade é um rio que às vezes some de vista mas nunca seca."
 substack_url: "https://naocabe.substack.com/p/menemigo"
 location: ""
-hero_image: ""
+hero_image: "/img/menemigo.jpg"
 camera: ""
 film: ""
 aperture: ""

@@ -6,7 +6,7 @@ type: leitura
 lead: "Entre o sonho que nos prometeram e o silêncio onde aprendemos a ficar."
 substack_url: "https://naocabe.substack.com/p/heranca-de-fe-escolha-de-esperanca"
 location: ""
-hero_image: ""
+hero_image: "/img/heranca-de-fe-escolha-de-esperanca.jpg"
 camera: ""
 film: ""
 aperture: ""

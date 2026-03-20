@@ -6,7 +6,7 @@ type: leitura
 lead: "Tem dias em que acordo com a impressão de que algo está me crescendo por dentro."
 substack_url: "https://naocabe.substack.com/p/na-curva-do-que-nao-cabe"
 location: ""
-hero_image: ""
+hero_image: "/img/na-curva-do-que-nao-cabe.jpg"
 camera: ""
 film: ""
 aperture: ""

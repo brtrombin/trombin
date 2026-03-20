@@ -6,7 +6,7 @@ type: leitura
 lead: "Sobre o que só cabe quando a gente se permite levar menos."
 substack_url: "https://naocabe.substack.com/p/espaco-na-bagagem"
 location: ""
-hero_image: ""
+hero_image: "/img/espaco-na-bagagem.jpg"
 camera: ""
 film: ""
 aperture: ""

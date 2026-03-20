@@ -6,7 +6,7 @@ type: leitura
 lead: "Esta coletânea nasce como uma tentativa de entender meu corpo, e escutar o que ele vem tentando me dizer há anos."
 substack_url: "https://naocabe.substack.com/p/a-fome-era-de-futuro-parte-i"
 location: ""
-hero_image: ""
+hero_image: "/img/a-fome-era-de-futuro-parte-i.jpg"
 camera: ""
 film: ""
 aperture: ""

@@ -6,7 +6,7 @@ type: leitura
 lead: "Quando o corpo já tentou de tudo, e mesmo assim continua pedindo cuidado."
 substack_url: "https://naocabe.substack.com/p/a-fome-era-de-futuro-parte-iii"
 location: ""
-hero_image: ""
+hero_image: "/img/a-fome-era-de-futuro-parte-iii.jpg"
 camera: ""
 film: ""
 aperture: ""

@@ -6,7 +6,7 @@ type: leitura
 lead: "Faz um ano que não fumo. Não por força. Nem por promessa. A água levou."
 substack_url: "https://naocabe.substack.com/p/quando-a-agua-levou-o-ultimo-cigarro"
 location: "Porto Alegre RS"
-hero_image: ""
+hero_image: "/img/quando-a-agua-levou-o-ultimo-cigarro.jpg"
 camera: ""
 film: ""
 aperture: ""

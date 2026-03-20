@@ -6,7 +6,7 @@ type: leitura
 lead: "terno escuro / chapéu inclinado / guarda-chuva encharcado / parado numa esquina qualquer"
 substack_url: "https://naocabe.substack.com/p/sombra-na-chuva"
 location: "Canela RS"
-hero_image: ""
+hero_image: "/img/sombra-na-chuva.jpg"
 camera: ""
 film: ""
 aperture: ""

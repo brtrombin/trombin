@@ -6,7 +6,7 @@ type: leitura
 lead: "Eu aprendi com o tempo que quem realmente se importa contigo, não importa a distância, um dia volta."
 substack_url: "https://naocabe.substack.com/p/se-um-dia-a-gente-se-perder"
 location: ""
-hero_image: ""
+hero_image: "/img/se-um-dia-a-gente-se-perder.jpg"
 camera: ""
 film: ""
 aperture: ""

@@ -6,7 +6,7 @@ type: leitura
 lead: "Antes de Paris, teve a aliança."
 substack_url: "https://naocabe.substack.com/p/o-que-veio-antes-do-sim"
 location: "Porto Alegre RS · Paris · Europa"
-hero_image: ""
+hero_image: "/img/o-que-veio-antes-do-sim.jpg"
 camera: ""
 film: ""
 aperture: ""

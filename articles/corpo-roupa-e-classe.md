@@ -6,7 +6,7 @@ type: leitura
 lead: "Quando cuidar de si é também enxergar o outro."
 substack_url: "https://naocabe.substack.com/p/corpo-roupa-e-classe"
 location: ""
-hero_image: ""
+hero_image: "/img/corpo-roupa-e-classe.jpg"
 camera: ""
 film: ""
 aperture: ""

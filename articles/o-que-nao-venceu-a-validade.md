@@ -6,7 +6,7 @@ type: leitura
 lead: "Sinto falta dos fins do mundo que vinham com data marcada."
 substack_url: "https://naocabe.substack.com/p/o-que-nao-venceu-a-validade"
 location: ""
-hero_image: ""
+hero_image: "/img/o-que-nao-venceu-a-validade.jpg"
 camera: ""
 film: ""
 aperture: ""

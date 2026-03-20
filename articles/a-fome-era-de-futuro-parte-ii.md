@@ -6,7 +6,7 @@ type: leitura
 lead: "Quando o corpo vira abrigo e aviso ao mesmo tempo."
 substack_url: "https://naocabe.substack.com/p/a-fome-era-de-futuro-parte-ii"
 location: ""
-hero_image: ""
+hero_image: "/img/a-fome-era-de-futuro-parte-ii.jpg"
 camera: ""
 film: ""
 aperture: ""

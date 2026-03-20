@@ -6,7 +6,7 @@ type: leitura
 lead: "Hoje faz oito anos. E tudo o que eu consigo sentir é paz, dessas que vêm quando a gente sabe que tá exatamente onde deveria estar."
 substack_url: "https://naocabe.substack.com/p/8-anos"
 location: ""
-hero_image: ""
+hero_image: "/img/8-anos.jpg"
 camera: ""
 film: ""
 aperture: ""

@@ -6,7 +6,7 @@ type: leitura
 lead: "Quando o corpo finalmente aprende o que a cabeça já sabia."
 substack_url: "https://naocabe.substack.com/p/a-fome-era-de-futuro-parte-iv"
 location: ""
-hero_image: ""
+hero_image: "/img/a-fome-era-de-futuro-parte-iv.jpg"
 camera: ""
 film: ""
 aperture: ""

@@ -6,7 +6,7 @@ type: leitura
 lead: "O som da água tem memória. E agora, ela lembra de tudo que quero esquecer."
 substack_url: "https://naocabe.substack.com/p/chove-la-fora"
 location: ""
-hero_image: ""
+hero_image: "/img/chove-la-fora.jpg"
 camera: ""
 film: ""
 aperture: ""

@@ -6,7 +6,7 @@ type: leitura
 lead: "Para o instante em que o amor já chegou, mas ainda está escondido por entre as pessoas."
 substack_url: "https://naocabe.substack.com/p/antes-de-ve-la"
 location: ""
-hero_image: ""
+hero_image: "/img/antes-de-ve-la.jpg"
 camera: ""
 film: ""
 aperture: ""

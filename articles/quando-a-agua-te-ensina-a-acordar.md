@@ -6,7 +6,7 @@ type: leitura
 lead: "A grande vitória não é escapar do balde. É acordar antes dele."
 substack_url: "https://naocabe.substack.com/p/quando-a-agua-te-ensina-a-acordar"
 location: ""
-hero_image: ""
+hero_image: "/img/quando-a-agua-te-ensina-a-acordar.jpg"
 camera: ""
 film: ""
 aperture: ""

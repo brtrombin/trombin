@@ -1,5 +1,5 @@
 ---
-draft: false
+draft: true
 title: "Conexão por Empatia?"
 date: 2025-01-01 # DATA INCERTA
 type: leitura

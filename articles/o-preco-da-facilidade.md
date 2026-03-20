@@ -6,7 +6,7 @@ type: leitura
 lead: "Às vezes eu acordo com o corpo querendo mato."
 substack_url: "https://naocabe.substack.com/p/o-preco-da-facilidade"
 location: ""
-hero_image: ""
+hero_image: "/img/o-preco-da-facilidade.jpg"
 camera: ""
 film: ""
 aperture: ""

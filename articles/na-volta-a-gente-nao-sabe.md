@@ -6,7 +6,7 @@ type: leitura
 lead: "— Na volta a gente não sabe, né, chefia…"
 substack_url: "https://naocabe.substack.com/p/na-volta-a-gente-nao-sabe"
 location: "Porto Alegre RS · Parque da Redenção"
-hero_image: ""
+hero_image: "/img/na-volta-a-gente-nao-sabe.jpg"
 camera: ""
 film: ""
 aperture: ""

@@ -524,10 +524,10 @@ footer {
 <body>
 
 <nav>
-  <a href="/" class="logo">tromb<em>.</em>in</a>
+  <a href="{{ '/' | url }}" class="logo">tromb<em>.</em>in</a>
   <div class="nav-right">
     <a href="#arquivo">arquivo</a>
-    <a href="/galeria.html">galeria</a>
+    <a href="{{ '/galeria.html' | url }}">galeria</a>
     <a href="#sobre">sobre</a>
     <a href="https://naocabe.substack.com" target="_blank" class="nav-pill">Substack</a>
     <a href="https://www.instagram.com/brtrombin" target="_blank" class="nav-pill">Instagram</a>
@@ -544,7 +544,7 @@ footer {
     <div class="hero-photo">
       <div class="hero-photo-inner" {% if not featured.data.hero_image %}style="background:{{ featured.data.hero_gradient | default('linear-gradient(180deg, #1a3a5c 0%, #2e6a9e 35%, #8aaa6a 58%, #d4621e 80%, #c8341a 100%)') }}"{% endif %}>
         {% if featured.data.hero_image %}
-        <img src="{{ featured.data.hero_image }}" alt="{{ featured.data.title }}">
+        <img src="{{ featured.data.hero_image | url }}" alt="{{ featured.data.title }}">
         {% endif %}
         <div class="ektar-stamp">
           {{ featured.data.location }}<br>
@@ -592,7 +592,7 @@ footer {
         {% for article in chunk %}
         <a class="film-frame" href="{{ article.url }}">
           {% if article.data.hero_image %}
-          <div class="frame-ph"><img src="{{ article.data.hero_image }}" alt="{{ article.data.title }}"></div>
+          <div class="frame-ph"><img src="{{ article.data.hero_image | url }}" alt="{{ article.data.title }}"></div>
           {% else %}
           <div class="frame-ph {{ article.data.colorClass }}"></div>
           {% endif %}

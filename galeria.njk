@@ -543,10 +543,10 @@ footer {
 <body>
 
 <nav>
-  <a href="/" class="logo">tromb<em>.</em>in</a>
+  <a href="{{ '/' | url }}" class="logo">tromb<em>.</em>in</a>
   <div class="nav-right">
-    <a href="/">arquivo</a>
-    <a href="/galeria.html" class="active">galeria</a>
+    <a href="{{ '/' | url }}">arquivo</a>
+    <a href="{{ '/galeria.html' | url }}" class="active">galeria</a>
     <a href="https://naocabe.substack.com" target="_blank" class="nav-pill">Substack</a>
   </div>
 </nav>
@@ -569,7 +569,7 @@ footer {
 <footer>
   <span class="footer-logo">tromb<em>.</em>in</span>
   <div class="footer-links">
-    <a href="/">contact sheet</a>
+    <a href="{{ '/' | url }}">contact sheet</a>
     <a href="https://naocabe.substack.com" target="_blank">Substack</a>
     <a href="https://www.instagram.com/brtrombin" target="_blank">Instagram</a>
   </div>
@@ -598,6 +598,9 @@ footer {
 </div>
 
 <script>
+// Base URL para paths de imagens e links (vazio em dev, /trombin no GitHub Pages)
+const BASE = "{{ siteBase }}";
+
 // ── Fonte 1: artigos (automático via Eleventy) ───────────────────────────────
 const fromArticles = [
   {% for article in collections.articles %}{% if article.data.hero_image %}
@@ -731,7 +734,7 @@ function renderRoll(list) {
         ? '<span class="has-text-badge">texto</span>' : '';
 
       cell.innerHTML = `
-        <img src="${p.img}" alt="${p.title}" loading="lazy">
+        <img src="${BASE}${p.img}" alt="${p.title}" loading="lazy">
         <span class="frame-idx">${p.idx}</span>
         ${metaLine ? `<div class="frame-meta">${metaLine}</div>` : ''}
         ${collectionBadge || textBadge}
@@ -762,7 +765,7 @@ function openLightbox(i, list) {
   const existingImg = lbPhoto.querySelector('img');
   if (existingImg) existingImg.remove();
   const img = document.createElement('img');
-  img.src = p.img;
+  img.src = BASE + p.img;
   img.alt = p.title;
   lbPhoto.insertBefore(img, lbPhoto.firstChild);
 
@@ -791,7 +794,7 @@ function openLightbox(i, list) {
 
   const link = document.getElementById('lb-link');
   if (p.textLink) {
-    link.href = p.textLink;
+    link.href = BASE + p.textLink;
     link.style.display = 'block';
   } else {
     link.style.display = 'none';

@@ -484,8 +484,8 @@ footer {
 <body>
 
 <nav>
-  <a href="/" class="logo">tromb<em>.</em>in</a>
-  <a href="/" class="nav-back">contact sheet</a>
+  <a href="{{ '/' | url }}" class="logo">tromb<em>.</em>in</a>
+  <a href="{{ '/' | url }}" class="nav-back">contact sheet</a>
   <span class="nav-frame">frame {{ frameNumber }} / 99exp</span>
 </nav>
 
@@ -493,7 +493,7 @@ footer {
   <div class="hero-film-strip" id="perfs-top"></div>
   <div class="hero-img-wrap">
     {% if hero_image %}
-    <img src="{{ hero_image }}" alt="{{ title }}">
+    <img src="{{ hero_image | url }}" alt="{{ title }}">
     {% else %}
     <div class="ph" style="background:{{ hero_gradient | default('linear-gradient(160deg,#1a3a5c 0%,#2e6a9e 30%,#6a8a5a 60%,#c8621e 85%,#c8341a 100%)') }}"></div>
     {% endif %}
@@ -613,7 +613,7 @@ footer {
 <footer>
   <span class="footer-logo">tromb<em>.</em>in</span>
   <div class="footer-links">
-    <a href="/">contact sheet</a>
+    <a href="{{ '/' | url }}">contact sheet</a>
     <a href="https://naocabe.substack.com" target="_blank">Substack</a>
     <a href="https://www.instagram.com/brtrombin" target="_blank">Instagram</a>
   </div>

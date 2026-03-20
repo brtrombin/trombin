@@ -77,7 +77,13 @@ module.exports = function(eleventyConfig) {
 
   // ── Config ───────────────────────────────────────────────────────────────
 
+  // siteBase: "" localmente, "/trombin" no GitHub Pages (via env var)
+  const pathPrefix = process.env.ELEVENTY_PATH_PREFIX || "/";
+  const siteBase   = pathPrefix.replace(/\/$/, ""); // remove trailing slash
+  eleventyConfig.addGlobalData("siteBase", siteBase);
+
   return {
+    pathPrefix,
     templateFormats: ["njk", "md"],
     markdownTemplateEngine: "njk",
     htmlTemplateEngine: "njk",

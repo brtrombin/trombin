@@ -44,6 +44,15 @@ module.exports = function(eleventyConfig) {
     return `${y} ${m}`;
   });
 
+  // temas únicos de todos os artigos, ordenados alfabeticamente
+  eleventyConfig.addFilter("uniqueThemes", (articles) => {
+    const seen = new Set();
+    for (const a of (articles || [])) {
+      for (const t of (a.data.themes || [])) seen.add(t);
+    }
+    return [...seen].sort((a, b) => a.localeCompare(b, "pt"));
+  });
+
   // chunk array into arrays of N
   eleventyConfig.addFilter("chunk", (arr, size) => {
     const chunks = [];

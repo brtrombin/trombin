@@ -478,6 +478,42 @@ footer {
   text-transform: uppercase;
 }
 
+/* TEMAS */
+.themes-section {
+  padding: 3rem 2rem 3.5rem;
+  border-top: 1px solid var(--green-border);
+  background: var(--bg-dark);
+}
+.themes-label {
+  font-family: var(--mono);
+  font-size: .6rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ektar-red);
+  display: block;
+  margin-bottom: 1.2rem;
+}
+.themes-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+}
+.theme-pill {
+  font-family: var(--mono);
+  font-size: .65rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  border: 1px solid var(--green-border);
+  padding: .3rem .8rem;
+  text-decoration: none;
+  transition: color .2s, border-color .2s;
+}
+.theme-pill:hover {
+  color: var(--cream);
+  border-color: var(--cream-dim);
+}
+
 @media (max-width: 768px) {
   nav { padding: .8rem 1.2rem; }
   .nav-right { gap: .8rem; }
@@ -627,6 +663,18 @@ footer {
     </div>
   </div>
   <div class="perfs" id="perfs-bot"></div>
+</section>
+{% endif %}
+
+{% set allThemes = collections.articles | uniqueThemes %}
+{% if allThemes and allThemes.length > 0 %}
+<section class="themes-section">
+  <span class="themes-label">explorar por tema</span>
+  <div class="themes-list">
+    {% for theme in allThemes %}
+    <a href="{{ '/galeria.html' | url }}?theme={{ theme }}" class="theme-pill">{{ theme }}</a>
+    {% endfor %}
+  </div>
 </section>
 {% endif %}
 

@@ -64,19 +64,26 @@ nav {
   letter-spacing: .2em;
   color: var(--cream);
   text-decoration: none;
+  flex-shrink: 0;
 }
 .logo em { color: var(--ektar-red); font-style: normal; }
 
+.nav-center {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .nav-back {
   font-family: var(--mono);
-  font-size: .62rem;
+  font-size: .72rem;
   letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--cream-dim);
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: .5rem;
+  gap: .4rem;
   transition: color .2s;
 }
 .nav-back:hover { color: var(--cream); }
@@ -84,10 +91,31 @@ nav {
 
 .nav-frame {
   font-family: var(--mono);
-  font-size: .58rem;
+  font-size: .65rem;
   letter-spacing: .15em;
   color: var(--ektar-amber);
   opacity: .8;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+}
+.nav-right a {
+  font-family: var(--mono);
+  font-size: .72rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  text-decoration: none;
+  transition: color .2s;
+}
+.nav-right a:hover { color: var(--cream); }
+.nav-pill {
+  border: 1px solid var(--ektar-red);
+  padding: .22rem .7rem;
+  color: var(--ektar-red) !important;
 }
 
 /* HERO */
@@ -384,12 +412,19 @@ nav {
 
 .tag {
   font-family: var(--mono);
-  font-size: .52rem;
+  font-size: .58rem;
   letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--cream-ghost);
   border: 1px solid var(--green-border);
   padding: .2rem .5rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color .2s, border-color .2s;
+}
+.tag:hover {
+  color: var(--cream);
+  border-color: var(--cream-dim);
 }
 
 .tag.red {
@@ -397,6 +432,7 @@ nav {
   border-color: var(--ektar-red);
   opacity: .7;
 }
+.tag.red:hover { opacity: 1; }
 
 /* nav entre textos */
 .article-nav {
@@ -469,6 +505,9 @@ footer {
 .footer-links a:hover { color: var(--cream); }
 
 @media (max-width: 800px) {
+  nav { padding: .8rem 1.2rem; }
+  .nav-center { display: none; }
+  .nav-right a:not(.nav-pill) { display: none; }
   .article-wrap {
     grid-template-columns: 1fr;
     gap: 3rem;
@@ -485,8 +524,17 @@ footer {
 
 <nav>
   <a href="{{ '/' | url }}" class="logo">br<em>.</em>trombin</a>
-  <a href="{{ '/' | url }}" class="nav-back">contact sheet</a>
-  <span class="nav-frame">frame {{ frameNumber }} / 99exp</span>
+  <div class="nav-center">
+    <a href="{{ '/' | url }}" class="nav-back">contact sheet</a>
+    <span class="nav-frame">frame {{ frameNumber }} / 99exp</span>
+  </div>
+  <div class="nav-right">
+    <a href="{{ '/' | url }}#arquivo">arquivo</a>
+    <a href="{{ '/galeria.html' | url }}">galeria</a>
+    <a href="{{ '/' | url }}#sobre">sobre</a>
+    <a href="https://naocabe.substack.com" target="_blank" class="nav-pill">Substack</a>
+    <a href="https://www.instagram.com/brtrombin" target="_blank" class="nav-pill">Instagram</a>
+  </div>
 </nav>
 
 <div class="article-hero">
@@ -592,7 +640,7 @@ footer {
       <p class="sidebar-label">temas</p>
       <div class="sidebar-tags">
         {% for theme in themes %}
-        <span class="tag{% if loop.first %} red{% endif %}">{{ theme }}</span>
+        <a href="{{ '/galeria.html' | url }}?theme={{ theme }}" class="tag{% if loop.first %} red{% endif %}">{{ theme }}</a>
         {% endfor %}
       </div>
     </div>

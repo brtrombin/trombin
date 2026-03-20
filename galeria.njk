@@ -70,11 +70,11 @@ nav {
 }
 .logo em { color: var(--ektar-red); font-style: normal; }
 
-.nav-right { display: flex; align-items: center; gap: 1.5rem; }
+.nav-right { display: flex; align-items: center; gap: 1.4rem; }
 .nav-right a {
   font-family: var(--mono);
-  font-size: .62rem;
-  letter-spacing: .16em;
+  font-size: .72rem;
+  letter-spacing: .18em;
   text-transform: uppercase;
   color: var(--cream-dim);
   text-decoration: none;
@@ -545,9 +545,11 @@ footer {
 <nav>
   <a href="{{ '/' | url }}" class="logo">br<em>.</em>trombin</a>
   <div class="nav-right">
-    <a href="{{ '/' | url }}">arquivo</a>
+    <a href="{{ '/' | url }}#arquivo">arquivo</a>
     <a href="{{ '/galeria.html' | url }}" class="active">galeria</a>
+    <a href="{{ '/' | url }}#sobre">sobre</a>
     <a href="https://naocabe.substack.com" target="_blank" class="nav-pill">Substack</a>
+    <a href="https://www.instagram.com/brtrombin" target="_blank" class="nav-pill">Instagram</a>
   </div>
 </nav>
 
@@ -846,7 +848,18 @@ window.addEventListener('resize', () => {
 
 // ── Init ─────────────────────────────────────────────────────────────────────
 buildFilterBar();
-renderRoll(photos);
+
+// Aplica filtro via URL param ?theme=nome (vindo dos links de temas dos artigos)
+const _urlTheme = new URLSearchParams(window.location.search).get('theme');
+if (_urlTheme) {
+  filtered = photos.filter(p => (p.themes || []).includes(_urlTheme));
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.filter === 'theme:' + _urlTheme);
+  });
+  renderRoll(filtered);
+} else {
+  renderRoll(photos);
+}
 </script>
 </body>
 </html>

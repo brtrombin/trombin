@@ -180,47 +180,40 @@ nav {
 }
 
 .roll-strip {
-  display: grid;
-  grid-template-columns: 28px 1fr 28px;
-  background: #0c0905;
-  border-top: 1px solid #1e180e;
-}
-
-.roll-strip:last-child {
-  border-bottom: 1px solid #1e180e;
-}
-
-.roll-perfs {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  padding: 8px 0;
+  margin-bottom: 1.2rem;
+}
+
+/* faixa de furinhos horizontal — topo e base, padrão KS-1870 */
+.roll-perfs-h {
+  height: 20px;
   background: #2a1e10;
-  border-right: 1px solid #1a1208;
-  border-left: 1px solid #1a1208;
-  gap: 10px;
-}
-
-.roll-perfs.right {
-  border-right: none;
-  border-left: 1px solid #1a1208;
-}
-
-.roll-perf {
-  width: 12px;
-  height: 9px;
-  background: #000;
-  border: 1px solid #1a1208;
-  border-radius: 2px;
   flex-shrink: 0;
+  position: relative;
+}
+.roll-perfs-h::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 0;
+  right: 0;
+  height: 60%;
+  /* período 22px: gap 6.5px + buraco 9px + gap 6.5px = proporção KS real ~42% buraco */
+  background: repeating-linear-gradient(
+    to right,
+    transparent 0, transparent 6.5px,
+    #000 6.5px, #000 15.5px,
+    transparent 15.5px, transparent 22px
+  );
 }
 
 .roll-frames {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 5px;
-  padding: 8px 6px;
+  padding: 6px;
+  background: #0c0905;
 }
 
 /* FRAME CELL */
@@ -247,11 +240,11 @@ nav {
   bottom: 6px;
   left: 7px;
   font-family: var(--mono);
-  font-size: .5rem;
-  color: rgba(255,140,0,.7);
-  letter-spacing: .08em;
+  font-size: clamp(.3rem, .38vw, .38rem);
+  color: rgba(212,98,30,.8);
+  letter-spacing: .07em;
   line-height: 1.5;
-  text-shadow: 0 0 6px rgba(0,0,0,.8);
+  text-shadow: 0 0 6px rgba(0,0,0,.95);
   pointer-events: none;
   z-index: 2;
 }
@@ -526,9 +519,6 @@ footer {
   .gallery-wrap { padding: 1rem; }
   .page-header { padding: 80px 1rem 0; }
   footer { flex-direction: column; gap: 1rem; text-align: center; }
-  .roll-strip { grid-template-columns: 18px 1fr 18px; }
-  .roll-perfs { gap: 6px; }
-  .roll-perf { width: 10px; height: 7px; }
 }
 </style>
 </head>
@@ -702,16 +692,10 @@ function renderRoll(list) {
     const strip = document.createElement('div');
     strip.className = 'roll-strip';
 
-    const leftPerfs = document.createElement('div');
-    leftPerfs.className = 'roll-perfs';
-    const rightPerfs = document.createElement('div');
-    rightPerfs.className = 'roll-perfs right';
-
-    const nPerfs = cols === 2 ? 4 : 6;
-    for (let i = 0; i < nPerfs; i++) {
-      leftPerfs.innerHTML += '<div class="roll-perf"></div>';
-      rightPerfs.innerHTML += '<div class="roll-perf"></div>';
-    }
+    const topPerfs = document.createElement('div');
+    topPerfs.className = 'roll-perfs-h';
+    const botPerfs = document.createElement('div');
+    botPerfs.className = 'roll-perfs-h';
 
     const frames = document.createElement('div');
     frames.className = 'roll-frames';
@@ -742,9 +726,9 @@ function renderRoll(list) {
       frames.appendChild(cell);
     });
 
-    strip.appendChild(leftPerfs);
+    strip.appendChild(topPerfs);
     strip.appendChild(frames);
-    strip.appendChild(rightPerfs);
+    strip.appendChild(botPerfs);
     roll.appendChild(strip);
   });
 

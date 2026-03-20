@@ -17,9 +17,9 @@ permalink: /
   --ektar-blue: #1a3a5c;
   --ektar-sky: #2e6a9e;
   --ektar-warm: #e8c87a;
-  --strip-bg: #140f08;
+  --strip-bg: #2a1e10;
   --frame-border: #0d0a05;
-  --perf-hole: #040302;
+  --perf-hole: #000;
   --text-dim: #7a6a52;
   --cream: #f0e8d0;
   --mono: 'Share Tech Mono', monospace;
@@ -319,32 +319,31 @@ nav {
 }
 
 .strip-row {
-  display: grid;
-  grid-template-columns: 26px 1fr 26px;
+  display: flex;
+  flex-direction: column;
   margin-bottom: 1.2rem;
 }
 
-.strip-perfs-side {
+/* faixa de furinhos horizontal — topo e base da tira */
+.strip-perfs-h {
+  height: 18px;
   background: #2a1e10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  padding: 8px 0;
-  gap: 10px;
-}
-
-.strip-perfs-side.right {
-  /* mirror of left */
-}
-
-.perf-v {
-  width: 12px;
-  height: 8px;
-  background: #000;
-  border: 1px solid #1a1208;
-  border-radius: 2px;
   flex-shrink: 0;
+  position: relative;
+}
+.strip-perfs-h::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: repeating-linear-gradient(
+    to right,
+    transparent 0, transparent 5px,
+    #000 5px, #000 17px,
+    transparent 17px, transparent 22px
+  );
 }
 
 .strip-frames {
@@ -352,7 +351,7 @@ nav {
   grid-template-columns: repeat(4, 1fr);
   gap: 5px;
   background: #0c0905;
-  padding: 8px 6px;
+  padding: 6px;
 }
 
 .film-frame {
@@ -422,11 +421,11 @@ nav {
   bottom: 5px;
   left: 6px;
   font-family: var(--mono);
-  font-size: .44rem;
-  color: rgba(212,98,30,.75);
-  letter-spacing: .08em;
+  font-size: clamp(.3rem, .38vw, .38rem);
+  color: rgba(212,98,30,.8);
+  letter-spacing: .07em;
   line-height: 1.5;
-  text-shadow: 0 0 8px rgba(0,0,0,.9);
+  text-shadow: 0 0 6px rgba(0,0,0,.95);
   pointer-events: none;
   z-index: 2;
 }
@@ -556,10 +555,7 @@ footer {
 <div class="contact-sheet">
   {% for chunk in collections.articles | chunk(4) %}
   <div class="strip-row">
-    <div class="strip-perfs-side">
-      <div class="perf-v"></div><div class="perf-v"></div><div class="perf-v"></div>
-      <div class="perf-v"></div><div class="perf-v"></div><div class="perf-v"></div>
-    </div>
+    <div class="strip-perfs-h"></div>
     <div class="strip-frames">
       {% for article in chunk %}
       <a class="film-frame" href="{{ article.url }}">
@@ -578,10 +574,7 @@ footer {
       </a>
       {% endfor %}
     </div>
-    <div class="strip-perfs-side right">
-      <div class="perf-v"></div><div class="perf-v"></div><div class="perf-v"></div>
-      <div class="perf-v"></div><div class="perf-v"></div><div class="perf-v"></div>
-    </div>
+    <div class="strip-perfs-h"></div>
   </div>
   {% endfor %}
 </div>

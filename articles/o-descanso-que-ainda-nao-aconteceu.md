@@ -18,8 +18,6 @@ themes:
   - produtividade
 ---
 
-Para os corpos que pedem pausa, mesmo quando o mundo não deixa.
-
 Faz poucos meses que descansei.
 
 Mas meu corpo jura que faz anos.

@@ -16,8 +16,6 @@ themes:
   - interior
 ---
 
-Três meses se passaram desde que escrevi sobre o descanso que ainda não tinha acontecido.
-
 Foram meses de muito. Muita alegria, muita ação, muita coisa tomando forma. Amigos reunidos, um apartamento novo na cidade grande, a vida se adensando em escolhas concretas. Quando muito acontece, pouco se escreve. Não por falta de assunto, mas por excesso de movimento.
 
 A cidade ganhou mais uma vez o duelo com o interior. Não por decisão clara, mas por gravidade.

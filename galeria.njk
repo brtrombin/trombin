@@ -549,12 +549,8 @@ footer {
     <span class="page-title">galeria fotográfica</span>
     <span class="page-count" id="count-label">— frames</span>
   </div>
-  <div class="filter-bar">
+  <div class="filter-bar" id="filter-bar">
     <button class="filter-btn active" data-filter="all">todos</button>
-    <button class="filter-btn" data-filter="porto-alegre">porto alegre</button>
-    <button class="filter-btn" data-filter="cotidiano">cotidiano</button>
-    <button class="filter-btn" data-filter="natureza">natureza</button>
-    <button class="filter-btn" data-filter="memoria">memória</button>
   </div>
 </div>
 
@@ -594,10 +590,11 @@ footer {
 </div>
 
 <script>
-const photos = [
+// ── Fonte 1: artigos (automático via Eleventy) ───────────────────────────────
+const fromArticles = [
   {% for article in collections.articles %}{% if article.data.hero_image %}
   {
-    idx: {{ article.data.frameNumber | dump | safe }},
+    source: "article",
     img: {{ article.data.hero_image | dump | safe }},
     title: {{ article.data.title | dump | safe }},
     caption: {{ (article.data.lead or "") | dump | safe }},
@@ -608,25 +605,36 @@ const photos = [
     date: {{ article.date | dateStamp | dump | safe }},
     loc: {{ (article.data.location or "") | dump | safe }},
     themes: {{ (article.data.themes or []) | dump | safe }},
+    collection: "",
     textLink: {{ article.url | dump | safe }}
   },
   {% endif %}{% endfor %}
 ];
 
+// ── Fonte 2: fotos avulsas e coleções (_data/gallery.json) ──────────────────
+// Esquema de cada entrada:
+// { source: "photo"|"collection", img, title, caption, camera, film,
+//   aperture, speed, date ("YYYY MM DD"), loc, themes: [], collection: "", textLink: null }
+const fromGallery = {{ gallery | dump | safe }};
+
+// ── Combinar e re-indexar sequencialmente ───────────────────────────────────
+const photos = [...fromArticles, ...fromGallery].map((p, i) => ({
+  ...p,
+  idx: String(i + 2).padStart(3, "0"),
+  themes: p.themes || [],
+  collection: p.collection || "",
+  textLink: p.textLink || null
+}));
+
+// ── Estado ───────────────────────────────────────────────────────────────────
 let current = 0;
 let filtered = [...photos];
 
 const roll = document.getElementById('roll');
 const lightbox = document.getElementById('lightbox');
 
-function buildCat(p) {
-  const cats = [];
-  if (p.loc && p.loc.includes('Porto Alegre')) cats.push('porto-alegre');
-  if (p.themes.includes('cotidiano')) cats.push('cotidiano');
-  if (p.themes.includes('natureza')) cats.push('natureza');
-  if (p.themes.includes('memoria') || p.themes.includes('memória')) cats.push('memoria');
-  return cats;
-}
+// ── Utilitários ──────────────────────────────────────────────────────────────
+function getColumns() { return window.innerWidth <= 600 ? 2 : 4; }
 
 function chunk(arr, size) {
   const out = [];
@@ -634,10 +642,71 @@ function chunk(arr, size) {
   return out;
 }
 
+// Abreviação de câmera: "Fujifilm X100F" → "X100F", "iPhone 15" → "iPhone"
+function shortCamera(cam) {
+  if (!cam) return '';
+  if (cam.toLowerCase().includes('iphone')) return 'iPhone';
+  return cam.split(' ').pop();
+}
+
+// Categorias de um frame para filtrar
+function buildCat(p) {
+  const cats = [];
+  if (p.loc) {
+    const locKey = 'loc:' + p.loc.toLowerCase()
+      .replace(/\s*·\s*.*/,'')   // remove sufixos tipo "· MARGS"
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '');
+    cats.push(locKey);
+  }
+  if (p.collection) cats.push('col:' + p.collection);
+  return cats;
+}
+
+// ── Filtros dinâmicos ────────────────────────────────────────────────────────
+function buildFilterBar() {
+  const bar = document.getElementById('filter-bar');
+  const locations = new Map();   // locKey → label
+  const collections = new Map(); // colKey → label
+
+  photos.forEach(p => {
+    if (p.loc) {
+      const label = p.loc.replace(/\s*·\s*.*/, '').trim(); // remove "· MARGS"
+      const key = 'loc:' + label.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+      if (!locations.has(key)) locations.set(key, label.toLowerCase());
+    }
+    if (p.collection) {
+      const key = 'col:' + p.collection;
+      if (!collections.has(key)) collections.set(key, p.collection);
+    }
+  });
+
+  bar.innerHTML = '<button class="filter-btn active" data-filter="all">todos</button>';
+  locations.forEach((label, key) => {
+    bar.innerHTML += `<button class="filter-btn" data-filter="${key}">${label}</button>`;
+  });
+  collections.forEach((label, key) => {
+    bar.innerHTML += `<button class="filter-btn" data-filter="${key}">${label}</button>`;
+  });
+
+  bar.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      bar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      filtered = f === 'all' ? [...photos] : photos.filter(p => buildCat(p).includes(f));
+      renderRoll(filtered);
+    });
+  });
+}
+
+// ── Renderizar rolo ──────────────────────────────────────────────────────────
 function renderRoll(list) {
   roll.innerHTML = '';
   const cols = getColumns();
   const rows = chunk(list, cols);
+
   rows.forEach(row => {
     const strip = document.createElement('div');
     strip.className = 'roll-strip';
@@ -660,13 +729,19 @@ function renderRoll(list) {
       const globalIdx = list.indexOf(p);
       const cell = document.createElement('div');
       cell.className = 'frame-cell';
-      const shortDate = p.date.slice(0, 7);
-      const cameraShort = p.camera ? p.camera.split(' ').pop() : '';
-      const metaLine = [shortDate, cameraShort].filter(Boolean).join(' · ');
+      const shortDate = p.date ? p.date.slice(0, 7) : '';
+      const camShort = shortCamera(p.camera);
+      const metaLine = [shortDate, camShort].filter(Boolean).join(' · ');
+      const collectionBadge = p.collection
+        ? `<span class="has-text-badge">${p.collection}</span>` : '';
+      const textBadge = (!p.collection && p.source === 'article')
+        ? '<span class="has-text-badge">texto</span>' : '';
+
       cell.innerHTML = `
         <img src="${p.img}" alt="${p.title}" loading="lazy">
         <span class="frame-idx">${p.idx}</span>
         ${metaLine ? `<div class="frame-meta">${metaLine}</div>` : ''}
+        ${collectionBadge || textBadge}
         <div class="frame-hover">
           <p class="hover-title">${p.title}</p>
           <p class="hover-caption">${p.loc}${p.film ? ' &middot; ' + p.film : ''}</p>
@@ -681,9 +756,11 @@ function renderRoll(list) {
     strip.appendChild(rightPerfs);
     roll.appendChild(strip);
   });
+
   document.getElementById('count-label').textContent = list.length + ' frames';
 }
 
+// ── Lightbox ─────────────────────────────────────────────────────────────────
 function openLightbox(i, list) {
   current = i;
   const p = list[i];
@@ -698,11 +775,15 @@ function openLightbox(i, list) {
 
   document.getElementById('lb-fn').textContent = p.idx;
 
-  const stampParts = [p.loc, p.date];
+  const stampParts = [p.loc ? p.loc.replace(/\s*·\s*.*/, '').trim() : '', p.date];
   if (p.aperture || p.speed) stampParts.push([p.aperture, p.speed].filter(Boolean).join('  '));
   document.getElementById('lb-stamp').innerHTML = stampParts.filter(Boolean).join('<br>');
 
-  document.getElementById('lb-eyebrow').textContent = `frame ${p.idx}${p.film ? ' · ' + p.film : ''}`;
+  const eyebrowParts = [`frame ${p.idx}`];
+  if (p.collection) eyebrowParts.push(p.collection);
+  else if (p.film) eyebrowParts.push(p.film);
+  document.getElementById('lb-eyebrow').textContent = eyebrowParts.join(' · ');
+
   document.getElementById('lb-title').textContent = p.title;
   document.getElementById('lb-caption').textContent = p.caption;
 
@@ -712,17 +793,28 @@ function openLightbox(i, list) {
   if (p.aperture) metaHTML += `<div class="lb-meta-row"><span class="lb-meta-key">abertura</span><span class="lb-meta-val">${p.aperture}</span></div>`;
   if (p.speed)    metaHTML += `<div class="lb-meta-row"><span class="lb-meta-key">veloc.</span><span class="lb-meta-val">${p.speed}</span></div>`;
   if (p.loc)      metaHTML += `<div class="lb-meta-row"><span class="lb-meta-key">local</span><span class="lb-meta-val">${p.loc}</span></div>`;
-  metaHTML += `<div class="lb-meta-row"><span class="lb-meta-key">data</span><span class="lb-meta-val">${p.date}</span></div>`;
+  if (p.date)     metaHTML += `<div class="lb-meta-row"><span class="lb-meta-key">data</span><span class="lb-meta-val">${p.date}</span></div>`;
   document.getElementById('lb-meta').innerHTML = metaHTML;
 
   const link = document.getElementById('lb-link');
-  link.href = p.textLink;
+  if (p.textLink) {
+    link.href = p.textLink;
+    link.style.display = 'block';
+  } else {
+    link.style.display = 'none';
+  }
 
   lightbox.classList.add('open');
   document.body.style.overflow = 'hidden';
 
-  document.getElementById('lb-prev').onclick = (e) => { e.stopPropagation(); if (current > 0) openLightbox(current - 1, list); };
-  document.getElementById('lb-next').onclick = (e) => { e.stopPropagation(); if (current < list.length - 1) openLightbox(current + 1, list); };
+  document.getElementById('lb-prev').onclick = (e) => {
+    e.stopPropagation();
+    if (current > 0) openLightbox(current - 1, list);
+  };
+  document.getElementById('lb-next').onclick = (e) => {
+    e.stopPropagation();
+    if (current < list.length - 1) openLightbox(current + 1, list);
+  };
 }
 
 function closeLightbox() {
@@ -739,18 +831,7 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight' && current < filtered.length - 1) openLightbox(current + 1, filtered);
 });
 
-// filtros
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const f = btn.dataset.filter;
-    filtered = f === 'all' ? [...photos] : photos.filter(p => buildCat(p).includes(f));
-    renderRoll(filtered);
-  });
-});
-
-// perfurações no header
+// ── Perfurações no header ────────────────────────────────────────────────────
 function makePerfs() {
   const el = document.getElementById('perfs');
   if (!el) return;
@@ -758,20 +839,18 @@ function makePerfs() {
   el.innerHTML = Array(n).fill('<div class="perf"></div>').join('');
 }
 makePerfs();
-window.addEventListener('resize', makePerfs);
-
-function getColumns() {
-  return window.innerWidth <= 600 ? 2 : 4;
-}
-
-renderRoll(photos);
 
 window.addEventListener('resize', () => {
+  makePerfs();
   const f = document.querySelector('.filter-btn.active');
   const filter = f ? f.dataset.filter : 'all';
-  const list = filter === 'all' ? [...photos] : photos.filter(p => buildCat(p).includes(filter));
-  renderRoll(list);
+  filtered = filter === 'all' ? [...photos] : photos.filter(p => buildCat(p).includes(filter));
+  renderRoll(filtered);
 });
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+buildFilterBar();
+renderRoll(photos);
 </script>
 </body>
 </html>

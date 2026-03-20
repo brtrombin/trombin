@@ -6,7 +6,7 @@ type: leitura
 lead: "Tenho escrito muito. Mas quase nada do que me dá prazer."
 substack_url: "https://naocabe.substack.com/p/cabeca-para-fora-do-mar"
 location: ""
-hero_image: ""
+hero_image: "/img/cabeca-para-fora-do-mar.jpg"
 camera: ""
 film: ""
 aperture: ""

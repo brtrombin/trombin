@@ -385,12 +385,14 @@ nav {
 .frame-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(transparent 40%, rgba(0,0,0,.7));
+  background: linear-gradient(transparent 40%, rgba(0,0,0,.75));
   opacity: 0;
   transition: opacity .3s;
   display: flex;
   align-items: flex-end;
+  justify-content: flex-start;
   padding: .5rem .4rem;
+  z-index: 3;
 }
 
 .frame-title-overlay {

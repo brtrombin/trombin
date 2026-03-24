@@ -62,6 +62,9 @@ module.exports = function(eleventyConfig) {
     return chunks;
   });
 
+  // skip first N items
+  eleventyConfig.addFilter("skip", (arr, n) => (arr || []).slice(n));
+
   // ── Collections ──────────────────────────────────────────────────────────
 
   eleventyConfig.addCollection("articles", function(collection) {

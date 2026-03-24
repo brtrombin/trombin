@@ -216,13 +216,19 @@ nav {
   background: #0c0905;
 }
 
+/* card = frame + legenda abaixo */
+.frame-card {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
 /* FRAME CELL */
 .frame-cell {
   position: relative;
   aspect-ratio: 3/2;
   overflow: hidden;
   background: var(--bg-deeper);
-  cursor: pointer;
 }
 
 .frame-cell img {
@@ -261,43 +267,29 @@ nav {
   z-index: 2;
 }
 
-/* hover overlay com legenda */
-.frame-hover {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(15,26,18,.9) 0%, rgba(15,26,18,.3) 50%, transparent 100%);
-  opacity: 0;
-  transition: opacity .3s;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: .7rem;
-  z-index: 3;
-}
-
-.frame-cell:hover .frame-hover { opacity: 1; }
-.frame-cell:hover img {
+/* hover: só escurece/satura a imagem, sem texto overlay */
+.frame-card:hover .frame-cell img {
   filter: contrast(1.15) saturate(1.3) brightness(.88);
   transform: scale(1.03);
 }
 
-.hover-title {
-  font-family: var(--serif);
-  font-size: .8rem;
-  font-style: italic;
-  color: var(--cream);
-  line-height: 1.3;
-  margin-bottom: .25rem;
-}
-
-.hover-caption {
+/* título sempre visível abaixo do frame — estilo rebate */
+.frame-caption {
   font-family: var(--mono);
-  font-size: .5rem;
-  letter-spacing: .1em;
-  color: var(--cream-dim);
-  text-transform: uppercase;
-  line-height: 1.5;
+  font-size: clamp(.42rem, .6vw, .58rem);
+  letter-spacing: .06em;
+  line-height: 1.35;
+  color: rgba(200,100,28,.82);
+  background: #160e04;
+  border-top: 1px solid #0c0703;
+  padding: .22rem .45rem .2rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color .2s;
 }
+.frame-card:hover .frame-caption { color: #ff8c00; }
 
 /* LIGHTBOX */
 .lightbox {
@@ -725,8 +717,6 @@ function renderRoll(list) {
 
     row.forEach(p => {
       const globalIdx = list.indexOf(p);
-      const cell = document.createElement('div');
-      cell.className = 'frame-cell';
       const shortDate = p.date ? p.date.slice(0, 7) : '';
       const camShort = shortCamera(p.camera);
       const metaLine = [shortDate, camShort].filter(Boolean).join(' · ');
@@ -735,18 +725,29 @@ function renderRoll(list) {
       const textBadge = (!p.collection && p.source === 'article')
         ? '<span class="has-text-badge">texto</span>' : '';
 
+      // card wrapper
+      const card = document.createElement('div');
+      card.className = 'frame-card';
+
+      // frame (imagem)
+      const cell = document.createElement('div');
+      cell.className = 'frame-cell';
       cell.innerHTML = `
         <img src="${BASE}${p.img}" alt="${p.title}" loading="lazy">
         <span class="frame-idx">${p.idx}</span>
         ${metaLine ? `<div class="frame-meta">${metaLine}</div>` : ''}
         ${collectionBadge || textBadge}
-        <div class="frame-hover">
-          <p class="hover-title">${p.title}</p>
-          <p class="hover-caption">${p.loc}${p.film ? ' &middot; ' + p.film : ''}</p>
-        </div>
       `;
       cell.addEventListener('click', () => openLightbox(globalIdx, list));
-      frames.appendChild(cell);
+
+      // legenda sempre visível abaixo
+      const caption = document.createElement('div');
+      caption.className = 'frame-caption';
+      caption.textContent = p.title;
+
+      card.appendChild(cell);
+      card.appendChild(caption);
+      frames.appendChild(card);
     });
 
     strip.appendChild(topPerfs);

@@ -61,29 +61,28 @@ body::after {
 }
 
 /* ── NAV ───────────────────────────────────────────────────── */
+/* ── NAV — idêntico ao index.njk ───────────────────────────── */
 nav {
   position: fixed;
   top: 0; left: 0; right: 0;
-  z-index: 200;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: .9rem 2rem;
-  background: rgba(22,35,24,.96);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(26,42,30,.94);
+  backdrop-filter: blur(6px);
   border-bottom: 1px solid #243a28;
 }
 
 .logo {
-  font-family: var(--mono);
+  font-family: 'Share Tech Mono', monospace;
   font-size: .95rem;
-  letter-spacing: .22em;
-  color: var(--warm-white);
+  letter-spacing: .2em;
+  color: #f0e8d0;
   text-decoration: none;
-  text-transform: uppercase;
 }
-.logo em { color: var(--orange); font-style: normal; }
+.logo em { color: #c8341a; font-style: normal; }
 
 .nav-right {
   display: flex;
@@ -91,29 +90,31 @@ nav {
   gap: 1.5rem;
 }
 .nav-right a {
-  font-family: var(--mono);
-  font-size: .68rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .72rem;
   letter-spacing: .18em;
   text-transform: uppercase;
-  color: rgba(240,237,232,.62);
+  color: #7a6a52;
   text-decoration: none;
   transition: color .2s;
 }
 .nav-right a:hover,
-.nav-right a:focus-visible { color: var(--warm-white); }
-.nav-right a.active { color: var(--orange) !important; }
+.nav-right a.active { color: #f0e8d0; }
 
 .nav-pill {
-  border: 1px solid rgba(244,129,63,.6);
-  padding: .22rem .78rem;
-  color: var(--orange) !important;
-  transition: background .2s, color .2s !important;
+  border: 1px solid #c8341a;
+  padding: .22rem .7rem;
+  color: #c8341a !important;
 }
-.nav-pill:hover,
-.nav-pill:focus-visible {
-  background: var(--orange) !important;
-  color: #1a2218 !important;
-  border-color: var(--orange) !important;
+.nav-pill:hover {
+  background: #c8341a;
+  color: #1a2a1e !important;
+}
+
+@media (max-width: 768px) {
+  nav { padding: .8rem 1rem; }
+  .nav-right { gap: .55rem; }
+  .nav-right a { font-size: .58rem; letter-spacing: .1em; }
 }
 
 /* ── PAGE ──────────────────────────────────────────────────── */
@@ -452,14 +453,13 @@ footer::before {
 </head>
 <body>
 
-<nav aria-label="Navegação principal">
-  <a href="{{ '/' | url }}" class="logo" aria-label="br.trombin — página inicial">br<em>.</em>trombin</a>
+<nav>
+  <a href="{{ '/' | url }}" class="logo">br<em>.</em>trombin</a>
   <div class="nav-right">
-    <a href="{{ '/' | url }}#arquivo">arquivo</a>
-    <a href="{{ '/galeria.html' | url }}">galeria</a>
     <a href="{{ '/sobre/' | url }}" class="active">sobre</a>
-    <a href="https://naocabe.substack.com" target="_blank" rel="noopener" class="nav-pill">Substack</a>
-    <a href="https://www.instagram.com/brtrombin" target="_blank" rel="noopener" class="nav-pill">Instagram</a>
+    <a href="{{ '/galeria.html' | url }}">galeria</a>
+    <a href="https://naocabe.substack.com" target="_blank" class="nav-pill">Substack</a>
+    <a href="https://www.instagram.com/brtrombin" target="_blank" class="nav-pill">Instagram</a>
   </div>
 </nav>
 

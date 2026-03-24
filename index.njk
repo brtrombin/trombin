@@ -6,649 +6,525 @@ permalink: /
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>br.trombin — fotografias e textos</title>
-<meta name="description" content="br.trombin — fotografias e textos de Bruno Trombin">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<title>br.trombin</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
-/* ── Reset ─────────────────────────────────────────────────── */
+:root {
+  --black: #1a2a1e;
+  --film-black: #162318;
+  --ektar-red: #c8341a;
+  --ektar-orange: #d4621e;
+  --ektar-blue: #1a3a5c;
+  --ektar-sky: #2e6a9e;
+  --ektar-warm: #e8c87a;
+  --strip-bg: #2a1e10;
+  --frame-border: #0d0a05;
+  --perf-hole: #000;
+  --text-dim: #7a6a52;
+  --cream: #f0e8d0;
+  --mono: 'Share Tech Mono', monospace;
+  --serif: 'Playfair Display', serif;
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
-/* ── Tokens ─────────────────────────────────────────────────
-   Darkroom-as-gallery: warm charcoal, fiber-base paper white,
-   Kodak orange as the single accent.
-   ──────────────────────────────────────────────────────────── */
-:root {
-  --dark:        #2f2e2c;   /* warm charcoal — darkroom walls  */
-  --dark-deep:   #232220;   /* nav, data strip, contact bg     */
-  --dark-card:   #363533;   /* card surfaces                   */
-  --dark-border: #45433e;   /* subtle borders                  */
-  --dark-frame:  #1a1916;   /* between frames in contact sheet */
-
-  --warm-white:  #f0ede8;   /* fiber-base paper                */
-  --warm-mid:    #afa89e;   /* secondary text                  */
-  --warm-dim:    #6e675d;   /* muted text                      */
-
-  --orange:      #f4813f;   /* Kodak orange — primary accent   */
-  --orange-hot:  #e8712e;   /* hover                           */
-  --orange-data: rgba(244,129,63,.82); /* film rebate labels   */
-
-  --mono:  'Share Tech Mono', ui-monospace, monospace;
-  --serif: 'Playfair Display', Georgia, serif;
-  --sans:  'Inter', system-ui, -apple-system, sans-serif;
-}
-
-/* ── Base ──────────────────────────────────────────────────── */
 body {
-  background: var(--dark);
-  color: var(--warm-white);
-  font-family: var(--sans);
+  background: var(--black);
+  color: var(--cream);
+  font-family: var(--mono);
   min-height: 100vh;
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
 }
 
-/* grain texture — felt, not seen (3–4% opacity) */
 body::after {
   content: '';
   position: fixed;
   inset: 0;
-  z-index: 998;
+  z-index: 999;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: .038;
+  opacity: .06;
   mix-blend-mode: screen;
 }
 
-/* skip link */
-.skip-link {
-  position: absolute;
-  top: -200%;
-  left: 1rem;
-  z-index: 9999;
-  padding: .5rem 1.2rem;
-  background: var(--orange);
-  color: var(--dark-deep);
-  font-family: var(--mono);
-  font-size: .68rem;
-  letter-spacing: .12em;
-  text-decoration: none;
-  font-weight: 500;
-}
-.skip-link:focus { top: 1rem; }
-
-:focus-visible {
-  outline: 2px solid var(--orange);
-  outline-offset: 3px;
-}
-
-/* ── NAV ───────────────────────────────────────────────────── */
+/* NAV */
 nav {
   position: fixed;
   top: 0; left: 0; right: 0;
-  z-index: 200;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: .9rem 2rem;
-  background: rgba(22,35,24,.96);   /* verde-escuro original */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(26,42,30,.94);
+  backdrop-filter: blur(6px);
   border-bottom: 1px solid #243a28;
 }
 
 .logo {
   font-family: var(--mono);
   font-size: .95rem;
-  letter-spacing: .22em;
-  color: var(--warm-white);
+  letter-spacing: .2em;
+  color: var(--cream);
   text-decoration: none;
-  text-transform: uppercase;
 }
-.logo em { color: var(--orange); font-style: normal; }
+.logo em { color: var(--ektar-red); font-style: normal; }
 
 .nav-right {
   display: flex;
   align-items: center;
   gap: 1.5rem;
 }
+
 .nav-right a {
   font-family: var(--mono);
-  font-size: .68rem;
+  font-size: .72rem;
   letter-spacing: .18em;
   text-transform: uppercase;
-  color: rgba(240,237,232,.62);
+  color: var(--text-dim);
   text-decoration: none;
   transition: color .2s;
 }
-.nav-right a:hover,
-.nav-right a:focus-visible { color: var(--warm-white); }
+.nav-right a:hover { color: var(--cream); }
 
 .nav-pill {
-  border: 1px solid rgba(244,129,63,.6);
-  padding: .22rem .78rem;
-  color: var(--orange) !important;
-  transition: background .2s, color .2s !important;
-}
-.nav-pill:hover,
-.nav-pill:focus-visible {
-  background: var(--orange) !important;
-  color: #1a2218 !important;
-  border-color: var(--orange) !important;
+  border: 1px solid #333;
+  padding: .22rem .7rem;
+  color: var(--ektar-red) !important;
+  border-color: var(--ektar-red) !important;
 }
 
-/* ── HERO ──────────────────────────────────────────────────── */
+/* HERO */
 .hero {
-  padding-top: 48px;
-  background: var(--dark-deep);
+  padding-top: 52px;
+  background: var(--strip-bg);
+  position: relative;
+  overflow: hidden;
 }
 
-/* split: photo 60% · editorial panel 40% */
+.perfs {
+  height: 22px;
+  background: var(--strip-bg);
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 4px;
+  position: relative;
+  z-index: 2;
+}
+
+.perf {
+  width: 14px;
+  height: 10px;
+  background: var(--perf-hole);
+  border: 1px solid #1a1408;
+  border-radius: 2px;
+  margin-right: 18px;
+  flex-shrink: 0;
+}
+
 .hero-frame {
   display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  min-height: calc(100vh - 48px);
+  grid-template-columns: 1.1fr 1fr;
+  min-height: calc(100vh - 100px);
+  border-top: 2px solid var(--frame-border);
+  border-bottom: 2px solid var(--frame-border);
+  position: relative;
 }
 
-/* photo side — full bleed, no decorative chrome */
+.frame-label {
+  position: absolute;
+  bottom: -20px;
+  left: 12px;
+  font-size: .58rem;
+  letter-spacing: .22em;
+  color: #ff8c00;
+  opacity: .85;
+  font-family: var(--mono);
+  z-index: 10;
+}
+
 .hero-photo {
   position: relative;
   overflow: hidden;
-  background: #191815;
+  background: #1a2e20;
+  border-right: 2px solid var(--frame-border);
 }
+
 .hero-photo-inner {
   width: 100%;
   height: 100%;
-  min-height: calc(100vh - 48px);
+  min-height: calc(100vh - 100px);
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  filter: contrast(1.12) saturate(1.3);
 }
+
 .hero-photo-inner img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: contrast(1.06) saturate(1.14);
+  filter: contrast(1.1) saturate(1.25);
   display: block;
 }
 
-/* Ektar exposure stamp */
 .ektar-stamp {
   position: absolute;
-  bottom: 16px;
-  right: 18px;
+  bottom: 12px;
+  right: 14px;
   font-family: var(--mono);
-  font-size: clamp(.62rem, .82vw, .8rem);
-  color: var(--orange);
+  font-size: clamp(.75rem, 1.1vw, .95rem);
+  color: #ff7800;
   letter-spacing: .14em;
-  text-shadow: 0 0 12px rgba(244,129,63,.55);
+  text-shadow: 0 0 6px rgba(255,120,0,.9), 0 0 14px rgba(255,80,0,.5);
   z-index: 2;
-  line-height: 1.8;
+  line-height: 1.6;
   text-align: right;
-  opacity: .92;
 }
 
-/* editorial info panel */
 .hero-info {
-  padding: 3.5rem 3rem 3rem;
+  padding: 3.5rem 3rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: var(--dark);
-  border-left: 1px solid var(--dark-border);
+  background: var(--strip-bg);
   position: relative;
 }
 
-/* orange top + left rule — strong editorial signature */
-.hero-info::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--orange) 0%, rgba(244,129,63,.3) 100%);
-  opacity: 1;
-}
-.hero-info::after {
-  content: '';
-  position: absolute;
-  top: 3px; bottom: 0; left: 0;
-  width: 3px;
-  background: linear-gradient(180deg, var(--orange) 0%, rgba(244,129,63,.0) 60%);
-}
-
 .strip-index {
-  font-family: var(--mono);
-  font-size: .52rem;
-  letter-spacing: .36em;
-  color: var(--orange);
+  font-size: .6rem;
+  letter-spacing: .28em;
+  color: var(--ektar-red);
   text-transform: uppercase;
-  margin-bottom: 1.4rem;
-  opacity: .9;
-}
-
-/* short orange bar — editorial divider */
-.hero-rule {
-  width: 2rem;
-  height: 2px;
-  background: var(--orange);
-  margin-bottom: 1.8rem;
-  flex-shrink: 0;
-  opacity: .65;
+  margin-bottom: 2rem;
 }
 
 .hero-title {
   font-family: var(--serif);
-  font-size: clamp(2.3rem, 3.3vw, 4.2rem);
-  line-height: 1.03;
-  color: var(--warm-white);
-  font-weight: 900;
-  letter-spacing: -.024em;
+  font-size: clamp(2rem, 3.6vw, 3.6rem);
+  line-height: 1.08;
+  color: var(--cream);
+  font-style: normal;
+  font-weight: 700;
   margin-bottom: 1.8rem;
+  letter-spacing: -.01em;
 }
 
 .hero-excerpt {
   font-family: var(--serif);
-  font-size: 1rem;
-  line-height: 1.88;
-  color: var(--warm-mid);
-  max-width: 32ch;
-  margin-bottom: 2.2rem;
+  font-size: .9rem;
+  line-height: 1.85;
+  color: #b0a080;
+  max-width: 36ch;
+  margin-bottom: 2.5rem;
   font-style: italic;
-  font-weight: 400;
-}
-
-/* thin border rule — separates copy from meta */
-.meta-rule {
-  width: 100%;
-  height: 1px;
-  background: var(--dark-border);
-  margin-bottom: 1.6rem;
-  flex-shrink: 0;
 }
 
 .meta-row {
   display: flex;
   align-items: center;
-  gap: .75rem;
-  margin-bottom: 2.4rem;
-  font-family: var(--sans);
-  font-size: .7rem;
-  color: var(--warm-dim);
-  flex-wrap: wrap;
-  letter-spacing: .02em;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  font-size: .62rem;
+  letter-spacing: .15em;
+  color: var(--text-dim);
+  text-transform: uppercase;
 }
+
 .meta-dot {
-  width: 2px; height: 2px;
-  background: var(--orange);
+  width: 3px;
+  height: 3px;
+  background: var(--ektar-red);
   border-radius: 50%;
-  flex-shrink: 0;
-  opacity: .55;
 }
 
 .btn-read {
-  display: inline-flex;
-  align-items: center;
-  gap: .65em;
+  display: inline-block;
   font-family: var(--mono);
-  font-size: .62rem;
-  letter-spacing: .22em;
+  font-size: .65rem;
+  letter-spacing: .2em;
   text-transform: uppercase;
-  color: var(--dark-deep);
-  background: var(--orange);
-  padding: .82rem 1.9rem;
+  color: var(--black);
+  background: var(--ektar-red);
+  padding: .7rem 1.6rem;
   text-decoration: none;
   align-self: flex-start;
-  transition: background .2s, transform .15s;
-  font-weight: 500;
+  transition: background .2s;
 }
-.btn-read::after { content: '→'; }
-.btn-read:hover,
-.btn-read:focus-visible {
-  background: var(--orange-hot);
-  transform: translateX(2px);
-}
+.btn-read:hover { background: var(--ektar-orange); }
 
 .exposure-data {
   position: absolute;
-  right: .8rem;
+  right: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  font-family: var(--mono);
-  font-size: .48rem;
-  letter-spacing: .14em;
-  color: rgba(255,255,255,.05);
+  font-size: .55rem;
+  letter-spacing: .15em;
+  color: #3a3020;
   writing-mode: vertical-rl;
   text-transform: uppercase;
   line-height: 2;
-  user-select: none;
 }
 
-/* ── FILM DATA STRIP ───────────────────────────────────────── */
-/*
-  Replaces drawn perforations.
-  Reference: actual film rebate strip — data printed on the
-  unexposed border of 35mm film. One thin band does the work
-  of a thousand illustrated holes.
-*/
-.film-data-strip {
-  background: var(--dark-deep);
-  padding: 7px 2rem;
+@keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+.hero-info > * { animation: fadeUp .7s ease both; }
+.strip-index { animation-delay: .1s; }
+.hero-title { animation-delay: .22s; }
+.hero-excerpt { animation-delay: .35s; }
+.meta-row { animation-delay: .44s; }
+.btn-read { animation-delay: .54s; }
+
+/* CONTACT SHEET */
+.sheet-header {
+  padding: 3rem 2rem 1.2rem;
   display: flex;
   align-items: center;
-  overflow: hidden;
-  position: relative;
-  border-top: 1px solid rgba(244,129,63,.12);
-  border-bottom: 1px solid rgba(244,129,63,.12);
+  gap: 1.5rem;
+  border-top: 1px solid #243a28;
 }
 
-.film-data-item {
-  font-family: var(--mono);
-  font-size: .56rem;
-  letter-spacing: .24em;
-  color: var(--orange-data);
-  text-transform: uppercase;
-  white-space: nowrap;
-  padding: 0 1.2rem;
-  flex-shrink: 0;
-}
-.film-data-item:first-child { padding-left: 0; }
-
-.film-data-sep {
-  width: 1px;
-  height: 9px;
-  background: rgba(244,129,63,.2);
-  flex-shrink: 0;
-}
-
-/* Entry animations — respect prefers-reduced-motion */
-@media (prefers-reduced-motion: no-preference) {
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .hero-info > * { animation: fadeUp .6s ease both; }
-  .strip-index  { animation-delay: .1s; }
-  .hero-rule    { animation-delay: .18s; }
-  .hero-title   { animation-delay: .26s; }
-  .hero-excerpt { animation-delay: .38s; }
-  .meta-rule    { animation-delay: .46s; }
-  .meta-row     { animation-delay: .52s; }
-  .btn-read     { animation-delay: .6s; }
-}
-
-/* ── CONTACT SHEET ─────────────────────────────────────────── */
-.sheet-header {
-  padding: 3rem 2rem 1.6rem;
-  display: flex;
-  align-items: baseline;
-  gap: 1.2rem;
-  border-top: 1px solid var(--dark-border);
-}
 .sheet-header h2 {
   font-family: var(--mono);
-  font-size: .54rem;
-  letter-spacing: .36em;
+  font-size: .62rem;
+  letter-spacing: .24em;
   text-transform: uppercase;
-  color: var(--orange);
+  color: var(--ektar-red);
   white-space: nowrap;
-  opacity: .85;
 }
+
 .sheet-header-line {
   flex: 1;
   height: 1px;
-  background: var(--dark-border);
+  background: #2a2218;
 }
+
 .sheet-header-right {
-  font-family: var(--mono);
-  font-size: .48rem;
-  letter-spacing: .24em;
-  color: var(--warm-dim);
+  font-size: .58rem;
+  letter-spacing: .15em;
+  color: #3a3020;
   text-transform: uppercase;
-  white-space: nowrap;
 }
 
 .contact-sheet {
-  background: #2a1e10;   /* bronze/marrom — fundo da tira entre faixas */
-  padding: 1.4rem 2rem 4.5rem;
+  background: var(--black);
+  padding: 1.5rem 2rem 3rem;
+  border-top: 2px solid #000;
+  border-bottom: 2px solid #000;
 }
 
-/* espaçamento entre strip-rows: mostra o bronze do contact-sheet */
 .strip-row {
   overflow-x: hidden;
-  margin-bottom: 8px;
+  margin-bottom: 1.2rem;
 }
+
 .strip-inner {
   display: flex;
   flex-direction: column;
 }
 
-/* strip-edge: borda superior e inferior de cada tira — bronze visível */
-.strip-edge {
-  height: 10px;
+/* faixa de furinhos horizontal — topo e base da tira */
+.strip-perfs-h {
+  height: 18px;
   background: #2a1e10;
   flex-shrink: 0;
-  border-top: 1px solid #1a1208;
-  border-bottom: 1px solid #1a1208;
+  position: relative;
+}
+.strip-perfs-h::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: repeating-linear-gradient(
+    to right,
+    transparent 0, transparent 5px,
+    #000 5px, #000 17px,
+    transparent 17px, transparent 22px
+  );
 }
 
-/* 3 colunas — frames maiores, proporção 3:2 do 35mm */
 .strip-frames {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
-  background: #2a1e10;   /* bronze entre frames */
-}
-
-/* film card: image frame + rebate caption */
-.film-card {
-  display: flex;
-  flex-direction: column;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  background: #0c0905;
+  padding: 6px;
 }
 
 .film-frame {
   position: relative;
   aspect-ratio: 3/2;
   overflow: hidden;
-  background: #141210;
+  background: #0f1a12;
+  cursor: pointer;
   text-decoration: none;
   display: block;
 }
-.film-frame:hover .frame-ph img,
-.film-frame:focus-visible .frame-ph img {
-  filter: contrast(1.18) saturate(1.4) brightness(.84);
-  transform: scale(1.04);
-}
+
+.film-frame:hover .frame-overlay { opacity: 1; }
+.film-frame:hover .frame-ph img { filter: contrast(1.2) saturate(1.4) brightness(.82); }
 
 .frame-ph {
   width: 100%;
   height: 100%;
-  overflow: hidden;
 }
+
 .frame-ph img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  filter: contrast(1.05) saturate(1.08);
-  transition: filter .38s ease, transform .42s ease;
+  filter: contrast(1.08) saturate(1.15);
+  transition: filter .35s;
 }
 
-/* frame number — top-left, Kodak orange mono */
+.frame-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent 40%, rgba(0,0,0,.75));
+  opacity: 0;
+  transition: opacity .3s;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: .5rem .4rem;
+  z-index: 3;
+}
+
+.frame-title-overlay {
+  font-family: var(--mono);
+  font-size: .5rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--cream);
+  line-height: 1.4;
+  text-shadow: 0 1px 6px rgba(0,0,0,.9);
+}
+
 .frame-idx {
   position: absolute;
-  top: 6px; left: 8px;
+  top: 5px;
+  left: 6px;
+  font-size: .46rem;
+  color: rgba(255,140,0,.5);
   font-family: var(--mono);
-  font-size: clamp(.5rem, .7vw, .72rem);
-  color: var(--orange);
-  letter-spacing: .08em;
+  letter-spacing: .06em;
   pointer-events: none;
   z-index: 2;
-  text-shadow: 0 0 5px rgba(0,0,0,.9);
-  opacity: .88;
 }
 
-/* location + date — bottom-left */
 .frame-meta {
   position: absolute;
-  bottom: 6px; left: 8px;
+  bottom: 5px;
+  left: 6px;
   font-family: var(--mono);
-  font-size: clamp(.38rem, .5vw, .56rem);
-  color: rgba(244,129,63,.82);
-  letter-spacing: .06em;
-  line-height: 1.65;
-  text-shadow: 0 1px 4px rgba(0,0,0,.95);
+  font-size: clamp(.3rem, .38vw, .38rem);
+  color: rgba(212,98,30,.8);
+  letter-spacing: .07em;
+  line-height: 1.5;
+  text-shadow: 0 0 6px rgba(0,0,0,.95);
   pointer-events: none;
   z-index: 2;
 }
 
-/* caption abaixo do frame — rebate do filme */
-.frame-caption {
-  padding: .32rem .6rem .28rem;
-  font-family: var(--mono);
-  font-size: clamp(.52rem, .72vw, .76rem);
-  line-height: 1.4;
-  color: rgba(204,108,36,.85);
-  text-decoration: none;
-  background: linear-gradient(to bottom, #1e1208, #160e04);
-  border-top: 1px solid #0e0904;
-  letter-spacing: .046em;
-  transition: color .2s;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-.frame-caption:hover,
-.frame-caption:focus-visible { color: var(--orange); }
+/* placeholder color swatches */
+.c1 { background: linear-gradient(135deg, var(--ektar-blue) 0%, #6a8a6a 60%, var(--ektar-orange) 100%); }
+.c2 { background: linear-gradient(135deg, #4a6040 0%, #8a9a5a 50%, var(--ektar-warm) 100%); }
+.c3 { background: linear-gradient(135deg, #3a2820 0%, var(--ektar-red) 60%, var(--ektar-orange) 100%); }
+.c4 { background: linear-gradient(135deg, var(--ektar-sky) 0%, #7aaa8a 50%, #c8a060 100%); }
+.c5 { background: linear-gradient(135deg, #1a2030 0%, var(--ektar-blue) 40%, #8aaa7a 100%); }
+.c6 { background: linear-gradient(135deg, #6a4030 0%, #a87050 60%, var(--ektar-warm) 100%); }
+.c7 { background: linear-gradient(135deg, #2a4020 0%, #5a8040 60%, var(--ektar-warm) 100%); }
+.c8 { background: linear-gradient(135deg, var(--ektar-red) 0%, #6a3020 50%, #2a1810 100%); }
 
-/* placeholder swatches for articles without hero images */
-.c1 { background: linear-gradient(135deg, #1a3a5c 0%, #6a8a6a 60%, #d4621e 100%); }
-.c2 { background: linear-gradient(135deg, #4a6040 0%, #8a9a5a 50%, #e8c87a 100%); }
-.c3 { background: linear-gradient(135deg, #3a2820 0%, #c8341a 60%, #d4621e 100%); }
-.c4 { background: linear-gradient(135deg, #2e6a9e 0%, #7aaa8a 50%, #c8a060 100%); }
-.c5 { background: linear-gradient(135deg, #1a2030 0%, #1a3a5c 40%, #8aaa7a 100%); }
-.c6 { background: linear-gradient(135deg, #6a4030 0%, #a87050 60%, #e8c87a 100%); }
-.c7 { background: linear-gradient(135deg, #2a4020 0%, #5a8040 60%, #e8c87a 100%); }
-.c8 { background: linear-gradient(135deg, #c8341a 0%, #6a3020 50%, #2a1810 100%); }
-
-/* ── THEMES ────────────────────────────────────────────────── */
-.themes-section {
-  padding: 3rem 2rem 3.5rem;
-  border-top: 1px solid var(--dark-border);
-  background: var(--dark);
-}
-.themes-label {
-  font-family: var(--mono);
-  font-size: .52rem;
-  letter-spacing: .32em;
-  text-transform: uppercase;
-  color: var(--orange);
-  display: block;
-  margin-bottom: 1.2rem;
-  opacity: .8;
-}
-.themes-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .45rem;
-}
-.theme-pill {
-  font-family: var(--mono);
-  font-size: .58rem;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--warm-dim);
-  border: 1px solid var(--dark-border);
-  padding: .28rem .9rem;
-  text-decoration: none;
-  transition: color .2s, border-color .2s;
-}
-.theme-pill:hover,
-.theme-pill:focus-visible {
-  color: var(--warm-white);
-  border-color: rgba(244,129,63,.5);
-}
-
-/* ── FOOTER ────────────────────────────────────────────────── */
 footer {
-  border-top: 1px solid var(--dark-border);
-  padding: 2.2rem 2rem;
+  border-top: 1px solid #243a28;
+  padding: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--dark-deep);
-  position: relative;
-}
-footer::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: var(--orange);
-  opacity: .3;
 }
 
 .footer-logo {
   font-family: var(--mono);
-  font-size: .8rem;
-  letter-spacing: .2em;
-  color: var(--warm-white);
+  font-size: .85rem;
+  letter-spacing: .15em;
+  color: var(--cream);
 }
-.footer-logo em { color: var(--orange); font-style: normal; }
+.footer-logo em { color: var(--ektar-red); font-style: normal; }
 
-.footer-links { display: flex; gap: 1.6rem; }
+.footer-links { display: flex; gap: 1.5rem; }
 .footer-links a {
-  font-family: var(--sans);
-  font-size: .68rem;
-  color: var(--warm-dim);
+  font-size: .6rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
   text-decoration: none;
   transition: color .2s;
-  letter-spacing: .02em;
 }
-.footer-links a:hover,
-.footer-links a:focus-visible { color: var(--warm-white); }
+.footer-links a:hover { color: var(--cream); }
 
 .footer-copy {
-  font-family: var(--mono);
-  font-size: .48rem;
-  letter-spacing: .14em;
-  color: rgba(255,255,255,.09);
+  font-size: .52rem;
+  letter-spacing: .1em;
+  color: #2a3a2c;
   text-transform: uppercase;
 }
 
-/* ── RESPONSIVE ────────────────────────────────────────────── */
-@media (max-width: 900px) {
-  .strip-frames { grid-template-columns: repeat(2, 1fr); }
+/* TEMAS */
+.themes-section {
+  padding: 3rem 2rem 3.5rem;
+  border-top: 1px solid var(--green-border);
+  background: var(--bg-dark);
+}
+.themes-label {
+  font-family: var(--mono);
+  font-size: .6rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ektar-red);
+  display: block;
+  margin-bottom: 1.2rem;
+}
+.themes-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+}
+.theme-pill {
+  font-family: var(--mono);
+  font-size: .65rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  border: 1px solid var(--green-border);
+  padding: .3rem .8rem;
+  text-decoration: none;
+  transition: color .2s, border-color .2s;
+}
+.theme-pill:hover {
+  color: var(--cream);
+  border-color: var(--cream-dim);
 }
 
 @media (max-width: 768px) {
-  nav { padding: .75rem 1rem; }
+  nav { padding: .8rem 1rem; }
   .nav-right { gap: .55rem; }
-  /* mostra todos os links no mobile, fonte menor */
-  .nav-right a { font-size: .54rem; letter-spacing: .12em; }
-
-  .hero-frame {
-    grid-template-columns: 1fr;
-    min-height: auto;
-  }
-  .hero-photo { border-bottom: 1px solid var(--dark-border); }
-  .hero-photo-inner { min-height: 62vw; }
-  .hero-info {
-    padding: 2.4rem 1.6rem;
-    border-left: none;
-    border-top: 1px solid var(--dark-border);
-  }
-  .hero-title { font-size: clamp(2rem, 7.5vw, 3.2rem); }
+  .nav-right a { font-size: .58rem; letter-spacing: .1em; }
+  .hero-frame { grid-template-columns: 1fr; min-height: auto; }
+  .hero-photo { border-right: none; border-bottom: 2px solid var(--frame-border); }
+  .hero-photo-inner { min-height: 56vw; }
+  .hero-info { padding: 2rem 1.5rem; }
   .exposure-data { display: none; }
-
-  .film-data-strip { padding: 6px 1.2rem; }
-  .film-data-item { padding: 0 .75rem; font-size: .5rem; }
-
-  .contact-sheet { padding: 1rem 1rem 3rem; }
-
-  /* entire strip scrolls as a unit on mobile */
+  .contact-sheet { padding: 1rem 0 2rem; }
+  /* a tira inteira (perfs + frames) rola como unidade */
   .strip-row {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -660,160 +536,138 @@ footer::before {
     flex-direction: column;
     min-width: max-content;
   }
-  .strip-edge { width: 100%; }
-  .strip-frames {
-    grid-template-columns: repeat(3, 78vw);
-    gap: 2px;
+  .strip-perfs-h {
+    width: 100%;
   }
-  .frame-caption { font-size: .76rem; }
-
-  footer { flex-direction: column; gap: 1.2rem; text-align: center; }
+  .strip-frames {
+    grid-template-columns: repeat(4, 70vw);
+    gap: 4px;
+    padding: 4px;
+  }
+  .strip-perfs-h::before {
+    background: repeating-linear-gradient(
+      to right,
+      transparent 0, transparent 5px,
+      #000 5px, #000 13px,
+      transparent 13px, transparent 18px
+    );
+  }
+  footer { flex-direction: column; gap: 1rem; text-align: center; }
   .footer-copy { display: none; }
-}
-
-@media (max-width: 480px) {
-  .hero-info { padding: 2rem 1.2rem; }
-  .hero-title { font-size: clamp(1.9rem, 8.5vw, 2.7rem); }
-  .sheet-header { padding: 2.2rem 1.2rem 1.2rem; }
-  .themes-section { padding: 2.2rem 1.2rem 2.8rem; }
-  footer { padding: 1.8rem 1.2rem; }
 }
 </style>
 </head>
 <body>
 
-<a href="#main" class="skip-link">ir para o conteúdo</a>
-
-<nav aria-label="Navegação principal">
-  <a href="{{ '/' | url }}" class="logo" aria-label="br.trombin — página inicial">br<em>.</em>trombin</a>
+<nav>
+  <a href="{{ '/' | url }}" class="logo">br<em>.</em>trombin</a>
   <div class="nav-right">
     <a href="{{ '/sobre/' | url }}">sobre</a>
     <a href="{{ '/galeria.html' | url }}">galeria</a>
-    <a href="https://naocabe.substack.com" target="_blank" rel="noopener" class="nav-pill">Substack</a>
-    <a href="https://www.instagram.com/brtrombin" target="_blank" rel="noopener" class="nav-pill">Instagram</a>
+    <a href="https://naocabe.substack.com" target="_blank" class="nav-pill">Substack</a>
+    <a href="https://www.instagram.com/brtrombin" target="_blank" class="nav-pill">Instagram</a>
   </div>
 </nav>
 
-<main id="main">
 {% if collections.articles and collections.articles.length > 0 %}
 {% set featured = collections.articles[0] %}
 
-<section class="hero" aria-label="Artigo em destaque">
+<section class="hero">
+  <div class="perfs" id="perfs-top"></div>
+
   <div class="hero-frame">
     <div class="hero-photo">
-      <div class="hero-photo-inner"{% if not featured.data.hero_image %} style="background:linear-gradient(160deg,#1a3a5c 0%,#2e6a9e 35%,#8aaa6a 58%,#d4621e 80%,#f4813f 100%)"{% endif %}>
+      <div class="hero-photo-inner" {% if not featured.data.hero_image %}style="background:{{ featured.data.hero_gradient | default('linear-gradient(180deg, #1a3a5c 0%, #2e6a9e 35%, #8aaa6a 58%, #d4621e 80%, #c8341a 100%)') }}"{% endif %}>
         {% if featured.data.hero_image %}
-        <img src="{{ featured.data.hero_image | url }}" alt="{{ featured.data.title }}" loading="eager" fetchpriority="high">
+        <img src="{{ featured.data.hero_image | url }}" alt="{{ featured.data.title }}">
         {% endif %}
-        <div class="ektar-stamp" aria-hidden="true">
-          {% if featured.data.location %}{{ featured.data.location }}<br>{% endif %}
+        <div class="ektar-stamp">
+          {{ featured.data.location }}<br>
           {{ featured.data.date | dateStamp }}<br>
-          {% if featured.data.aperture %}{{ featured.data.aperture }}&nbsp; {% endif %}{% if featured.data.speed %}{{ featured.data.speed }}{% endif %}
+          {{ featured.data.aperture }}&nbsp;&nbsp;{{ featured.data.speed }}
         </div>
       </div>
     </div>
 
     <div class="hero-info">
-      <p class="strip-index">frame {{ featured.data.frameNumber }} &nbsp;—&nbsp; br.trombin</p>
-      <div class="hero-rule" aria-hidden="true"></div>
+      <p class="strip-index">br.trombin &mdash; frame {{ featured.data.frameNumber }}</p>
       <h1 class="hero-title">{{ featured.data.title }}</h1>
       {% if featured.data.lead %}
       <p class="hero-excerpt">{{ featured.data.lead }}</p>
       {% endif %}
-      <div class="meta-rule" aria-hidden="true"></div>
       <div class="meta-row">
         <span>{{ featured.data.date | dateLong }}</span>
-        <span class="meta-dot" aria-hidden="true"></span>
+        <span class="meta-dot"></span>
         <span>{{ featured.data.type | default("leitura") }}</span>
-        {% if featured.data.camera %}
-        <span class="meta-dot" aria-hidden="true"></span>
+        <span class="meta-dot"></span>
         <span>{{ featured.data.camera }}</span>
-        {% endif %}
       </div>
-      <a href="{{ featured.url }}" class="btn-read">abrir texto </a>
-      <div class="exposure-data" aria-hidden="true">{{ featured.data.film }} &nbsp;·&nbsp; ISO 100</div>
+      <a href="{{ featured.url }}" class="btn-read">abrir texto</a>
+      <div class="exposure-data">{{ featured.data.film }} &nbsp;&middot;&nbsp; ISO 100</div>
     </div>
-  </div>
-</section>
 
-<!-- Film data strip — replaces drawn perforations. -->
-<!-- One line of rebate data: the film aesthetic felt, not illustrated. -->
-<div class="film-data-strip" aria-hidden="true">
-  {% if featured.data.film %}<span class="film-data-item">{{ featured.data.film }}</span><span class="film-data-sep"></span>{% endif %}
-  {% if featured.data.aperture or featured.data.speed %}
-  <span class="film-data-item">{% if featured.data.aperture %}{{ featured.data.aperture }}{% endif %}{% if featured.data.aperture and featured.data.speed %} · {% endif %}{% if featured.data.speed %}{{ featured.data.speed }}{% endif %}</span>
-  <span class="film-data-sep"></span>
-  {% endif %}
-  <span class="film-data-item">{{ featured.data.date | dateStamp }}</span>
-  <span class="film-data-sep"></span>
-  <span class="film-data-item">frame {{ featured.data.frameNumber }}</span>
-  <span class="film-data-sep"></span>
-  {% if featured.data.location %}<span class="film-data-item">{{ featured.data.location | locShort }}</span><span class="film-data-sep"></span>{% endif %}
-  <span class="film-data-item">br.trombin</span>
-</div>
+    <span class="frame-label">▷ {{ featured.data.frameNumber }} &nbsp; {{ featured.data.film }} &nbsp; 99exp</span>
+  </div>
+
+  <div class="perfs" id="perfs-bot"></div>
+</section>
 
 <div class="sheet-header" id="arquivo">
   <h2>contact sheet</h2>
-  <div class="sheet-header-line" aria-hidden="true"></div>
+  <div class="sheet-header-line"></div>
   <span class="sheet-header-right">br.trombin &nbsp; 2024&ndash;2025</span>
 </div>
 
-<section class="contact-sheet" aria-label="Arquivo de artigos">
+<div class="contact-sheet">
   {% for chunk in collections.articles | chunk(4) %}
   <div class="strip-row">
     <div class="strip-inner">
-      <div class="strip-edge" aria-hidden="true"></div>
+      <div class="strip-perfs-h"></div>
       <div class="strip-frames">
         {% for article in chunk %}
-        <div class="film-card">
-          <a class="film-frame" href="{{ article.url }}" aria-label="{{ article.data.title }}">
-            {% if article.data.hero_image %}
-            <div class="frame-ph"><img src="{{ article.data.hero_image | url }}" alt="" loading="lazy"></div>
-            {% else %}
-            <div class="frame-ph {{ article.data.colorClass }}"></div>
-            {% endif %}
-            <span class="frame-idx" aria-hidden="true">{{ article.data.frameNumber }}</span>
-            <div class="frame-meta" aria-hidden="true">
-              {{ article.data.location | locShort }}<br>{{ article.data.date | dateYM }}
-            </div>
-          </a>
-          <a class="frame-caption" href="{{ article.url }}" tabindex="-1" aria-hidden="true">{{ article.data.title }}</a>
-        </div>
+        <a class="film-frame" href="{{ article.url }}">
+          {% if article.data.hero_image %}
+          <div class="frame-ph"><img src="{{ article.data.hero_image | url }}" alt="{{ article.data.title }}"></div>
+          {% else %}
+          <div class="frame-ph {{ article.data.colorClass }}"></div>
+          {% endif %}
+          <span class="frame-idx">{{ article.data.frameNumber }}</span>
+          <div class="frame-meta">
+            {{ article.data.location | locShort }}<br>{{ article.data.date | dateYM }}
+          </div>
+          <div class="frame-overlay">
+            <span class="frame-title-overlay">{{ article.data.title }}</span>
+          </div>
+        </a>
         {% endfor %}
       </div>
-      <div class="strip-edge" aria-hidden="true"></div>
+      <div class="strip-perfs-h"></div>
     </div>
   </div>
   {% endfor %}
-</section>
+</div>
 
 {% else %}
-<section class="hero" aria-label="Capa">
+{# Placeholder quando não há artigos ainda #}
+<section class="hero">
+  <div class="perfs" id="perfs-top"></div>
   <div class="hero-frame">
     <div class="hero-photo">
-      <div class="hero-photo-inner" style="background:linear-gradient(160deg,#1a3a5c 0%,#2e6a9e 35%,#8aaa6a 58%,#d4621e 80%,#f4813f 100%)"></div>
+      <div class="hero-photo-inner" style="background:linear-gradient(180deg,#1a3a5c 0%,#2e6a9e 35%,#8aaa6a 58%,#d4621e 80%,#c8341a 100%)">
+      </div>
     </div>
     <div class="hero-info">
-      <p class="strip-index">frame 000 &nbsp;—&nbsp; br.trombin</p>
-      <div class="hero-rule"></div>
+      <p class="strip-index">br.trombin &mdash; frame 000</p>
       <h1 class="hero-title">O que não<br>coube aqui<br>ficou em mim</h1>
     </div>
   </div>
+  <div class="perfs" id="perfs-bot"></div>
 </section>
-<div class="film-data-strip" aria-hidden="true">
-  <span class="film-data-item">Kodak Ektar 100</span>
-  <span class="film-data-sep"></span>
-  <span class="film-data-item">ISO 100</span>
-  <span class="film-data-sep"></span>
-  <span class="film-data-item">Porto Alegre RS</span>
-  <span class="film-data-sep"></span>
-  <span class="film-data-item">br.trombin</span>
-</div>
 {% endif %}
 
 {% set allThemes = collections.articles | uniqueThemes %}
 {% if allThemes and allThemes.length > 0 %}
-<section class="themes-section" aria-label="Explorar por tema">
+<section class="themes-section">
   <span class="themes-label">explorar por tema</span>
   <div class="themes-list">
     {% for theme in allThemes %}
@@ -822,63 +676,75 @@ footer::before {
   </div>
 </section>
 {% endif %}
-</main>
 
-<footer id="sobre" role="contentinfo">
+<footer>
   <span class="footer-logo">br<em>.</em>trombin</span>
-  <nav class="footer-links" aria-label="Links externos">
-    <a href="https://naocabe.substack.com" target="_blank" rel="noopener">Não Cabia</a>
-    <a href="https://www.instagram.com/brtrombin" target="_blank" rel="noopener">Instagram</a>
+  <div class="footer-links">
+    <a href="https://naocabe.substack.com" target="_blank">Não Cabia</a>
+    <a href="https://www.instagram.com/brtrombin" target="_blank">Instagram</a>
     <a href="{{ '/sobre/' | url }}">sobre</a>
-  </nav>
-  <span class="footer-copy">Kodak Ektar 100 &nbsp;·&nbsp; Porto Alegre RS &nbsp;·&nbsp; 2024–2025</span>
+  </div>
+  <span class="footer-copy">Kodak Ektar 100 &nbsp;&middot;&nbsp; Porto Alegre RS &nbsp;&middot;&nbsp; 2024&ndash;2025</span>
 </footer>
 
 <script>
-// auto-scroll nas tiras — mobile only, respects prefers-reduced-motion
+function makePerfs(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const n = Math.ceil(window.innerWidth / 32) + 2;
+  el.innerHTML = Array(n).fill('<div class="perf"></div>').join('');
+}
+makePerfs('perfs-top');
+makePerfs('perfs-bot');
+window.addEventListener('resize', () => { makePerfs('perfs-top'); makePerfs('perfs-bot'); });
+
+// Auto-scroll suave nas tiras — apenas mobile
 (function() {
   if (window.innerWidth > 768) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  const SPEED = 0.38;
-  const PAUSE = 2500;
+  const SPEED = 0.4; // px por frame (~24px/s em 60fps)
+  const PAUSE_AFTER_TOUCH = 3000; // ms de pausa após interação
 
   document.querySelectorAll('.strip-row').forEach(row => {
-    let rafId   = null;
-    let paused  = false;
-    let timer   = null;
+    let rafId = null;
+    let paused = false;
+    let resumeTimer = null;
     let visible = false;
 
-    function tick() {
+    function scroll() {
       if (!paused && visible) {
-        const max = row.scrollWidth - row.clientWidth;
-        if (row.scrollLeft >= max - 1) {
+        const inner = row.querySelector('.strip-inner') || row;
+        const maxScroll = inner.scrollWidth - row.clientWidth;
+        if (row.scrollLeft >= maxScroll) {
+          // chegou no fim: pausa 1s e volta pro início suavemente
           paused = true;
           setTimeout(() => {
             row.scrollTo({ left: 0, behavior: 'smooth' });
-            setTimeout(() => { paused = false; }, 650);
-          }, 1200);
+            setTimeout(() => { paused = false; }, 600);
+          }, 1000);
         } else {
           row.scrollLeft += SPEED;
         }
       }
-      rafId = requestAnimationFrame(tick);
+      rafId = requestAnimationFrame(scroll);
     }
 
-    function pause() {
+    function pauseTemporarily() {
       paused = true;
-      clearTimeout(timer);
-      timer = setTimeout(() => { paused = false; }, PAUSE);
+      clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => { paused = false; }, PAUSE_AFTER_TOUCH);
     }
 
-    row.addEventListener('touchstart', pause, { passive: true });
+    row.addEventListener('touchstart', pauseTemporarily, { passive: true });
     row.addEventListener('mouseenter', () => { paused = true; });
     row.addEventListener('mouseleave', () => { paused = false; });
 
-    new IntersectionObserver(entries => {
+    const observer = new IntersectionObserver(entries => {
       visible = entries[0].isIntersecting;
-      if (visible && !rafId) rafId = requestAnimationFrame(tick);
-    }, { threshold: 0.2 }).observe(row);
+      if (visible && !rafId) rafId = requestAnimationFrame(scroll);
+    }, { threshold: 0.3 });
+
+    observer.observe(row);
   });
 })();
 </script>

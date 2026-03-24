@@ -69,16 +69,16 @@ nav {
   align-items: center;
   justify-content: space-between;
   padding: .9rem 2rem;
-  background: rgba(35,34,32,.97);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--dark-border);
+  background: rgba(22,35,24,.96);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid #243a28;
 }
 
 .logo {
   font-family: var(--mono);
-  font-size: .84rem;
-  letter-spacing: .28em;
+  font-size: .95rem;
+  letter-spacing: .22em;
   color: var(--warm-white);
   text-decoration: none;
   text-transform: uppercase;
@@ -88,32 +88,31 @@ nav {
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 1.8rem;
+  gap: 1.5rem;
 }
 .nav-right a {
   font-family: var(--mono);
-  font-size: .6rem;
-  letter-spacing: .24em;
+  font-size: .68rem;
+  letter-spacing: .18em;
   text-transform: uppercase;
-  color: var(--warm-dim);
+  color: rgba(240,237,232,.62);
   text-decoration: none;
   transition: color .2s;
 }
 .nav-right a:hover,
-.nav-right a:focus-visible,
-.nav-right a.active { color: var(--warm-white); }
-.nav-right a.active { color: var(--orange); }
+.nav-right a:focus-visible { color: var(--warm-white); }
+.nav-right a.active { color: var(--orange) !important; }
 
 .nav-pill {
-  border: 1px solid rgba(244,129,63,.55);
-  padding: .22rem .88rem;
+  border: 1px solid rgba(244,129,63,.6);
+  padding: .22rem .78rem;
   color: var(--orange) !important;
   transition: background .2s, color .2s !important;
 }
 .nav-pill:hover,
 .nav-pill:focus-visible {
   background: var(--orange) !important;
-  color: var(--dark-deep) !important;
+  color: #1a2218 !important;
   border-color: var(--orange) !important;
 }
 

@@ -93,58 +93,50 @@ nav {
   align-items: center;
   justify-content: space-between;
   padding: .9rem 2rem;
-  background: rgba(26,24,22,.98);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  /* orange masthead rule at the very top edge */
-  border-top: 2px solid var(--orange);
-  border-bottom: 1px solid rgba(255,255,255,.07);
+  background: rgba(22,35,24,.96);   /* verde-escuro original */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid #243a28;
 }
 
 .logo {
   font-family: var(--mono);
-  font-size: 1rem;
-  letter-spacing: .32em;
+  font-size: .95rem;
+  letter-spacing: .22em;
   color: var(--warm-white);
   text-decoration: none;
   text-transform: uppercase;
-  font-weight: 500;
 }
-/* the dot burns orange */
 .logo em { color: var(--orange); font-style: normal; }
 
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 1.8rem;
+  gap: 1.5rem;
 }
 .nav-right a {
   font-family: var(--mono);
-  font-size: .62rem;
-  letter-spacing: .22em;
+  font-size: .68rem;
+  letter-spacing: .18em;
   text-transform: uppercase;
-  color: var(--warm-mid);   /* #afa89e — proper contrast on dark bg */
+  color: rgba(240,237,232,.62);
   text-decoration: none;
   transition: color .2s;
 }
 .nav-right a:hover,
 .nav-right a:focus-visible { color: var(--warm-white); }
 
-/* pills: solid orange fill — punchy, unmissable */
 .nav-pill {
-  background: var(--orange);
-  border: 1px solid var(--orange);
-  padding: .25rem .9rem;
-  color: var(--dark-deep) !important;
-  font-weight: 500;
-  transition: background .2s, transform .12s !important;
+  border: 1px solid rgba(244,129,63,.6);
+  padding: .22rem .78rem;
+  color: var(--orange) !important;
+  transition: background .2s, color .2s !important;
 }
 .nav-pill:hover,
 .nav-pill:focus-visible {
-  background: var(--orange-hot) !important;
-  border-color: var(--orange-hot) !important;
-  transform: translateY(-1px);
-  color: var(--dark-deep) !important;
+  background: var(--orange) !important;
+  color: #1a2218 !important;
+  border-color: var(--orange) !important;
 }
 
 /* ── HERO ──────────────────────────────────────────────────── */
@@ -637,9 +629,10 @@ footer::before {
 }
 
 @media (max-width: 768px) {
-  nav { padding: .75rem 1.2rem; }
-  .nav-right { gap: .8rem; }
-  .nav-right a:not(.nav-pill) { display: none; }
+  nav { padding: .75rem 1rem; }
+  .nav-right { gap: .55rem; }
+  /* mostra todos os links no mobile, fonte menor */
+  .nav-right a { font-size: .54rem; letter-spacing: .12em; }
 
   .hero-frame {
     grid-template-columns: 1fr;

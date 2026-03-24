@@ -410,35 +410,35 @@ nav {
 }
 
 .contact-sheet {
-  background: var(--dark-deep);
+  background: #2a1e10;   /* bronze/marrom — fundo da tira entre faixas */
   padding: 1.4rem 2rem 4.5rem;
 }
 
-/* each strip row has thin edge lines (film border effect) */
+/* espaçamento entre strip-rows: mostra o bronze do contact-sheet */
 .strip-row {
   overflow-x: hidden;
-  margin-bottom: 3px;
+  margin-bottom: 8px;
 }
 .strip-inner {
   display: flex;
   flex-direction: column;
 }
 
-/* film strip edges — dark strip with faint orange register marks */
+/* strip-edge: borda superior e inferior de cada tira — bronze visível */
 .strip-edge {
-  height: 9px;
-  background: #121109;
+  height: 10px;
+  background: #2a1e10;
   flex-shrink: 0;
-  border-top: 1px solid rgba(244,129,63,.18);
-  border-bottom: 1px solid rgba(244,129,63,.18);
+  border-top: 1px solid #1a1208;
+  border-bottom: 1px solid #1a1208;
 }
 
-/* 4-col grid of film cards */
+/* 3 colunas — frames maiores, proporção 3:2 do 35mm */
 .strip-frames {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 2px;
-  background: var(--dark-frame);
+  background: #2a1e10;   /* bronze entre frames */
 }
 
 /* film card: image frame + rebate caption */
@@ -478,24 +478,24 @@ nav {
 /* frame number — top-left, Kodak orange mono */
 .frame-idx {
   position: absolute;
-  top: 5px; left: 6px;
+  top: 6px; left: 8px;
   font-family: var(--mono);
-  font-size: .44rem;
+  font-size: clamp(.5rem, .7vw, .72rem);
   color: var(--orange);
   letter-spacing: .08em;
   pointer-events: none;
   z-index: 2;
   text-shadow: 0 0 5px rgba(0,0,0,.9);
-  opacity: .8;
+  opacity: .88;
 }
 
 /* location + date — bottom-left */
 .frame-meta {
   position: absolute;
-  bottom: 5px; left: 6px;
+  bottom: 6px; left: 8px;
   font-family: var(--mono);
-  font-size: clamp(.29rem, .36vw, .38rem);
-  color: rgba(244,129,63,.78);
+  font-size: clamp(.38rem, .5vw, .56rem);
+  color: rgba(244,129,63,.82);
   letter-spacing: .06em;
   line-height: 1.65;
   text-shadow: 0 1px 4px rgba(0,0,0,.95);
@@ -503,21 +503,16 @@ nav {
   z-index: 2;
 }
 
-/*
-  Caption in film-rebate style — always visible.
-  Reads like data printed on the unexposed border strip.
-  McKinnon principle: text as label, not decoration.
-*/
+/* caption abaixo do frame — rebate do filme */
 .frame-caption {
-  padding: .2rem .5rem .18rem;
+  padding: .32rem .6rem .28rem;
   font-family: var(--mono);
-  font-size: clamp(.34rem, .5vw, .52rem);
+  font-size: clamp(.52rem, .72vw, .76rem);
   line-height: 1.4;
-  color: rgba(204,108,36,.78);
+  color: rgba(204,108,36,.85);
   text-decoration: none;
-  background: #19100500;
-  background: linear-gradient(to bottom, #160e04, #100b03);
-  border-top: 1px solid #0b0804;
+  background: linear-gradient(to bottom, #1e1208, #160e04);
+  border-top: 1px solid #0e0904;
   letter-spacing: .046em;
   transition: color .2s;
   overflow: hidden;
@@ -625,7 +620,7 @@ footer::before {
 
 /* ── RESPONSIVE ────────────────────────────────────────────── */
 @media (max-width: 900px) {
-  .strip-frames { grid-template-columns: repeat(3, 1fr); }
+  .strip-frames { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
@@ -667,10 +662,10 @@ footer::before {
   }
   .strip-edge { width: 100%; }
   .strip-frames {
-    grid-template-columns: repeat(4, 68vw);
+    grid-template-columns: repeat(3, 78vw);
     gap: 2px;
   }
-  .frame-caption { font-size: .68rem; }
+  .frame-caption { font-size: .76rem; }
 
   footer { flex-direction: column; gap: 1.2rem; text-align: center; }
   .footer-copy { display: none; }
@@ -692,9 +687,8 @@ footer::before {
 <nav aria-label="Navegação principal">
   <a href="{{ '/' | url }}" class="logo" aria-label="br.trombin — página inicial">br<em>.</em>trombin</a>
   <div class="nav-right">
-    <a href="#arquivo">arquivo</a>
-    <a href="{{ '/galeria.html' | url }}">galeria</a>
     <a href="{{ '/sobre/' | url }}">sobre</a>
+    <a href="{{ '/galeria.html' | url }}">galeria</a>
     <a href="https://naocabe.substack.com" target="_blank" rel="noopener" class="nav-pill">Substack</a>
     <a href="https://www.instagram.com/brtrombin" target="_blank" rel="noopener" class="nav-pill">Instagram</a>
   </div>

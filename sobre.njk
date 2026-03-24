@@ -1,0 +1,620 @@
+---
+permalink: /sobre/
+title: sobre
+---
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sobre — br.trombin</title>
+<meta name="description" content="Bruno Trombin — fotógrafo e escritor de Porto Alegre RS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+/* ── Reset + Tokens ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --dark:        #2f2e2c;
+  --dark-deep:   #232220;
+  --dark-border: #45433e;
+
+  --warm-white:  #f0ede8;
+  --warm-mid:    #afa89e;
+  --warm-dim:    #6e675d;
+
+  --orange:      #f4813f;
+  --orange-hot:  #e8712e;
+  --orange-data: rgba(244,129,63,.82);
+
+  --mono:  'Share Tech Mono', ui-monospace, monospace;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans:  'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background: var(--dark);
+  color: var(--warm-white);
+  font-family: var(--sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: .038;
+  mix-blend-mode: screen;
+}
+
+:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 3px;
+}
+
+/* ── NAV ───────────────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .9rem 2rem;
+  background: rgba(35,34,32,.97);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--dark-border);
+}
+
+.logo {
+  font-family: var(--mono);
+  font-size: .84rem;
+  letter-spacing: .28em;
+  color: var(--warm-white);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.logo em { color: var(--orange); font-style: normal; }
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+}
+.nav-right a {
+  font-family: var(--mono);
+  font-size: .6rem;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--warm-dim);
+  text-decoration: none;
+  transition: color .2s;
+}
+.nav-right a:hover,
+.nav-right a:focus-visible,
+.nav-right a.active { color: var(--warm-white); }
+.nav-right a.active { color: var(--orange); }
+
+.nav-pill {
+  border: 1px solid rgba(244,129,63,.55);
+  padding: .22rem .88rem;
+  color: var(--orange) !important;
+  transition: background .2s, color .2s !important;
+}
+.nav-pill:hover,
+.nav-pill:focus-visible {
+  background: var(--orange) !important;
+  color: var(--dark-deep) !important;
+  border-color: var(--orange) !important;
+}
+
+/* ── PAGE ──────────────────────────────────────────────────── */
+.page-wrap {
+  padding-top: 48px;
+  min-height: 100vh;
+}
+
+/* ── HEADER ────────────────────────────────────────────────── */
+.sobre-header {
+  background: var(--dark-deep);
+  border-bottom: 1px solid var(--dark-border);
+  padding: 4rem 2rem 3.5rem;
+  position: relative;
+}
+.sobre-header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--orange);
+  opacity: .75;
+}
+
+.header-label {
+  font-family: var(--mono);
+  font-size: .52rem;
+  letter-spacing: .36em;
+  color: var(--orange-data);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 1.2rem;
+}
+
+.sobre-header h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.6rem, 5vw, 4.8rem);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -.022em;
+  color: var(--warm-white);
+  margin-bottom: 1.4rem;
+}
+.sobre-header h1 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--warm-mid);
+}
+
+.header-lead {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-style: italic;
+  line-height: 1.85;
+  color: var(--warm-mid);
+  max-width: 52ch;
+}
+
+/* ── CONTENT GRID ──────────────────────────────────────────── */
+.sobre-body {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 0;
+  border-bottom: 1px solid var(--dark-border);
+}
+
+/* left col — photo + data */
+.sobre-aside {
+  padding: 3rem 2rem;
+  border-right: 1px solid var(--dark-border);
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.portrait-frame {
+  position: relative;
+  aspect-ratio: 3/4;
+  background: #191815;
+  overflow: hidden;
+}
+.portrait-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(1.06) saturate(1.1);
+  display: block;
+}
+.portrait-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(160deg, #2a2520 0%, #3a3028 60%, #4a4038 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.portrait-placeholder span {
+  font-family: var(--mono);
+  font-size: .52rem;
+  letter-spacing: .22em;
+  color: var(--warm-dim);
+  text-transform: uppercase;
+}
+
+/* frame number label below portrait */
+.portrait-label {
+  margin-top: .5rem;
+  font-family: var(--mono);
+  font-size: .52rem;
+  letter-spacing: .18em;
+  color: var(--orange-data);
+  text-transform: uppercase;
+}
+
+/* data sheet — like an equipment card */
+.data-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+}
+.data-row {
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+  padding-bottom: .6rem;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.data-row:last-child { border-bottom: none; padding-bottom: 0; }
+.data-key {
+  font-family: var(--mono);
+  font-size: .48rem;
+  letter-spacing: .28em;
+  color: var(--orange-data);
+  text-transform: uppercase;
+}
+.data-val {
+  font-family: var(--sans);
+  font-size: .8rem;
+  color: var(--warm-mid);
+  line-height: 1.5;
+}
+
+/* contact links */
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-family: var(--mono);
+  font-size: .6rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--warm-dim);
+  text-decoration: none;
+  transition: color .2s;
+}
+.contact-link::before {
+  content: '→';
+  color: var(--orange);
+  opacity: .7;
+}
+.contact-link:hover,
+.contact-link:focus-visible { color: var(--warm-white); }
+
+/* right col — bio text */
+.sobre-main {
+  padding: 3.5rem 3.5rem 3.5rem 3rem;
+}
+
+.bio-section {
+  margin-bottom: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.bio-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.bio-section-label {
+  font-family: var(--mono);
+  font-size: .5rem;
+  letter-spacing: .34em;
+  color: var(--orange);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 1.4rem;
+  opacity: .8;
+}
+
+.bio-section h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1.18;
+  color: var(--warm-white);
+  margin-bottom: 1.2rem;
+  letter-spacing: -.012em;
+}
+
+.bio-section p {
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.92;
+  color: var(--warm-mid);
+  margin-bottom: 1.2rem;
+  max-width: 60ch;
+}
+.bio-section p:last-child { margin-bottom: 0; }
+
+.bio-section p strong {
+  color: var(--warm-white);
+  font-weight: 700;
+}
+
+/* pull quote */
+.pull-quote {
+  margin: 2rem 0;
+  padding: 1.4rem 1.8rem;
+  border-left: 3px solid var(--orange);
+  background: rgba(244,129,63,.04);
+}
+.pull-quote p {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-style: italic;
+  line-height: 1.7;
+  color: var(--warm-white);
+  margin: 0;
+  max-width: none;
+}
+
+/* film credits list */
+.film-list {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+  margin-top: 1rem;
+}
+.film-item {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .08em;
+  color: var(--warm-dim);
+}
+.film-item::before {
+  content: '';
+  width: 1.5rem;
+  height: 1px;
+  background: var(--orange);
+  opacity: .5;
+  flex-shrink: 0;
+}
+
+/* ── FOOTER ────────────────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--dark-border);
+  padding: 2.2rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--dark-deep);
+  position: relative;
+}
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--orange);
+  opacity: .3;
+}
+
+.footer-logo {
+  font-family: var(--mono);
+  font-size: .8rem;
+  letter-spacing: .2em;
+  color: var(--warm-white);
+}
+.footer-logo em { color: var(--orange); font-style: normal; }
+
+.footer-links { display: flex; gap: 1.6rem; }
+.footer-links a {
+  font-family: var(--sans);
+  font-size: .68rem;
+  color: var(--warm-dim);
+  text-decoration: none;
+  transition: color .2s;
+}
+.footer-links a:hover { color: var(--warm-white); }
+
+.footer-copy {
+  font-family: var(--mono);
+  font-size: .48rem;
+  letter-spacing: .14em;
+  color: rgba(255,255,255,.09);
+  text-transform: uppercase;
+}
+
+/* ── RESPONSIVE ────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .sobre-body { grid-template-columns: 1fr; }
+  .sobre-aside {
+    border-right: none;
+    border-bottom: 1px solid var(--dark-border);
+    padding: 2.5rem 1.6rem;
+  }
+  .portrait-frame { max-width: 280px; }
+  .sobre-main { padding: 2.5rem 1.6rem; }
+}
+
+@media (max-width: 768px) {
+  nav { padding: .75rem 1.2rem; }
+  .nav-right { gap: .8rem; }
+  .nav-right a:not(.nav-pill) { display: none; }
+  .sobre-header { padding: 3rem 1.4rem 2.5rem; }
+  footer { flex-direction: column; gap: 1.2rem; text-align: center; }
+  .footer-copy { display: none; }
+}
+
+@media (max-width: 480px) {
+  .sobre-header { padding: 2.5rem 1.2rem 2rem; }
+  .sobre-aside,
+  .sobre-main { padding: 2rem 1.2rem; }
+  footer { padding: 1.8rem 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<nav aria-label="Navegação principal">
+  <a href="{{ '/' | url }}" class="logo" aria-label="br.trombin — página inicial">br<em>.</em>trombin</a>
+  <div class="nav-right">
+    <a href="{{ '/' | url }}#arquivo">arquivo</a>
+    <a href="{{ '/galeria.html' | url }}">galeria</a>
+    <a href="{{ '/sobre/' | url }}" class="active">sobre</a>
+    <a href="https://naocabe.substack.com" target="_blank" rel="noopener" class="nav-pill">Substack</a>
+    <a href="https://www.instagram.com/brtrombin" target="_blank" rel="noopener" class="nav-pill">Instagram</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <header class="sobre-header">
+    <span class="header-label">br.trombin &nbsp;—&nbsp; about</span>
+    <h1>Bruno<br><em>Trombin</em></h1>
+    <p class="header-lead">
+      Fotógrafo analógico e escritor de Porto Alegre RS.<br>
+      Registro o que a memória guarda antes de entender o porquê.
+    </p>
+  </header>
+
+  <div class="sobre-body">
+
+    <!-- aside: portrait + data sheet -->
+    <aside class="sobre-aside" aria-label="Informações">
+
+      <div>
+        <div class="portrait-frame" role="img" aria-label="Retrato de Bruno Trombin">
+          <!-- Troque pelo caminho da sua foto: -->
+          <!-- <img src="{{ '/img/portrait.jpg' | url }}" alt="Bruno Trombin"> -->
+          <div class="portrait-placeholder">
+            <span>portrait</span>
+          </div>
+        </div>
+        <p class="portrait-label">brtrombin · porto alegre rs</p>
+      </div>
+
+      <div class="data-sheet" aria-label="Ficha técnica">
+        <div class="data-row">
+          <span class="data-key">nome</span>
+          <span class="data-val">Bruno Trombin</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">base</span>
+          <span class="data-val">Porto Alegre RS · Brasil</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">formato</span>
+          <span class="data-val">35mm analógico</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">filmes favoritos</span>
+          <div class="film-list">
+            <span class="film-item">Kodak Ektar 100</span>
+            <span class="film-item">Kodak Portra 400</span>
+            <span class="film-item">Ilford HP5 Plus</span>
+          </div>
+        </div>
+        <div class="data-row">
+          <span class="data-key">publicações</span>
+          <span class="data-val">Não Cabia — Substack</span>
+        </div>
+      </div>
+
+      <nav class="contact-links" aria-label="Contato e redes">
+        <a href="https://naocabe.substack.com" target="_blank" rel="noopener" class="contact-link">Não Cabia · Substack</a>
+        <a href="https://www.instagram.com/brtrombin" target="_blank" rel="noopener" class="contact-link">@brtrombin · Instagram</a>
+        <a href="mailto:bruno@trombin.com.br" class="contact-link">bruno@trombin.com.br</a>
+      </nav>
+
+    </aside>
+
+    <!-- main: bio text -->
+    <main class="sobre-main">
+
+      <section class="bio-section">
+        <span class="bio-section-label">quem sou</span>
+        <h2>O que não coube aqui ficou em mim</h2>
+
+        <p>
+          Sou Bruno Trombin. Fotógrafo analógico, escritor e morador de Porto Alegre RS.
+          Cresci aprendendo que as histórias importantes não cabem em uma linha — e foi essa
+          convicção que me levou tanto à fotografia quanto à escrita.
+        </p>
+
+        <p>
+          Trabalho com filme analógico porque o processo me interessa tanto quanto o resultado.
+          O momento em que você aperta o obturador sem ver o que captou — essa espera, esse ato
+          de fé — <strong>muda o olhar antes de mudar a foto.</strong>
+        </p>
+
+        <div class="pull-quote">
+          <p>"Não fotografo para registrar. Fotografo para entender o que não tenho palavras para descrever ainda."</p>
+        </div>
+
+        <p>
+          Paralelamente, escrevo na newsletter <strong>Não Cabia</strong> — textos sobre vivências,
+          viagens, relações e os pequenos acúmulos que formam uma vida. A fotografia e a escrita
+          se alimentam: o que a câmera captura, o texto processa. O que o texto não alcança,
+          a imagem guarda.
+        </p>
+      </section>
+
+      <section class="bio-section">
+        <span class="bio-section-label">o trabalho</span>
+        <h2>Presença antes de técnica</h2>
+
+        <p>
+          Meu interesse é na fotografia de rua, de viagem e documental — especialmente nos
+          gestos cotidianos que passam despercebidos: a luz que entra numa janela de manhã
+          cedo, duas pessoas num banco de praça, o detalhe de uma fachada desgastada.
+        </p>
+
+        <p>
+          Prefiro o erro bonito ao acerto previsível. A granulação do Ilford HP5 num dia
+          nublado de Porto Alegre me interessa mais do que qualquer imagem tecnicamente perfeita
+          que não tenha nada pra dizer. <strong>Técnica é o mínimo. Presença é o trabalho.</strong>
+        </p>
+
+        <p>
+          Viajo com câmera sempre que posso — e quando não posso viajar, fotografo a vizinhança
+          com a mesma atenção que daria a qualquer cidade estrangeira. Porto Alegre me dá
+          material suficiente pra uma vida inteira de frames.
+        </p>
+      </section>
+
+      <section class="bio-section">
+        <span class="bio-section-label">sobre este site</span>
+        <h2>Um arquivo em aberto</h2>
+
+        <p>
+          Este site é um arquivo pessoal — não um portfólio comercial. Os textos e as fotos
+          aqui existem porque precisavam existir, não porque alguém pediu.
+        </p>
+
+        <p>
+          A estética de contact sheet (a grade de frames na página inicial) não é decoração:
+          é uma referência direta ao laboratório fotográfico. Cada frame tem um número.
+          Cada número é uma história. <strong>O arquivo cresce conforme vivo.</strong>
+        </p>
+
+        <p>
+          Se algum texto ou imagem ressoou com você, me escreva. Ou assine a newsletter
+          Não Cabia — é lá que publico com mais regularidade e onde a conversa costuma acontecer.
+        </p>
+      </section>
+
+    </main>
+  </div>
+
+</div>
+
+<footer role="contentinfo">
+  <span class="footer-logo">br<em>.</em>trombin</span>
+  <nav class="footer-links" aria-label="Links externos">
+    <a href="https://naocabe.substack.com" target="_blank" rel="noopener">Não Cabia</a>
+    <a href="https://www.instagram.com/brtrombin" target="_blank" rel="noopener">Instagram</a>
+    <a href="{{ '/sobre/' | url }}">sobre</a>
+  </nav>
+  <span class="footer-copy">Kodak Ektar 100 &nbsp;·&nbsp; Porto Alegre RS &nbsp;·&nbsp; 2024–2025</span>
+</footer>
+
+</body>
+</html>

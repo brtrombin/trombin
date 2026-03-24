@@ -509,7 +509,7 @@ footer {
 @media (max-width: 800px) {
   nav { padding: .8rem 1.2rem; }
   .nav-center { display: none; }
-  .nav-right a:not(.nav-pill) { display: none; }
+  .nav-right a { font-size: .58rem; letter-spacing: .1em; }
   .article-wrap {
     grid-template-columns: 1fr;
     gap: 3rem;
@@ -531,9 +531,8 @@ footer {
     <span class="nav-frame">frame {{ frameNumber }} / 99exp</span>
   </div>
   <div class="nav-right">
-    <a href="{{ '/' | url }}#arquivo">arquivo</a>
+    <a href="{{ '/sobre/' | url }}">sobre</a>
     <a href="{{ '/galeria.html' | url }}">galeria</a>
-    <a href="{{ '/' | url }}#sobre">sobre</a>
     <a href="https://naocabe.substack.com" target="_blank" class="nav-pill">Substack</a>
     <a href="https://www.instagram.com/brtrombin" target="_blank" class="nav-pill">Instagram</a>
   </div>

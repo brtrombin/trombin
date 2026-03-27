@@ -13,6 +13,9 @@ themes:
   - "reflexão"
   - "capitalismo"
   - "nostalgia"
+  - "política"
+  - "escrita"
+  - "memória"
 ---
 
 Empolgado, preparei a sala.

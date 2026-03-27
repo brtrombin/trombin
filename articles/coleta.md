@@ -15,6 +15,9 @@ author_note: ""
 themes:
   - "cronica"
   - "cotidiano"
+  - "reflexão"
+  - "memória"
+  - "natureza"
 ---
 
 A rua ainda está deitada

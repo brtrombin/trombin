@@ -17,6 +17,10 @@ themes:
   - "enchente"
   - "solidão"
   - "silêncio"
+  - "memória"
+  - "presença"
+  - "raquel"
+  - "natureza"
 ---
 
 Sentado num banco da praça.

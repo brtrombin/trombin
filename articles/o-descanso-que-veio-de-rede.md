@@ -15,6 +15,9 @@ themes:
   - presença
   - cotidiano
   - interior
+  - "reflexão"
+  - "raquel"
+  - "memória"
 ---
 
 Foram meses de muito. Muita alegria, muita ação, muita coisa tomando forma. Amigos reunidos, um apartamento novo na cidade grande, a vida se adensando em escolhas concretas. Quando muito acontece, pouco se escreve. Não por falta de assunto, mas por excesso de movimento.

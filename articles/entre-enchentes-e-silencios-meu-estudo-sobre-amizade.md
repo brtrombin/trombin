@@ -16,6 +16,8 @@ themes:
   - "pensamentos"
   - "amizade"
   - "chuva"
+  - "reflexão"
+  - "enchente"
 ---
 
 *Quando a filosofia encontra o corpo molhado, o afeto vira um abrigo.*

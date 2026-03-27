@@ -14,6 +14,10 @@ author_note: "Escrito numa varanda, esperando Raquel chegar, com a câmera em si
 themes:
   - "fotografia"
   - "política"
+  - "reflexão"
+  - "capitalismo"
+  - "memória"
+  - "escrita"
 
 ---
 

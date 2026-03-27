@@ -16,6 +16,9 @@ themes:
   - "reflexão"
   - "escrita"
   - "eu"
+  - "pensamentos"
+  - "cotidiano"
+  - "presença"
 ---
 
 *Para tudo aquilo que pulsa quando o corpo já não dá conta.*

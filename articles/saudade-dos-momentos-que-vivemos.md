@@ -14,6 +14,10 @@ author_note: "Escrito enquanto Raquel viajava. Voltei a fotografar, não por sol
 themes:
   - "pensamentos"
   - "fotografia"
+  - "reflexão"
+  - "capitalismo"
+  - "memória"
+  - "escrita"
 
 ---
 

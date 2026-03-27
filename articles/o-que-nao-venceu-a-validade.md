@@ -16,6 +16,7 @@ themes:
   - "reflexão"
   - "memória"
   - "infância"
+  - "pensamentos"
 ---
 
 *Para as promessas que mofaram antes do apocalipse chegar.*

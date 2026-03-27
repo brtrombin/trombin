@@ -16,6 +16,8 @@ themes:
   - "reflexão"
   - "viagem"
   - "política"
+  - "capitalismo"
+  - "cidade"
 ---
 
 Roma foi linda, mas agora é barulho.

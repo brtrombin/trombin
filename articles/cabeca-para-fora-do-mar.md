@@ -14,6 +14,9 @@ speed: ""
 author_note: ""
 themes:
   - "reflexão"
+  - "escrita"
+  - "trabalho"
+  - "cotidiano"
 ---
 
 Tenho escrito muito.

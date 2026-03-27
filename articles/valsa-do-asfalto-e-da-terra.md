@@ -15,6 +15,9 @@ themes:
   - "pensamentos"
   - "crônica"
   - "reflexão"
+  - "cidade"
+  - "natureza"
+  - "solidão"
 
 ---
 

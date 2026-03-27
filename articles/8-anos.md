@@ -15,6 +15,8 @@ author_note: ""
 themes:
   - "pensamentos"
   - "raquel"
+  - "amor"
+  - "presença"
 ---
 
 Tô aqui, na frente da lareira.

@@ -17,6 +17,8 @@ themes:
   - "amor"
   - "enchente"
   - "reflexão"
+  - "raquel"
+  - "saúde"
 ---
 
 sim, eu sei que a expectativa é ver as fotos do dia, mas tenho uma história pra contar.

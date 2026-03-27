@@ -15,6 +15,9 @@ themes:
   - "pensamentos"
   - "corpo"
   - "cansaço"
+  - "reflexão"
+  - "raquel"
+  - "natureza"
 
 ---
 

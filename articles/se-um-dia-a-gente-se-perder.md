@@ -15,6 +15,8 @@ author_note: ""
 themes:
   - "pensamentos"
   - "amizade"
+  - "reflexão"
+  - "presença"
 ---
 
 Eu aprendi com o tempo que quem realmente se importa contigo, não importa a distância, um dia volta e mesmo que tenha passado anos parece que foi semana passada a última vez que vocês se viram.

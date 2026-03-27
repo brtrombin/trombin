@@ -17,6 +17,8 @@ themes:
   - "corpo"
   - "eu"
   - "desabafos"
+  - "infância"
+  - "saúde"
 ---
 
 *Uma jornada de escuta, peso e presença: escrita como lembrete, não como receita.*

@@ -17,6 +17,10 @@ themes:
   - "infância"
   - "reflexão"
   - "rotina"
+  - "corpo"
+  - "trabalho"
+  - "presença"
+  - "saúde"
 ---
 
 *Alguns baldes só molham. Outros moldam para sempre o jeito como saímos da cama.*

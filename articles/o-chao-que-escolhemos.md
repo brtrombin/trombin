@@ -17,6 +17,9 @@ themes:
   - "amor"
   - "casa"
   - "reflexão"
+  - "presença"
+  - "casamento"
+  - "descanso"
 ---
 
 Voltei há poucos dias das férias. O som do mar já não acalenta mais o meu dia.

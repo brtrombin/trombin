@@ -18,6 +18,9 @@ themes:
   - algoritmo
   - nostalgia
   - capitalismo
+  - "reflexão"
+  - "política"
+  - "solidão"
 ---
 
 Sempre disseram que todo ser humano busca se conectar. Escutei isso de psicólogo, de padre, de amigo, até de influenciador. Mas nunca perguntaram o preço.

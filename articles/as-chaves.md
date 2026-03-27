@@ -17,6 +17,9 @@ themes:
   - "capitalismo"
   - "trabalho"
   - "cotidiano"
+  - "política"
+  - "solidão"
+  - "casa"
 ---
 
 Acordei percebendo que havia perdido algumas das chaves que estavam em meu chaveiro.

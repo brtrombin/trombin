@@ -16,6 +16,9 @@ themes:
   - "reflexão"
   - "corpo"
   - "desabafos"
+  - "saúde"
+  - "raquel"
+  - "memória"
 ---
 
 *Quando o corpo já tentou de tudo, e mesmo assim continua pedindo cuidado.*

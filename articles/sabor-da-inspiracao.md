@@ -16,6 +16,9 @@ themes:
   - "poesia"
   - "reflexão"
   - "saúde"
+  - "pensamentos"
+  - "corpo"
+  - "desabafos"
 ---
 
 Tem dias em que, na penumbra do pensamento,  

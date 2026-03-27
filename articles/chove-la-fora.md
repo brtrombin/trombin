@@ -15,6 +15,9 @@ author_note: ""
 themes:
   - "reflexão"
   - "enchente"
+  - "memória"
+  - "raquel"
+  - "presença"
 ---
 
 *O som da água tem memória. E agora, ela lembra de tudo que quero esquecer.*

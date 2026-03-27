@@ -15,6 +15,9 @@ author_note: ""
 themes:
   - "pensamentos"
   - "amizade"
+  - "reflexão"
+  - "presença"
+  - "memória"
 ---
 
 A amizade é um rio

@@ -15,6 +15,9 @@ author_note: ""
 themes:
   - "pensamentos"
   - "política"
+  - "capitalismo"
+  - "reflexão"
+  - "trabalho"
 ---
 
 *Quando cuidar de si é também enxergar o outro.*

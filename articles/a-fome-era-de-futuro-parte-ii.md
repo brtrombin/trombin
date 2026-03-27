@@ -17,6 +17,9 @@ themes:
   - "corpo"
   - "eu"
   - "desabafos"
+  - "memória"
+  - "saúde"
+  - "solidão"
 ---
 
 *Quando o corpo vira abrigo e aviso ao mesmo tempo.*

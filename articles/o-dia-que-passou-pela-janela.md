@@ -14,6 +14,10 @@ author_note: "Escrito depois de perder um show e inventar tarefas no lugar do de
 themes:
   - "política"
   - "reflexão"
+  - "capitalismo"
+  - "trabalho"
+  - "descanso"
+  - "solidão"
 
 ---
 

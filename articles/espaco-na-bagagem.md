@@ -14,6 +14,9 @@ speed: ""
 author_note: ""
 themes:
   - "pensamentos"
+  - "viagem"
+  - "reflexão"
+  - "presença"
 ---
 
 *Sobre o que só cabe quando a gente se permite levar menos.*

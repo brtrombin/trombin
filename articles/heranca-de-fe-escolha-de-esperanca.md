@@ -14,6 +14,8 @@ speed: ""
 author_note: ""
 themes:
   - "pensamentos"
+  - "reflexão"
+  - "trabalho"
 ---
 
 *Entre o sonho que nos prometeram e o silêncio onde aprendemos a ficar.*

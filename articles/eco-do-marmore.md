@@ -15,6 +15,8 @@ author_note: ""
 themes:
   - "viagem"
   - "reflexão"
+  - "memória"
+  - "natureza"
 ---
 
 Hoje caminhei pelo Palatino e pelo Fórum Romano.

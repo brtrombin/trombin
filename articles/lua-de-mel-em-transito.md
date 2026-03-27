@@ -16,6 +16,9 @@ themes:
   - "viagem"
   - "reflexão"
   - "casamento"
+  - "amor"
+  - "raquel"
+  - "presença"
 ---
 
 A lua de mel começou em Porto Alegre. No São Pedro, Ian Ramil lançou o *tetein*. O teatro inteiro parecia pulsar junto. Não foi só um show. Foi bênção. Foi um começo.

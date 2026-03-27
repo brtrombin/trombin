@@ -17,6 +17,9 @@ themes:
   - "reflexão"
   - "escrita"
   - "casamento"
+  - "pensamentos"
+  - "trabalho"
+  - "presença"
 ---
 
 Tenho escrito muito.

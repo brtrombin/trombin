@@ -16,6 +16,9 @@ themes:
   - "cronica"
   - "cidade"
   - "reflexão"
+  - "política"
+  - "trabalho"
+  - "solidão"
 ---
 
 Domingo na Redenção.

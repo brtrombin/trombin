@@ -17,6 +17,9 @@ themes:
   - "reflexão"
   - "saúde"
   - "recomeço"
+  - "corpo"
+  - "memória"
+  - "presença"
 ---
 
 *Sobre rituais que afundam, silêncios que flutuam, e o estranho recomeço de respirar sem fumaça.*

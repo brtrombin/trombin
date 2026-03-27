@@ -12,6 +12,8 @@ themes:
   - "reflexão"
   - "desabafos"
   - "amizade"
+  - "pensamentos"
+  - "corpo"
 
 ---
 

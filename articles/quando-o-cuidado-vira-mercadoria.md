@@ -13,6 +13,9 @@ hero_image: "/img/margs-cuidado.jpg"
 author_note: "Escrito num sábado de julho, entre a feira do bom fim e o MARGS. Tentando entender por que o descanso ainda parece uma obrigação."
 themes:
   - "política"
+  - "capitalismo"
+  - "reflexão"
+  - "trabalho"
 
 ---
 

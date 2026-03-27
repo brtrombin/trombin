@@ -16,6 +16,8 @@ themes:
   - "pensamentos"
   - "cidade"
   - "reflexão"
+  - "natureza"
+  - "capitalismo"
 ---
 
 Às vezes eu acordo com o corpo querendo mato.

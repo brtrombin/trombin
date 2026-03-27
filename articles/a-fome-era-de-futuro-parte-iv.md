@@ -16,6 +16,9 @@ themes:
   - "reflexão"
   - "corpo"
   - "desabafos"
+  - "enchente"
+  - "saúde"
+  - "casamento"
 ---
 
 *Quando o corpo finalmente aprende o que a cabeça já sabia.*

@@ -16,6 +16,8 @@ themes:
   - "raquel"
   - "amor"
   - "casamento"
+  - "presença"
+  - "reflexão"
 ---
 
 *Para o instante em que o amor já chegou, mas ainda está escondido por entre as pessoas.*

@@ -76,9 +76,9 @@ def get_enclosure_url(entry) -> str:
     return ""
 
 
-def html_to_markdown(html: str) -> str:
-    html = re.sub(r"<figure[^>]*>.*?</figure>", "", html, flags=re.DOTALL)
-    html = re.sub(r"<img[^>]*>", "", html)
+def html_to_markdown(raw_html: str) -> str:
+    raw_html = re.sub(r"<figure[^>]*>.*?</figure>", "", raw_html, flags=re.DOTALL)
+    raw_html = re.sub(r"<img[^>]*>", "", raw_html)
 
     h = html2text.HTML2Text()
     h.ignore_links = False
@@ -86,7 +86,8 @@ def html_to_markdown(html: str) -> str:
     h.body_width = 0
     h.unicode_snob = True
     h.wrap_links = False
-    return h.handle(html).strip()
+    # unescape qualquer entity que html2text não tenha convertido
+    return html.unescape(h.handle(raw_html).strip())
 
 
 def extract_lead(entry) -> str:
@@ -107,7 +108,7 @@ def build_front_matter(slug: str, entry, hero_image: str) -> str:
     else:
         date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
-    title = entry.get("title", slug).replace('"', '\\"')
+    title = html.unescape(entry.get("title", slug)).replace('"', '\\"')
     lead  = extract_lead(entry).replace('"', '\\"')
     link  = entry.get("link", "")
 

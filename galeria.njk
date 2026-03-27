@@ -87,6 +87,26 @@ nav {
   padding: .22rem .7rem;
   color: var(--ektar-red) !important;
 }
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 101;
+}
+.nav-hamburger span {
+  width: 22px; height: 2px;
+  background: var(--cream);
+  display: block;
+  transition: transform .25s, opacity .2s;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 /* HEADER */
 .page-header {
@@ -506,7 +526,21 @@ footer {
 
 @media (max-width: 600px) {
   nav { padding: .8rem 1.2rem; }
-  .nav-right { gap: .8rem; }
+  .nav-hamburger { display: flex; }
+  .nav-right {
+    display: none;
+    position: fixed;
+    top: 49px; left: 0; right: 0;
+    background: rgba(22,35,24,.98);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.8rem 2rem;
+    gap: 1.4rem;
+    border-bottom: 1px solid #243a28;
+    z-index: 99;
+  }
+  .nav-right.open { display: flex; }
+  .nav-right a { font-size: .9rem; letter-spacing: .14em; }
   .nav-right a { font-size: .58rem; letter-spacing: .1em; }
   .gallery-wrap { padding: 1rem 0; }
   .page-header { padding: 80px 1rem 0; }
@@ -535,15 +569,8 @@ footer {
 </head>
 <body>
 
-<nav>
-  <a href="{{ '/' | url }}" class="logo">br<em>.</em>trombin</a>
-  <div class="nav-right">
-    <a href="{{ '/sobre/' | url }}">sobre</a>
-    <a href="{{ '/galeria.html' | url }}" class="active">galeria</a>
-    <a href="https://naocabe.substack.com" target="_blank" class="nav-pill">Substack</a>
-    <a href="https://www.instagram.com/brtrombin" target="_blank" class="nav-pill">Instagram</a>
-  </div>
-</nav>
+{% set navActive = "galeria" %}
+{% include "nav.njk" %}
 
 <div class="page-header">
   <div class="film-strip" id="perfs"></div>
@@ -861,6 +888,31 @@ if (_urlTheme) {
 } else {
   renderRoll(photos);
 }
+// NAV HAMBURGER
+(function() {
+  var toggle = document.getElementById("nav-toggle");
+  var menu   = document.getElementById("nav-menu");
+  if (!toggle || !menu) return;
+  toggle.addEventListener("click", function() {
+    var open = menu.classList.toggle("open");
+    toggle.classList.toggle("open", open);
+    toggle.setAttribute("aria-expanded", String(open));
+  });
+  document.addEventListener("click", function(e) {
+    if (!menu.contains(e.target) && !toggle.contains(e.target)) {
+      menu.classList.remove("open");
+      toggle.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
+    }
+  });
+  menu.querySelectorAll("a").forEach(function(a) {
+    a.addEventListener("click", function() {
+      menu.classList.remove("open");
+      toggle.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
+    });
+  });
+})();
 </script>
 </body>
 </html>

@@ -110,11 +110,44 @@ nav {
   background: #c8341a;
   color: #1a2a1e !important;
 }
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 101;
+}
+.nav-hamburger span {
+  width: 22px; height: 2px;
+  background: #f0e8d0;
+  display: block;
+  transition: transform .25s, opacity .2s;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 @media (max-width: 768px) {
-  nav { padding: .8rem 1rem; }
-  .nav-right { gap: .55rem; }
-  .nav-right a { font-size: .58rem; letter-spacing: .1em; }
+  nav { padding: .8rem 1.2rem; }
+  .nav-hamburger { display: flex; }
+  .nav-right {
+    display: none;
+    position: fixed;
+    top: 49px; left: 0; right: 0;
+    background: rgba(22,35,24,.98);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.8rem 2rem;
+    gap: 1.4rem;
+    border-bottom: 1px solid #243a28;
+    z-index: 99;
+  }
+  .nav-right.open { display: flex; }
+  .nav-right a { font-size: .9rem; letter-spacing: .14em; }
 }
 
 /* ── PAGE ──────────────────────────────────────────────────── */
@@ -435,9 +468,6 @@ footer::before {
 }
 
 @media (max-width: 768px) {
-  nav { padding: .75rem 1.2rem; }
-  .nav-right { gap: .8rem; }
-  .nav-right a:not(.nav-pill) { display: none; }
   .sobre-header { padding: 3rem 1.4rem 2.5rem; }
   footer { flex-direction: column; gap: 1.2rem; text-align: center; }
   .footer-copy { display: none; }
@@ -453,15 +483,8 @@ footer::before {
 </head>
 <body>
 
-<nav>
-  <a href="{{ '/' | url }}" class="logo">br<em>.</em>trombin</a>
-  <div class="nav-right">
-    <a href="{{ '/sobre/' | url }}" class="active">sobre</a>
-    <a href="{{ '/galeria.html' | url }}">galeria</a>
-    <a href="https://naocabe.substack.com" target="_blank" class="nav-pill">Substack</a>
-    <a href="https://www.instagram.com/brtrombin" target="_blank" class="nav-pill">Instagram</a>
-  </div>
-</nav>
+{% set navActive = "sobre" %}
+{% include "nav.njk" %}
 
 <div class="page-wrap">
 
@@ -469,8 +492,8 @@ footer::before {
     <span class="header-label">br.trombin &nbsp;—&nbsp; about</span>
     <h1>Bruno<br><em>Trombin</em></h1>
     <p class="header-lead">
-      Fotógrafo analógico e escritor de Porto Alegre RS.<br>
-      Registro o que a memória guarda antes de entender o porquê.
+      Fotógrafo e escritor de Porto Alegre RS.<br>
+      Focado em observar o movimento da vida.
     </p>
   </header>
 
@@ -500,11 +523,11 @@ footer::before {
           <span class="data-val">Porto Alegre RS · Brasil</span>
         </div>
         <div class="data-row">
-          <span class="data-key">formato</span>
-          <span class="data-val">35mm analógico</span>
+          <span class="data-key">foco</span>
+          <span class="data-val">o movimento da vida</span>
         </div>
         <div class="data-row">
-          <span class="data-key">filmes favoritos</span>
+          <span class="data-key">filmes preferidos</span>
           <div class="film-list">
             <span class="film-item">Kodak Ektar 100</span>
             <span class="film-item">Kodak Portra 400</span>
@@ -533,70 +556,71 @@ footer::before {
         <h2>O que não coube aqui ficou em mim</h2>
 
         <p>
-          Sou Bruno Trombin. Fotógrafo analógico, escritor e morador de Porto Alegre RS.
-          Cresci aprendendo que as histórias importantes não cabem em uma linha — e foi essa
-          convicção que me levou tanto à fotografia quanto à escrita.
+          Sou Bruno Trombin. Fotógrafo, escritor e morador de Porto Alegre RS.
+          Tenho 30 anos e a convicção de que as histórias que importam não cabem em uma linha.
+          Foi essa convicção que me levou à fotografia e à escrita — de formas diferentes,
+          as duas fazem a mesma coisa: guardam o que o tempo ia levar.
         </p>
 
         <p>
-          Trabalho com filme analógico porque o processo me interessa tanto quanto o resultado.
-          O momento em que você aperta o obturador sem ver o que captou — essa espera, esse ato
-          de fé — <strong>muda o olhar antes de mudar a foto.</strong>
+          Sou casado com a Raquel. Recentemente compramos nosso primeiro apartamento —
+          um lugar com 50 anos de memória nas paredes e amigos grandes a uma quadra de distância.
+          Não era novo. Era real. E às vezes é isso que basta.
         </p>
 
         <div class="pull-quote">
-          <p>"Não fotografo para registrar. Fotografo para entender o que não tenho palavras para descrever ainda."</p>
+          <p>"Não é pra parecer, não é pra performar, não é pra caber no olhar de ninguém."</p>
         </div>
 
         <p>
-          Paralelamente, escrevo na newsletter <strong>Não Cabia</strong> — textos sobre vivências,
-          viagens, relações e os pequenos acúmulos que formam uma vida. A fotografia e a escrita
-          se alimentam: o que a câmera captura, o texto processa. O que o texto não alcança,
-          a imagem guarda.
+          Escrevo na newsletter <strong>Não Cabia</strong> — textos sobre vivências, viagens,
+          relações e os pequenos acúmulos que formam uma vida. Fotografia e escrita se alimentam:
+          o que a câmera captura, o texto processa. O que o texto não alcança, a imagem guarda.
         </p>
       </section>
 
       <section class="bio-section">
         <span class="bio-section-label">o trabalho</span>
-        <h2>Presença antes de técnica</h2>
+        <h2>Observar o movimento da vida</h2>
 
         <p>
-          Meu interesse é na fotografia de rua, de viagem e documental — especialmente nos
-          gestos cotidianos que passam despercebidos: a luz que entra numa janela de manhã
-          cedo, duas pessoas num banco de praça, o detalhe de uma fachada desgastada.
+          Fotografo o cotidiano — o gesto sem querer, a luz que muda de ângulo, o rosto
+          de alguém que não sabe que está sendo visto. Não busco o instante decisivo.
+          Busco o instante honesto.
         </p>
 
         <p>
-          Prefiro o erro bonito ao acerto previsível. A granulação do Ilford HP5 num dia
-          nublado de Porto Alegre me interessa mais do que qualquer imagem tecnicamente perfeita
-          que não tenha nada pra dizer. <strong>Técnica é o mínimo. Presença é o trabalho.</strong>
+          Trabalho com fotografia em geral — analógica e digital, dependendo do que o momento
+          pede. O que não muda é a intenção: <strong>estar presente antes de estar técnico.</strong>
+          A câmera vem depois da atenção.
         </p>
 
         <p>
-          Viajo com câmera sempre que posso — e quando não posso viajar, fotografo a vizinhança
-          com a mesma atenção que daria a qualquer cidade estrangeira. Porto Alegre me dá
-          material suficiente pra uma vida inteira de frames.
+          Porto Alegre é meu ponto de partida e sempre de chegada. Mas carrego a câmera
+          em qualquer lugar — seja numa viagem longa ou numa volta de ônibus. A cidade
+          estranha e a cidade familiar exigem o mesmo olhar.
         </p>
       </section>
 
       <section class="bio-section">
         <span class="bio-section-label">sobre este site</span>
-        <h2>Um arquivo em aberto</h2>
+        <h2>Um arquivo que cresce conforme vivo</h2>
 
         <p>
           Este site é um arquivo pessoal — não um portfólio comercial. Os textos e as fotos
-          aqui existem porque precisavam existir, não porque alguém pediu.
+          aqui existem porque precisavam existir, não porque alguém pediu. Não há curadoria
+          estratégica. Há registro honesto.
         </p>
 
         <p>
-          A estética de contact sheet (a grade de frames na página inicial) não é decoração:
-          é uma referência direta ao laboratório fotográfico. Cada frame tem um número.
-          Cada número é uma história. <strong>O arquivo cresce conforme vivo.</strong>
+          A grade de contact sheet na página inicial não é decoração: é referência direta
+          ao laboratório fotográfico. Cada frame tem número. Cada número tem história.
+          O arquivo cresce conforme vivo — e essa frase não é metáfora.
         </p>
 
         <p>
-          Se algum texto ou imagem ressoou com você, me escreva. Ou assine a newsletter
-          Não Cabia — é lá que publico com mais regularidade e onde a conversa costuma acontecer.
+          Se algum texto ou imagem ressoou, me escreve. Ou assina a <strong>Não Cabia</strong> —
+          é lá que publico com mais regularidade e onde a conversa costuma acontecer.
         </p>
       </section>
 
@@ -615,5 +639,31 @@ footer::before {
   <span class="footer-copy">Kodak Ektar 100 &nbsp;·&nbsp; Porto Alegre RS &nbsp;·&nbsp; 2024–2025</span>
 </footer>
 
+<script>
+(function() {
+  var toggle = document.getElementById("nav-toggle");
+  var menu   = document.getElementById("nav-menu");
+  if (!toggle || !menu) return;
+  toggle.addEventListener("click", function() {
+    var open = menu.classList.toggle("open");
+    toggle.classList.toggle("open", open);
+    toggle.setAttribute("aria-expanded", String(open));
+  });
+  document.addEventListener("click", function(e) {
+    if (!menu.contains(e.target) && !toggle.contains(e.target)) {
+      menu.classList.remove("open");
+      toggle.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
+    }
+  });
+  menu.querySelectorAll("a").forEach(function(a) {
+    a.addEventListener("click", function() {
+      menu.classList.remove("open");
+      toggle.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
+    });
+  });
+})();
+</script>
 </body>
 </html>

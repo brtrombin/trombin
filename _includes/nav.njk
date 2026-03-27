@@ -1,0 +1,16 @@
+{#
+  Nav compartilhado — igual em todas as páginas.
+  Variável opcional: navActive ("sobre" | "galeria" | "")
+#}
+<nav aria-label="Navegação principal">
+  <a href="{{ '/' | url }}" class="logo" aria-label="br.trombin — página inicial">br<em>.</em>trombin</a>
+  <div class="nav-right" id="nav-menu" role="navigation">
+    <a href="{{ '/sobre/' | url }}"{% if navActive == "sobre" %} class="active" aria-current="page"{% endif %}>sobre</a>
+    <a href="{{ '/galeria.html' | url }}"{% if navActive == "galeria" %} class="active" aria-current="page"{% endif %}>galeria</a>
+    <a href="https://naocabe.substack.com" target="_blank" rel="noopener" class="nav-pill">Substack</a>
+    <a href="https://www.instagram.com/brtrombin" target="_blank" rel="noopener" class="nav-pill">Instagram</a>
+  </div>
+  <button class="nav-hamburger" id="nav-toggle" aria-label="abrir menu" aria-expanded="false" aria-controls="nav-menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>

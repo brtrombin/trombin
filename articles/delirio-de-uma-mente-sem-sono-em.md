@@ -4,9 +4,9 @@ title: "Delírio de uma mente sem sono, em Roma"
 date: 2025-10-08
 type: leitura
 lead: "Roma foi linda, mas agora é barulho."
-substack_url: "https://naocabe.substack.com/p/delirio-de-uma-mente-sem-sono-em-roma"
+substack_url: "https://naocabe.substack.com/p/delirio-de-uma-mente-sem-sono-em"
 location: ""
-hero_image: "/img/delirio-de-uma-mente-sem-sono-em-roma.jpg"
+hero_image: "/img/delirio-de-uma-mente-sem-sono-em.jpg"
 camera: ""
 film: ""
 aperture: ""

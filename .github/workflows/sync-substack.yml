@@ -2,8 +2,8 @@ name: Sync Substack
 
 on:
   schedule:
-    - cron: "0 7 * * *"  # diariamente às 07:00 UTC
-  workflow_dispatch:       # permite disparar manualmente pelo GitHub
+    - cron: "0 7 * * *"   # diariamente às 07:00 UTC (04:00 BRT)
+  workflow_dispatch:        # permite rodar manualmente pelo GitHub UI
 
 permissions:
   contents: write
@@ -11,20 +11,17 @@ permissions:
 jobs:
   sync:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
       - name: Instalar dependências
         run: pip install -r requirements-sync.txt
 
-      - name: Sincronizar posts do Substack
+      - name: Rodar sync
         run: python scripts/sync-substack.py
 
       - name: Commit e push se houver novidades
@@ -33,7 +30,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add articles/ img/
           if git diff --staged --quiet; then
-            echo "Nenhum post novo — nada a commitar."
+            echo "Nenhum post novo encontrado."
           else
             git commit -m "sync: importa novos textos do Substack"
             git push

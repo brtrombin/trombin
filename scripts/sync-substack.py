@@ -5,6 +5,7 @@ Lê o RSS do Substack e cria articles/*.md + img/*.jpg para posts novos.
 Rodado pelo GitHub Actions diariamente.
 """
 
+import html
 import os
 import re
 import sys
@@ -91,6 +92,7 @@ def html_to_markdown(html: str) -> str:
 def extract_lead(entry) -> str:
     raw = getattr(entry, "summary", "") or ""
     clean = re.sub(r"<[^>]+>", "", raw).strip()
+    clean = html.unescape(clean)
     clean = re.sub(r"\s+", " ", clean)
     if len(clean) > LEAD_MAX_CHARS:
         clean = clean[:LEAD_MAX_CHARS].rsplit(" ", 1)[0] + "..."

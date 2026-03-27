@@ -3,7 +3,7 @@ draft: false
 title: "O chão que escolhemos"
 date: 2026-03-25
 type: leitura
-lead: "Sobre a certeza que chega de onde a gente n&#227;o esperava."
+lead: "Sobre a certeza que chega de onde a gente não esperava."
 substack_url: "https://naocabe.substack.com/p/o-chao-que-escolhemos"
 location: ""
 hero_image: "/img/o-chao-que-escolhemos.jpg"

@@ -12,7 +12,11 @@ film: ""
 aperture: ""
 speed: ""
 author_note: ""
-themes: []
+themes:
+  - "raquel"
+  - "reflexão"
+  - "escrita"
+  - "casamento"
 ---
 
 Tenho escrito muito.

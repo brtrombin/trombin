@@ -12,7 +12,10 @@ film: ""
 aperture: ""
 speed: ""
 author_note: ""
-themes: []
+themes:
+  - "poesia"
+  - "reflexão"
+  - "saúde"
 ---
 
 Tem dias em que, na penumbra do pensamento,  

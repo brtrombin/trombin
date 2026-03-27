@@ -19,6 +19,7 @@ camera: ""
 film: ""
 aperture: ""
 speed: ""
-themes: []
+themes:
+  - "fotografia"
 author_note: ""
 ---

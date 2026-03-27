@@ -12,7 +12,11 @@ film: ""
 aperture: ""
 speed: ""
 author_note: ""
-themes: []
+themes:
+  - "raquel"
+  - "amor"
+  - "casa"
+  - "reflexão"
 ---
 
 Voltei há poucos dias das férias. O som do mar já não acalenta mais o meu dia.

@@ -12,7 +12,11 @@ film: ""
 aperture: ""
 speed: ""
 author_note: ""
-themes: []
+themes:
+  - "reflexão"
+  - "capitalismo"
+  - "trabalho"
+  - "cotidiano"
 ---
 
 Acordei percebendo que havia perdido algumas das chaves que estavam em meu chaveiro.

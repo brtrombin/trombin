@@ -553,7 +553,7 @@ footer {
     padding: 1.8rem 2rem;
     gap: 1.4rem;
     border-bottom: 1px solid #243a28;
-    z-index: 99;
+    z-index: 102;
   }
   .nav-right.open { display: flex; }
   .nav-right a { font-size: .9rem; letter-spacing: .14em; }
@@ -633,7 +633,7 @@ footer {
         <span class="meta-dot"></span>
         <span>{{ featured.data.camera }}</span>
       </div>
-      <a href="{{ featured.url }}" class="btn-read">abrir texto</a>
+      <a href="{{ featured.url }}" class="btn-read">{% if featured.data.type == "ensaio" %}abrir ensaio{% else %}abrir texto{% endif %}</a>
       <div class="exposure-data">{{ featured.data.film }} &nbsp;&middot;&nbsp; ISO 100</div>
     </div>
 

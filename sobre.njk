@@ -62,7 +62,7 @@ body::after {
 
 /* ── NAV ───────────────────────────────────────────────────── */
 /* ── NAV — idêntico ao index.njk ───────────────────────────── */
-nav {
+nav:not([class]) {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
@@ -132,7 +132,7 @@ nav {
 .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 @media (max-width: 768px) {
-  nav { padding: .8rem 1.2rem; }
+  nav:not([class]) { padding: .8rem 1.2rem; }
   .nav-hamburger { display: flex; }
   .nav-right {
     display: none;

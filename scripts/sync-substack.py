@@ -36,6 +36,38 @@ MAX_WIDTH      = 1920               # largura máxima da capa, em px
 JPEG_QUALITY   = 75
 LEAD_MAX_CHARS = 180                # tamanho máximo da chamada (lead)
 
+# Cabeçalhos do pedido do feed: identifica o script como leitor de RSS
+FEED_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (compatible; rss-sync/1.0)",
+    "Accept": "application/rss+xml, application/xml;q=0.9, text/xml;q=0.8, */*;q=0.5",
+}
+
+
+def fetch_feed():
+    """Baixa e interpreta o RSS. Encerra o script com erro se não vier um feed com posts.
+
+    Feed vazio nunca é tratado como "sem novidades": o Substack sempre lista os
+    posts publicados, então zero posts significa que a resposta não era o feed
+    (bloqueio, página de erro) e o workflow precisa ficar vermelho.
+    """
+    try:
+        resp = requests.get(RSS_URL, headers=FEED_HEADERS, timeout=30)
+    except requests.RequestException as e:
+        sys.exit(f"erro: não foi possível baixar o feed: {e}")
+
+    feed = feedparser.parse(resp.content)
+
+    if resp.status_code != 200 or not feed.entries:
+        # mostra o que veio no lugar do feed, para diagnosticar pelo log
+        preview = " ".join(resp.text[:300].split())
+        print(f"erro: a resposta não é um feed com posts "
+              f"(HTTP {resp.status_code}, {resp.headers.get('content-type', '?')}, "
+              f"{len(resp.content)} bytes)")
+        print(f"      início da resposta: {preview}")
+        sys.exit(1)
+
+    return feed
+
 
 def slug_from_url(url: str) -> str:
     """Extrai o slug de uma URL de post: .../p/meu-texto?x=1 → "meu-texto"."""
@@ -169,7 +201,7 @@ def sync():
     IMG_DIR.mkdir(exist_ok=True)
 
     print(f"Lendo feed: {RSS_URL}")
-    feed = feedparser.parse(RSS_URL)
+    feed = fetch_feed()
 
     # bozo = feedparser encontrou XML malformado; segue com o que conseguiu ler
     if feed.bozo:

@@ -2,7 +2,8 @@
 """
 sync-substack.py
 Lê o RSS do Substack e cria articles/*.md + img/*.jpg para posts novos.
-Rodado pelo GitHub Actions diariamente (.github/workflows/sync-substack.yml).
+Rodar localmente: o workflow .github/workflows/sync-substack.yml existe, mas o
+Substack bloqueia os servidores do GitHub (HTTP 403), então lá ele falha.
 
 Fluxo, para cada post do feed:
   1. extrai o slug da URL (/p/<slug>) — ele vira o nome do .md e da imagem

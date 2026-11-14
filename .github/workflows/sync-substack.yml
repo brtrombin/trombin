@@ -1,11 +1,16 @@
 # Importa posts novos do Substack: roda scripts/sync-substack.py e, se algo
 # mudou em articles/ ou img/, faz commit e push (o que dispara o deploy).
+#
+# Agendamento diário pausado: o Substack responde HTTP 403 (desafio anti-bot
+# da Cloudflare) aos servidores do GitHub, então a execução falha aqui.
+# O script funciona rodando localmente: python scripts/sync-substack.py
+# Para reativar, devolver ao bloco "on":
+#   schedule:
+#     - cron: "0 7 * * *"   # diariamente às 07:00 UTC (04:00 BRT)
 name: Sync Substack
 
 on:
-  schedule:
-    - cron: "0 7 * * *"   # diariamente às 07:00 UTC (04:00 BRT)
-  workflow_dispatch:        # permite rodar manualmente pelo GitHub UI
+  workflow_dispatch:        # só manual, pelo GitHub UI
 
 permissions:
   contents: write           # necessário para o push do commit automático

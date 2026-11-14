@@ -2,6 +2,18 @@
 permalink: /sobre/
 title: sobre
 ---
+{#
+  Página "sobre".
+
+  Estrutura:
+    1. nav fixo (nav.njk)
+    2. cabeçalho com nome e chamada
+    3. duas colunas: retrato + ficha + contatos | texto da bio
+    4. rodapé
+
+  Usa uma paleta própria (cinza quente + laranja) em vez do verde das
+  outras páginas; só o nav mantém as cores do resto do site.
+#}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -22,13 +34,14 @@ html { scroll-behavior: smooth; }
   --dark-deep:   #232220;
   --dark-border: #45433e;
 
-  --warm-white:  #f0ede8;
-  --warm-mid:    #afa89e;
-  --warm-dim:    #6e675d;
+  --warm-white:  #f0ede8;   /* títulos */
+  --warm-text:   #c9c2b8;   /* corpo do texto (contraste 7.7:1) */
+  --warm-mid:    #afa89e;   /* texto secundário (5.8:1) */
+  --warm-dim:    #a39c90;   /* texto terciário — mínimo legível (5:1) */
 
   --orange:      #f4813f;
   --orange-hot:  #e8712e;
-  --orange-data: rgba(244,129,63,.82);
+  --orange-data: #f4813f;   /* rótulos em mono (5.2:1) */
 
   --mono:  'Share Tech Mono', ui-monospace, monospace;
   --serif: 'Playfair Display', Georgia, serif;
@@ -44,6 +57,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Grão de filme: ruído SVG fixo por cima de tudo, sem capturar cliques */
 body::after {
   content: '';
   position: fixed;
@@ -55,13 +69,15 @@ body::after {
   mix-blend-mode: screen;
 }
 
+/* contorno de foco para navegação por teclado */
 :focus-visible {
   outline: 2px solid var(--orange);
   outline-offset: 3px;
 }
 
-/* ── NAV ───────────────────────────────────────────────────── */
-/* ── NAV — idêntico ao index.njk ───────────────────────────── */
+/* ── NAV — idêntico ao index.njk (cores fixas, não usa os tokens daqui) ──
+   :not([class]) é obrigatório: a página tem outros <nav> (contatos e links
+   do rodapé) que não podem herdar o position: fixed. */
 nav:not([class]) {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -69,7 +85,7 @@ nav:not([class]) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: .9rem 2rem;
+  padding: .85rem 2rem;
   background: rgba(26,42,30,.94);
   backdrop-filter: blur(6px);
   border-bottom: 1px solid #243a28;
@@ -91,25 +107,28 @@ nav:not([class]) {
 }
 .nav-right a {
   font-family: 'Share Tech Mono', monospace;
-  font-size: .72rem;
-  letter-spacing: .18em;
+  font-size: .8rem;
+  letter-spacing: .16em;
   text-transform: uppercase;
-  color: #7a6a52;
+  color: #b8a880;
   text-decoration: none;
   transition: color .2s;
 }
 .nav-right a:hover,
 .nav-right a.active { color: #f0e8d0; }
 
+/* links externos (Substack / Instagram) em formato de etiqueta */
 .nav-pill {
   border: 1px solid #c8341a;
   padding: .22rem .7rem;
-  color: #c8341a !important;
+  color: #f07050 !important;
 }
 .nav-pill:hover {
   background: #c8341a;
-  color: #1a2a1e !important;
+  color: #f0e8d0 !important;
 }
+
+/* botão hambúrguer — visível só em mobile */
 .nav-hamburger {
   display: none;
   flex-direction: column;
@@ -118,7 +137,9 @@ nav:not([class]) {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  /* padding grande + margem negativa: área de toque de ~44px sem aumentar o nav */
+  padding: 14px 11px;
+  margin: -10px -7px;
   z-index: 101;
 }
 .nav-hamburger span {
@@ -127,17 +148,19 @@ nav:not([class]) {
   display: block;
   transition: transform .25s, opacity .2s;
 }
+/* estado aberto: as três barras viram um X */
 .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .nav-hamburger.open span:nth-child(2) { opacity: 0; }
 .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
+/* nav mobile: links viram painel suspenso aberto pelo hambúrguer */
 @media (max-width: 768px) {
   nav:not([class]) { padding: .8rem 1.2rem; }
   .nav-hamburger { display: flex; }
   .nav-right {
     display: none;
     position: fixed;
-    top: 49px; left: 0; right: 0;
+    top: 49px; left: 0; right: 0; /* 49px = altura do nav mobile */
     background: rgba(22,35,24,.98);
     flex-direction: column;
     align-items: flex-start;
@@ -147,12 +170,12 @@ nav:not([class]) {
     z-index: 102;
   }
   .nav-right.open { display: flex; }
-  .nav-right a { font-size: .9rem; letter-spacing: .14em; }
+  .nav-right a { font-size: 1rem; letter-spacing: .14em; }
 }
 
 /* ── PAGE ──────────────────────────────────────────────────── */
 .page-wrap {
-  padding-top: 48px;
+  padding-top: 48px; /* altura do nav fixo */
   min-height: 100vh;
 }
 
@@ -163,6 +186,7 @@ nav:not([class]) {
   padding: 4rem 2rem 3.5rem;
   position: relative;
 }
+/* filete laranja no topo do cabeçalho */
 .sobre-header::before {
   content: '';
   position: absolute;
@@ -174,8 +198,8 @@ nav:not([class]) {
 
 .header-label {
   font-family: var(--mono);
-  font-size: .52rem;
-  letter-spacing: .36em;
+  font-size: .78rem;
+  letter-spacing: .24em;
   color: var(--orange-data);
   text-transform: uppercase;
   display: block;
@@ -214,7 +238,7 @@ nav:not([class]) {
   border-bottom: 1px solid var(--dark-border);
 }
 
-/* left col — photo + data */
+/* coluna esquerda — retrato + ficha + contatos */
 .sobre-aside {
   padding: 3rem 2rem;
   border-right: 1px solid var(--dark-border);
@@ -236,6 +260,7 @@ nav:not([class]) {
   filter: contrast(1.06) saturate(1.1);
   display: block;
 }
+/* placeholder caso o retrato seja removido (hoje sem uso no HTML) */
 .portrait-placeholder {
   width: 100%;
   height: 100%;
@@ -246,23 +271,23 @@ nav:not([class]) {
 }
 .portrait-placeholder span {
   font-family: var(--mono);
-  font-size: .52rem;
+  font-size: .75rem;
   letter-spacing: .22em;
   color: var(--warm-dim);
   text-transform: uppercase;
 }
 
-/* frame number label below portrait */
+/* legenda abaixo do retrato */
 .portrait-label {
-  margin-top: .5rem;
+  margin-top: .6rem;
   font-family: var(--mono);
-  font-size: .52rem;
-  letter-spacing: .18em;
+  font-size: .75rem;
+  letter-spacing: .14em;
   color: var(--orange-data);
   text-transform: uppercase;
 }
 
-/* data sheet — like an equipment card */
+/* ficha técnica — como uma etiqueta de equipamento: chave em cima, valor embaixo */
 .data-sheet {
   display: flex;
   flex-direction: column;
@@ -278,19 +303,19 @@ nav:not([class]) {
 .data-row:last-child { border-bottom: none; padding-bottom: 0; }
 .data-key {
   font-family: var(--mono);
-  font-size: .48rem;
-  letter-spacing: .28em;
+  font-size: .72rem;
+  letter-spacing: .2em;
   color: var(--orange-data);
   text-transform: uppercase;
 }
 .data-val {
   font-family: var(--sans);
-  font-size: .8rem;
+  font-size: .95rem;
   color: var(--warm-mid);
   line-height: 1.5;
 }
 
-/* contact links */
+/* links de contato (Substack, Instagram, e-mail) */
 .contact-links {
   display: flex;
   flex-direction: column;
@@ -301,12 +326,13 @@ nav:not([class]) {
   align-items: center;
   gap: .6rem;
   font-family: var(--mono);
-  font-size: .6rem;
-  letter-spacing: .14em;
+  font-size: .8rem;
+  letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--warm-dim);
+  color: var(--warm-mid);
   text-decoration: none;
   transition: color .2s;
+  overflow-wrap: anywhere; /* o e-mail não estoura a coluna em telas estreitas */
 }
 .contact-link::before {
   content: '→';
@@ -316,7 +342,7 @@ nav:not([class]) {
 .contact-link:hover,
 .contact-link:focus-visible { color: var(--warm-white); }
 
-/* right col — bio text */
+/* coluna direita — texto da bio */
 .sobre-main {
   padding: 3.5rem 3.5rem 3.5rem 3rem;
 }
@@ -332,15 +358,15 @@ nav:not([class]) {
   border-bottom: none;
 }
 
+/* rótulo de cada seção ("quem sou", "o trabalho", …) */
 .bio-section-label {
   font-family: var(--mono);
-  font-size: .5rem;
-  letter-spacing: .34em;
+  font-size: .78rem;
+  letter-spacing: .24em;
   color: var(--orange);
   text-transform: uppercase;
   display: block;
   margin-bottom: 1.4rem;
-  opacity: .8;
 }
 
 .bio-section h2 {
@@ -353,11 +379,12 @@ nav:not([class]) {
   letter-spacing: -.012em;
 }
 
+/* parágrafo: 18px com entrelinha generosa */
 .bio-section p {
   font-family: var(--serif);
-  font-size: 1rem;
-  line-height: 1.92;
-  color: var(--warm-mid);
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: var(--warm-text);
   margin-bottom: 1.2rem;
   max-width: 60ch;
 }
@@ -368,7 +395,7 @@ nav:not([class]) {
   font-weight: 700;
 }
 
-/* pull quote */
+/* citação em destaque */
 .pull-quote {
   margin: 2rem 0;
   padding: 1.4rem 1.8rem;
@@ -377,7 +404,7 @@ nav:not([class]) {
 }
 .pull-quote p {
   font-family: var(--serif);
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-style: italic;
   line-height: 1.7;
   color: var(--warm-white);
@@ -385,7 +412,7 @@ nav:not([class]) {
   max-width: none;
 }
 
-/* film credits list */
+/* lista de filmes preferidos, cada item com um traço laranja à esquerda */
 .film-list {
   display: flex;
   flex-direction: column;
@@ -397,9 +424,9 @@ nav:not([class]) {
   align-items: center;
   gap: .8rem;
   font-family: var(--mono);
-  font-size: .68rem;
-  letter-spacing: .08em;
-  color: var(--warm-dim);
+  font-size: .85rem;
+  letter-spacing: .06em;
+  color: var(--warm-mid);
 }
 .film-item::before {
   content: '';
@@ -420,6 +447,7 @@ footer {
   background: var(--dark-deep);
   position: relative;
 }
+/* filete laranja discreto no topo do rodapé */
 footer::before {
   content: '';
   position: absolute;
@@ -440,7 +468,7 @@ footer::before {
 .footer-links { display: flex; gap: 1.6rem; }
 .footer-links a {
   font-family: var(--sans);
-  font-size: .68rem;
+  font-size: .85rem;
   color: var(--warm-dim);
   text-decoration: none;
   transition: color .2s;
@@ -449,13 +477,16 @@ footer::before {
 
 .footer-copy {
   font-family: var(--mono);
-  font-size: .48rem;
-  letter-spacing: .14em;
-  color: rgba(255,255,255,.09);
+  font-size: .7rem;
+  letter-spacing: .12em;
+  color: var(--warm-dim);
   text-transform: uppercase;
 }
 
-/* ── RESPONSIVE ────────────────────────────────────────────── */
+/* ── RESPONSIVO ────────────────────────────────────────────────
+   ≤ 860px: uma coluna só (ficha em cima, bio embaixo).
+   ≤ 768px: cabeçalho e rodapé compactos.
+   ≤ 480px: margens laterais menores. */
 @media (max-width: 860px) {
   .sobre-body { grid-template-columns: 1fr; }
   .sobre-aside {
@@ -483,11 +514,13 @@ footer::before {
 </head>
 <body>
 
+{# navActive marca o link "sobre" como página atual dentro do nav.njk #}
 {% set navActive = "sobre" %}
 {% include "nav.njk" %}
 
 <div class="page-wrap">
 
+  {# ── CABEÇALHO ─────────────────────────────────────────────────────── #}
   <header class="sobre-header">
     <span class="header-label">br.trombin &nbsp;—&nbsp; about</span>
     <h1>Bruno<br><em>Trombin</em></h1>
@@ -499,7 +532,7 @@ footer::before {
 
   <div class="sobre-body">
 
-    <!-- aside: portrait + data sheet -->
+    {# ── COLUNA ESQUERDA: retrato, ficha técnica e contatos ───────────── #}
     <aside class="sobre-aside" aria-label="Informações">
 
       <div>
@@ -544,7 +577,7 @@ footer::before {
 
     </aside>
 
-    <!-- main: bio text -->
+    {# ── COLUNA DIREITA: bio em três seções ───────────────────────────── #}
     <main class="sobre-main">
 
       <section class="bio-section">
@@ -636,15 +669,20 @@ footer::before {
 </footer>
 
 <script>
+// ── Menu hambúrguer (mobile) ─────────────────────────────────────────────
 (function() {
   var toggle = document.getElementById("nav-toggle");
   var menu   = document.getElementById("nav-menu");
   if (!toggle || !menu) return;
+
+  // abre/fecha ao tocar no botão
   toggle.addEventListener("click", function() {
     var open = menu.classList.toggle("open");
     toggle.classList.toggle("open", open);
     toggle.setAttribute("aria-expanded", String(open));
   });
+
+  // fecha ao tocar fora do menu
   document.addEventListener("click", function(e) {
     if (!menu.contains(e.target) && !toggle.contains(e.target)) {
       menu.classList.remove("open");
@@ -652,6 +690,8 @@ footer::before {
       toggle.setAttribute("aria-expanded", "false");
     }
   });
+
+  // fecha ao escolher um link
   menu.querySelectorAll("a").forEach(function(a) {
     a.addEventListener("click", function() {
       menu.classList.remove("open");

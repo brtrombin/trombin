@@ -1,6 +1,19 @@
 ---
 permalink: /
 ---
+{#
+  Página inicial.
+
+  Estrutura:
+    1. nav fixo (nav.njk)
+    2. hero — o texto mais recente em destaque, como um frame de filme
+    3. contact sheet — todos os textos em tiras de 4 frames
+    4. temas — atalhos para a galeria filtrada
+    5. rodapé
+
+  Dados: collections.articles (definida no .eleventy.js), ordenada do mais
+  recente para o mais antigo; cada item já traz frameNumber e colorClass.
+#}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -9,23 +22,35 @@ permalink: /
 <title>br.trombin</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
+/* ══ TOKENS ═══════════════════════════════════════════════════════════════
+   Paleta inspirada no filme Kodak Ektar 100. As cores "-text" são versões
+   mais claras dos acentos, usadas só em texto pequeno: o vermelho Ektar
+   puro não atinge contraste 4.5:1 (WCAG AA) sobre os fundos escuros. */
 :root {
-  --black: #1a2a1e;
+  --black: #1a2a1e;           /* fundo da página (verde quase preto) */
   --film-black: #162318;
-  --ektar-red: #c8341a;
+  --bg-dark: #162318;         /* fundo da seção de temas */
+  --green-border: #2e4a32;
+  --strip-bg: #2a1e10;        /* marrom da base do filme */
+  --frame-border: #0d0a05;
+  --perf-hole: #000;
+
+  --ektar-red: #c8341a;       /* botões, bordas, detalhes decorativos */
+  --ektar-red-text: #f07050;  /* rótulos em vermelho (contraste ≥ 5:1) */
   --ektar-orange: #d4621e;
   --ektar-blue: #1a3a5c;
   --ektar-sky: #2e6a9e;
   --ektar-warm: #e8c87a;
-  --strip-bg: #2a1e10;
-  --frame-border: #0d0a05;
-  --perf-hole: #000;
-  --text-dim: #7a6a52;
-  --cream: #f0e8d0;
+
+  --cream: #f0e8d0;           /* títulos */
+  --cream-dim: #b8a880;       /* texto secundário (6:1) */
+  --text-dim: #a8987a;        /* texto terciário — mínimo legível (5:1) */
+
   --mono: 'Share Tech Mono', monospace;
   --serif: 'Playfair Display', serif;
 }
 
+/* ══ RESET + BASE ═════════════════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
@@ -37,6 +62,7 @@ body {
   overflow-x: hidden;
 }
 
+/* Grão de filme: ruído SVG fixo por cima de tudo, sem capturar cliques */
 body::after {
   content: '';
   position: fixed;
@@ -48,7 +74,7 @@ body::after {
   mix-blend-mode: screen;
 }
 
-/* NAV */
+/* ══ NAV (markup em _includes/nav.njk) ════════════════════════════════════ */
 nav {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -56,7 +82,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: .9rem 2rem;
+  padding: .85rem 2rem;
   background: rgba(26,42,30,.94);
   backdrop-filter: blur(6px);
   border-bottom: 1px solid #243a28;
@@ -79,24 +105,24 @@ nav {
 
 .nav-right a {
   font-family: var(--mono);
-  font-size: .72rem;
-  letter-spacing: .18em;
+  font-size: .8rem;
+  letter-spacing: .16em;
   text-transform: uppercase;
-  color: var(--text-dim);
+  color: var(--cream-dim);
   text-decoration: none;
   transition: color .2s;
 }
 .nav-right a:hover { color: var(--cream); }
 
+/* links externos (Substack / Instagram) em formato de etiqueta */
 .nav-pill {
-  border: 1px solid #333;
+  border: 1px solid var(--ektar-red);
   padding: .22rem .7rem;
-  color: var(--ektar-red) !important;
-  border-color: var(--ektar-red) !important;
+  color: var(--ektar-red-text) !important;
 }
 .nav-right a.active { color: var(--cream); }
 
-/* hamburger — visível só em mobile */
+/* botão hambúrguer — visível só em mobile (ver @media) */
 .nav-hamburger {
   display: none;
   flex-direction: column;
@@ -105,7 +131,9 @@ nav {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  /* padding grande + margem negativa: área de toque de ~44px sem aumentar o nav */
+  padding: 14px 11px;
+  margin: -10px -7px;
   z-index: 101;
 }
 .nav-hamburger span {
@@ -114,18 +142,22 @@ nav {
   display: block;
   transition: transform .25s, opacity .2s;
 }
+/* estado aberto: as três barras viram um X */
 .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .nav-hamburger.open span:nth-child(2) { opacity: 0; }
 .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* HERO */
+/* ══ HERO — texto em destaque ═════════════════════════════════════════════
+   Um "frame" de filme em tela cheia: perfurações em cima e embaixo,
+   foto à esquerda, título e chamada à direita. */
 .hero {
-  padding-top: 52px;
+  padding-top: 52px; /* altura do nav fixo */
   background: var(--strip-bg);
   position: relative;
   overflow: hidden;
 }
 
+/* faixa de perfurações; os furos (.perf) são gerados por JS */
 .perfs {
   height: 22px;
   background: var(--strip-bg);
@@ -147,23 +179,24 @@ nav {
   flex-shrink: 0;
 }
 
+/* foto | informações — lado a lado no desktop, empilhados no mobile */
 .hero-frame {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
-  min-height: calc(100vh - 100px);
+  min-height: calc(100vh - 100px); /* tela inteira menos nav e perfurações */
   border-top: 2px solid var(--frame-border);
   border-bottom: 2px solid var(--frame-border);
   position: relative;
 }
 
+/* legenda de borda do filme ("▷ 043 … 99exp"), sobre a faixa inferior */
 .frame-label {
   position: absolute;
-  bottom: -20px;
+  bottom: -21px;
   left: 12px;
-  font-size: .58rem;
-  letter-spacing: .22em;
-  color: #ff8c00;
-  opacity: .85;
+  font-size: .72rem;
+  letter-spacing: .2em;
+  color: #ff9a2e;
   font-family: var(--mono);
   z-index: 10;
 }
@@ -197,12 +230,13 @@ nav {
   display: block;
 }
 
+/* carimbo laranja estilo "data back" de câmera analógica */
 .ektar-stamp {
   position: absolute;
   bottom: 12px;
   right: 14px;
   font-family: var(--mono);
-  font-size: clamp(.75rem, 1.1vw, .95rem);
+  font-size: clamp(.8rem, 1.1vw, .95rem);
   color: #ff7800;
   letter-spacing: .14em;
   text-shadow: 0 0 6px rgba(255,120,0,.9), 0 0 14px rgba(255,80,0,.5);
@@ -220,10 +254,11 @@ nav {
   position: relative;
 }
 
+/* linha "br.trombin — frame 043" acima do título */
 .strip-index {
-  font-size: .6rem;
-  letter-spacing: .28em;
-  color: var(--ektar-red);
+  font-size: .78rem;
+  letter-spacing: .22em;
+  color: var(--ektar-red-text);
   text-transform: uppercase;
   margin-bottom: 2rem;
 }
@@ -231,7 +266,7 @@ nav {
 .hero-title {
   font-family: var(--serif);
   font-size: clamp(2rem, 3.6vw, 3.6rem);
-  line-height: 1.08;
+  line-height: 1.1;
   color: var(--cream);
   font-style: normal;
   font-weight: 700;
@@ -241,21 +276,23 @@ nav {
 
 .hero-excerpt {
   font-family: var(--serif);
-  font-size: .9rem;
-  line-height: 1.85;
-  color: #b0a080;
+  font-size: 1.1rem;
+  line-height: 1.75;
+  color: #cbbd9c;
   max-width: 36ch;
   margin-bottom: 2.5rem;
   font-style: italic;
 }
 
+/* data · tipo · câmera */
 .meta-row {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 1rem;
+  gap: .5rem 1rem;
   margin-bottom: 2.5rem;
-  font-size: .62rem;
-  letter-spacing: .15em;
+  font-size: .78rem;
+  letter-spacing: .14em;
   color: var(--text-dim);
   text-transform: uppercase;
 }
@@ -270,31 +307,33 @@ nav {
 .btn-read {
   display: inline-block;
   font-family: var(--mono);
-  font-size: .65rem;
-  letter-spacing: .2em;
+  font-size: .82rem;
+  letter-spacing: .18em;
   text-transform: uppercase;
-  color: var(--black);
+  color: #fffaf0; /* quase branco sobre vermelho: 5:1 (o verde-escuro dava 2.8:1) */
   background: var(--ektar-red);
-  padding: .7rem 1.6rem;
+  padding: .8rem 1.6rem;
   text-decoration: none;
   align-self: flex-start;
   transition: background .2s;
 }
 .btn-read:hover { background: var(--ektar-orange); }
 
+/* texto vertical na lateral direita ("Kodak Ektar · ISO 100") — só desktop */
 .exposure-data {
   position: absolute;
   right: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  font-size: .55rem;
+  font-size: .7rem;
   letter-spacing: .15em;
-  color: #3a3020;
+  color: var(--text-dim);
   writing-mode: vertical-rl;
   text-transform: uppercase;
   line-height: 2;
 }
 
+/* entrada em cascata dos elementos do hero (cada um com um atraso maior) */
 @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
 .hero-info > * { animation: fadeUp .7s ease both; }
 .strip-index { animation-delay: .1s; }
@@ -303,7 +342,9 @@ nav {
 .meta-row { animation-delay: .44s; }
 .btn-read { animation-delay: .54s; }
 
-/* CONTACT SHEET */
+/* ══ CONTACT SHEET — arquivo de todos os textos ═══════════════════════════ */
+
+/* título da seção: "contact sheet ───────── br.trombin 2024–2025" */
 .sheet-header {
   padding: 3rem 2rem 1.2rem;
   display: flex;
@@ -314,10 +355,11 @@ nav {
 
 .sheet-header h2 {
   font-family: var(--mono);
-  font-size: .62rem;
-  letter-spacing: .24em;
+  font-size: .8rem;
+  font-weight: 400;
+  letter-spacing: .22em;
   text-transform: uppercase;
-  color: var(--ektar-red);
+  color: var(--ektar-red-text);
   white-space: nowrap;
 }
 
@@ -328,10 +370,11 @@ nav {
 }
 
 .sheet-header-right {
-  font-size: .58rem;
-  letter-spacing: .15em;
-  color: #3a3020;
+  font-size: .72rem;
+  letter-spacing: .14em;
+  color: var(--text-dim);
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .contact-sheet {
@@ -341,6 +384,9 @@ nav {
   border-bottom: 2px solid #000;
 }
 
+/* Uma tira = 4 frames entre duas faixas de perfuração.
+   .strip-row   → janela (no mobile vira área de rolagem horizontal)
+   .strip-inner → a tira em si (perfurações + frames) */
 .strip-row {
   overflow-x: hidden;
   margin-bottom: 1.2rem;
@@ -351,7 +397,8 @@ nav {
   flex-direction: column;
 }
 
-/* faixa de furinhos horizontal — topo e base da tira */
+/* faixa de furinhos horizontal — topo e base da tira, desenhada com
+   um degradê repetido (sem elementos extras no HTML) */
 .strip-perfs-h {
   height: 18px;
   background: #2a1e10;
@@ -385,6 +432,7 @@ nav {
 .film-card {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .film-frame {
@@ -401,6 +449,7 @@ nav {
   filter: contrast(1.2) saturate(1.4) brightness(.82);
 }
 
+/* área da foto; sem hero_image recebe um degradê (.c1 … .c8) */
 .frame-ph {
   width: 100%;
   height: 100%;
@@ -415,52 +464,56 @@ nav {
   transition: filter .35s;
 }
 
-/* título sempre visível abaixo do frame, estilo rebate */
+/* título sempre visível abaixo do frame, estilo rebate (borda do filme) */
 .frame-caption {
   font-family: var(--mono);
-  font-size: clamp(.42rem, .6vw, .58rem);
-  letter-spacing: .06em;
-  line-height: 1.35;
-  color: rgba(200,100,28,.82);
+  font-size: clamp(.75rem, .9vw, .85rem);
+  letter-spacing: .04em;
+  line-height: 1.4;
+  color: #e08a3c;
   background: #160e04;
   border-top: 1px solid #0c0703;
-  padding: .22rem .45rem .2rem;
+  padding: .35rem .5rem .3rem;
   text-decoration: none;
+  /* corta o título em no máximo 2 linhas, com reticências */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   transition: color .2s;
 }
-.frame-caption:hover { color: #ff8c00; }
+.frame-caption:hover { color: #ffb060; }
 
+/* número do frame, canto superior esquerdo da miniatura */
 .frame-idx {
   position: absolute;
-  top: 5px;
-  left: 6px;
-  font-size: .46rem;
-  color: rgba(255,140,0,.5);
+  top: 6px;
+  left: 7px;
+  font-size: .7rem;
+  color: #ff9a2e;
   font-family: var(--mono);
   letter-spacing: .06em;
+  text-shadow: 0 0 4px #000, 0 0 2px #000;
   pointer-events: none;
   z-index: 2;
 }
 
+/* local + ano/mês, canto inferior esquerdo da miniatura */
 .frame-meta {
   position: absolute;
-  bottom: 5px;
-  left: 6px;
+  bottom: 6px;
+  left: 7px;
   font-family: var(--mono);
-  font-size: clamp(.3rem, .38vw, .38rem);
-  color: rgba(212,98,30,.8);
-  letter-spacing: .07em;
-  line-height: 1.5;
-  text-shadow: 0 0 6px rgba(0,0,0,.95);
+  font-size: .7rem;
+  color: #ff9a2e;
+  letter-spacing: .06em;
+  line-height: 1.45;
+  text-shadow: 0 0 4px #000, 0 0 2px #000;
   pointer-events: none;
   z-index: 2;
 }
 
-/* placeholder color swatches */
+/* degradês de placeholder para textos sem foto (classe sorteada no .eleventy.js) */
 .c1 { background: linear-gradient(135deg, var(--ektar-blue) 0%, #6a8a6a 60%, var(--ektar-orange) 100%); }
 .c2 { background: linear-gradient(135deg, #4a6040 0%, #8a9a5a 50%, var(--ektar-warm) 100%); }
 .c3 { background: linear-gradient(135deg, #3a2820 0%, var(--ektar-red) 60%, var(--ektar-orange) 100%); }
@@ -470,12 +523,51 @@ nav {
 .c7 { background: linear-gradient(135deg, #2a4020 0%, #5a8040 60%, var(--ektar-warm) 100%); }
 .c8 { background: linear-gradient(135deg, var(--ektar-red) 0%, #6a3020 50%, #2a1810 100%); }
 
+/* ══ TEMAS ════════════════════════════════════════════════════════════════ */
+.themes-section {
+  padding: 3rem 2rem 3.5rem;
+  border-top: 1px solid var(--green-border);
+  background: var(--bg-dark);
+}
+.themes-label {
+  font-family: var(--mono);
+  font-size: .78rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ektar-red-text);
+  display: block;
+  margin-bottom: 1.2rem;
+}
+.themes-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+}
+/* etiqueta de tema — abre a galeria já filtrada (?theme=…) */
+.theme-pill {
+  font-family: var(--mono);
+  font-size: .78rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  border: 1px solid var(--green-border);
+  padding: .4rem .85rem;
+  text-decoration: none;
+  transition: color .2s, border-color .2s;
+}
+.theme-pill:hover {
+  color: var(--cream);
+  border-color: var(--cream-dim);
+}
+
+/* ══ RODAPÉ ═══════════════════════════════════════════════════════════════ */
 footer {
   border-top: 1px solid #243a28;
   padding: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1.5rem;
 }
 
 .footer-logo {
@@ -488,8 +580,8 @@ footer {
 
 .footer-links { display: flex; gap: 1.5rem; }
 .footer-links a {
-  font-size: .6rem;
-  letter-spacing: .14em;
+  font-size: .75rem;
+  letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--text-dim);
   text-decoration: none;
@@ -498,55 +590,21 @@ footer {
 .footer-links a:hover { color: var(--cream); }
 
 .footer-copy {
-  font-size: .52rem;
+  font-size: .7rem;
   letter-spacing: .1em;
-  color: #2a3a2c;
+  color: var(--text-dim);
   text-transform: uppercase;
 }
 
-/* TEMAS */
-.themes-section {
-  padding: 3rem 2rem 3.5rem;
-  border-top: 1px solid var(--green-border);
-  background: var(--bg-dark);
-}
-.themes-label {
-  font-family: var(--mono);
-  font-size: .6rem;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--ektar-red);
-  display: block;
-  margin-bottom: 1.2rem;
-}
-.themes-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .6rem;
-}
-.theme-pill {
-  font-family: var(--mono);
-  font-size: .65rem;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--cream-dim);
-  border: 1px solid var(--green-border);
-  padding: .3rem .8rem;
-  text-decoration: none;
-  transition: color .2s, border-color .2s;
-}
-.theme-pill:hover {
-  color: var(--cream);
-  border-color: var(--cream-dim);
-}
-
+/* ══ RESPONSIVO (≤ 768px: celular e tablet em pé) ═════════════════════════ */
 @media (max-width: 768px) {
+  /* nav: links viram painel suspenso aberto pelo hambúrguer */
   nav { padding: .8rem 1.2rem; }
   .nav-hamburger { display: flex; }
   .nav-right {
     display: none;
     position: fixed;
-    top: 49px; left: 0; right: 0;
+    top: 49px; left: 0; right: 0; /* 49px = altura do nav mobile */
     background: rgba(22,35,24,.98);
     flex-direction: column;
     align-items: flex-start;
@@ -556,12 +614,18 @@ footer {
     z-index: 102;
   }
   .nav-right.open { display: flex; }
-  .nav-right a { font-size: .9rem; letter-spacing: .14em; }
+  .nav-right a { font-size: 1rem; letter-spacing: .14em; }
+
+  /* hero: foto em cima, informações embaixo */
   .hero-frame { grid-template-columns: 1fr; min-height: auto; }
   .hero-photo { border-right: none; border-bottom: 2px solid var(--frame-border); }
   .hero-photo-inner { min-height: 56vw; }
   .hero-info { padding: 2rem 1.5rem; }
   .exposure-data { display: none; }
+
+  .sheet-header { padding: 2.5rem 1.2rem 1.2rem; gap: 1rem; }
+
+  /* contact sheet: cada tira rola na horizontal, como um filme passando */
   .contact-sheet { padding: 1rem 0 2rem; }
   /* a tira inteira (perfs + frames) rola como unidade */
   .strip-row {
@@ -570,6 +634,8 @@ footer {
     scrollbar-width: none;
   }
   .strip-row::-webkit-scrollbar { display: none; }
+  /* max-content: a tira fica da largura dos 4 frames, e as faixas de
+     perfuração acompanham essa largura */
   .strip-inner {
     display: inline-flex;
     flex-direction: column;
@@ -578,11 +644,14 @@ footer {
   .strip-perfs-h {
     width: 100%;
   }
+  /* frame com 72% da tela (deixa o próximo aparecendo), limitado a 340px
+     para não ficar gigante em tablets */
   .strip-frames {
-    grid-template-columns: repeat(4, 72vw);
+    grid-template-columns: repeat(4, min(72vw, 340px));
     gap: 4px;
     padding: 4px;
   }
+  .frame-caption { font-size: .8rem; }
   .strip-perfs-h::before {
     background: repeating-linear-gradient(
       to right,
@@ -591,8 +660,16 @@ footer {
       transparent 13px, transparent 18px
     );
   }
+
+  .themes-section { padding: 2.5rem 1.2rem 3rem; }
+
   footer { flex-direction: column; gap: 1rem; text-align: center; }
   .footer-copy { display: none; }
+}
+
+/* telas estreitas: esconde o "br.trombin 2024–2025" do título da seção */
+@media (max-width: 420px) {
+  .sheet-header-right { display: none; }
 }
 </style>
 </head>
@@ -601,12 +678,15 @@ footer {
 {% include "nav.njk" %}
 
 {% if collections.articles and collections.articles.length > 0 %}
+{# o texto mais recente é o destaque do hero #}
 {% set featured = collections.articles[0] %}
 
+{# ── HERO ──────────────────────────────────────────────────────────────── #}
 <section class="hero">
   <div class="perfs" id="perfs-top"></div>
 
   <div class="hero-frame">
+    {# foto do destaque — ou um degradê, se o texto não tiver hero_image #}
     <div class="hero-photo">
       <div class="hero-photo-inner" {% if not featured.data.hero_image %}style="background:{{ featured.data.hero_gradient | default('linear-gradient(180deg, #1a3a5c 0%, #2e6a9e 35%, #8aaa6a 58%, #d4621e 80%, #c8341a 100%)') }}"{% endif %}>
         {% if featured.data.hero_image %}
@@ -620,6 +700,7 @@ footer {
       </div>
     </div>
 
+    {# título, chamada, metadados e botão #}
     <div class="hero-info">
       <p class="strip-index">br.trombin &mdash; frame {{ featured.data.frameNumber }}</p>
       <h1 class="hero-title">{{ featured.data.title }}</h1>
@@ -643,6 +724,7 @@ footer {
   <div class="perfs" id="perfs-bot"></div>
 </section>
 
+{# ── CONTACT SHEET ─────────────────────────────────────────────────────── #}
 <div class="sheet-header" id="arquivo">
   <h2>contact sheet</h2>
   <div class="sheet-header-line"></div>
@@ -650,6 +732,7 @@ footer {
 </div>
 
 <div class="contact-sheet">
+  {# o filtro chunk(4) (do .eleventy.js) divide os textos em tiras de 4 frames #}
   {% for chunk in collections.articles | chunk(4) %}
   <div class="strip-row">
     <div class="strip-inner">
@@ -668,6 +751,7 @@ footer {
               {{ article.data.location | locShort }}<br>{{ article.data.date | dateYM }}
             </div>
           </a>
+          {# tabindex -1: o frame acima já é o link focável; evita foco duplicado no teclado #}
           <a class="frame-caption" href="{{ article.url }}" tabindex="-1">{{ article.data.title }}</a>
         </div>
         {% endfor %}
@@ -696,6 +780,9 @@ footer {
 </section>
 {% endif %}
 
+{# ── TEMAS ───────────────────────────────────────────────────────────────
+   uniqueThemes (do .eleventy.js) junta os temas de todos os textos,
+   sem repetição e em ordem alfabética. #}
 {% set allThemes = collections.articles | uniqueThemes %}
 {% if allThemes and allThemes.length > 0 %}
 <section class="themes-section">
@@ -711,24 +798,28 @@ footer {
 <footer>
   <span class="footer-logo">br<em>.</em>trombin</span>
   <div class="footer-links">
-    <a href="https://naocabe.substack.com" target="_blank">Não Cabia</a>
-    <a href="https://www.instagram.com/brtrombin" target="_blank">Instagram</a>
+    <a href="https://naocabe.substack.com" target="_blank" rel="noopener">Não Cabia</a>
+    <a href="https://www.instagram.com/brtrombin" target="_blank" rel="noopener">Instagram</a>
     <a href="{{ '/sobre/' | url }}">sobre</a>
   </div>
   <span class="footer-copy">Kodak Ektar 100 &nbsp;&middot;&nbsp; Porto Alegre RS &nbsp;&middot;&nbsp; 2024&ndash;2025</span>
 </footer>
 
 <script>
-// NAV HAMBURGER
+// ── Menu hambúrguer (mobile) ─────────────────────────────────────────────
 (function() {
   const toggle = document.getElementById('nav-toggle');
   const menu   = document.getElementById('nav-menu');
   if (!toggle || !menu) return;
+
+  // abre/fecha ao tocar no botão
   toggle.addEventListener('click', function() {
     const open = menu.classList.toggle('open');
     toggle.classList.toggle('open', open);
     toggle.setAttribute('aria-expanded', String(open));
   });
+
+  // fecha ao tocar fora do menu
   document.addEventListener('click', function(e) {
     if (!menu.contains(e.target) && !toggle.contains(e.target)) {
       menu.classList.remove('open');
@@ -736,6 +827,8 @@ footer {
       toggle.setAttribute('aria-expanded', 'false');
     }
   });
+
+  // fecha ao escolher um link
   menu.querySelectorAll('a').forEach(function(a) {
     a.addEventListener('click', function() {
       menu.classList.remove('open');
@@ -745,6 +838,9 @@ footer {
   });
 })();
 
+// ── Perfurações do hero ──────────────────────────────────────────────────
+// Preenche a faixa com furos suficientes para a largura atual da janela
+// (cada furo ocupa 32px: 14 de largura + 18 de margem).
 function makePerfs(id) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -755,7 +851,9 @@ makePerfs('perfs-top');
 makePerfs('perfs-bot');
 window.addEventListener('resize', () => { makePerfs('perfs-top'); makePerfs('perfs-bot'); });
 
-// Auto-scroll suave nas tiras — apenas mobile
+// ── Auto-scroll suave nas tiras — apenas mobile ──────────────────────────
+// Cada tira desliza devagar para a esquerda enquanto está visível na tela,
+// e volta ao início quando chega ao fim. Pausa quando o usuário toca nela.
 (function() {
   if (window.innerWidth > 768) return;
 
@@ -763,11 +861,12 @@ window.addEventListener('resize', () => { makePerfs('perfs-top'); makePerfs('per
   const PAUSE_AFTER_TOUCH = 3000; // ms de pausa após interação
 
   document.querySelectorAll('.strip-row').forEach(row => {
-    let rafId = null;
-    let paused = false;
-    let resumeTimer = null;
-    let visible = false;
+    let rafId = null;        // id do requestAnimationFrame em andamento
+    let paused = false;      // true enquanto o usuário interage
+    let resumeTimer = null;  // timer que retoma o movimento após o toque
+    let visible = false;     // a tira está dentro da tela?
 
+    // um passo da animação: chamado a cada frame do navegador
     function scroll() {
       if (!paused && visible) {
         const inner = row.querySelector('.strip-inner') || row;
@@ -796,6 +895,7 @@ window.addEventListener('resize', () => { makePerfs('perfs-top'); makePerfs('per
     row.addEventListener('mouseenter', () => { paused = true; });
     row.addEventListener('mouseleave', () => { paused = false; });
 
+    // só anima a tira quando pelo menos 30% dela está visível
     const observer = new IntersectionObserver(entries => {
       visible = entries[0].isIntersecting;
       if (visible && !rafId) rafId = requestAnimationFrame(scroll);

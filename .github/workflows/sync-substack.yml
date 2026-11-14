@@ -1,3 +1,5 @@
+# Importa posts novos do Substack: roda scripts/sync-substack.py e, se algo
+# mudou em articles/ ou img/, faz commit e push (o que dispara o deploy).
 name: Sync Substack
 
 on:
@@ -6,7 +8,7 @@ on:
   workflow_dispatch:        # permite rodar manualmente pelo GitHub UI
 
 permissions:
-  contents: write
+  contents: write           # necessário para o push do commit automático
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'

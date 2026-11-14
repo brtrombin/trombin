@@ -1,20 +1,23 @@
+# Publica o site no GitHub Pages: gera _site/ com o Eleventy e faz o deploy.
 name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch:
+    branches: [main]      # todo push na main publica (inclusive o do sync do Substack)
+  workflow_dispatch:      # permite rodar manualmente pelo GitHub UI
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# se dois deploys coincidirem, o mais antigo é cancelado
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
+  # 1) gera o site e guarda _site/ como artefato
   build:
     runs-on: ubuntu-latest
     steps:
@@ -33,6 +36,7 @@ jobs:
         with:
           path: _site
 
+  # 2) publica o artefato no GitHub Pages
   deploy:
     needs: build
     runs-on: ubuntu-latest

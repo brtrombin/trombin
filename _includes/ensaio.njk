@@ -1,3 +1,19 @@
+{#
+  Layout de ensaio fotográfico — usado pelos .md com "layout: ensaio.njk".
+
+  Estrutura da página:
+    1. nav fixo no topo (igual ao do artigo)
+    2. capa em tira de filme
+    3. cabeçalho (título, lead, câmera/filme/local)
+    4. grade de fotos — cada foto abre no lightbox
+    5. navegação anterior/próximo e rodapé
+
+  Front matter esperado no .md:
+    title, date, lead, hero_image, location, camera, film,
+    images: [ { src, caption }, … ]
+  Injetado pelo .eleventy.js (collection "articles"):
+    frameNumber, prevArticle, nextArticle
+#}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,22 +22,31 @@
 <title>{{ title }} — br.trombin</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 <style>
+/* ══ TOKENS ═══════════════════════════════════════════════════════════════
+   Mesma paleta do article.njk. As cores "-text" são versões mais claras
+   dos acentos, usadas só em texto pequeno para atingir contraste AA. */
 :root {
   --bg: #1e2e22;
   --bg-dark: #162318;
   --bg-deeper: #0f1a12;
   --green-mid: #243a28;
   --green-border: #2e4a32;
-  --ektar-red: #c8341a;
+
+  --ektar-red: #c8341a;          /* bordas e detalhes decorativos */
+  --ektar-red-text: #f07050;     /* rótulos em vermelho */
   --ektar-orange: #d4621e;
+  --ektar-orange-text: #e88a4a;  /* legendas em laranja */
   --ektar-amber: #e8a830;
-  --cream: #f0e8d0;
-  --cream-dim: #b8a880;
-  --cream-ghost: #6a5a40;
+
+  --cream: #f0e8d0;              /* títulos */
+  --cream-dim: #b8a880;          /* texto secundário */
+  --cream-ghost: #a09070;        /* texto terciário — mínimo legível */
+
   --mono: 'Share Tech Mono', monospace;
   --serif: 'Playfair Display', serif;
 }
 
+/* ══ RESET + BASE ═════════════════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
@@ -33,6 +58,7 @@ body {
   overflow-x: hidden;
 }
 
+/* Grão de filme: ruído SVG fixo por cima de tudo, sem capturar cliques */
 body::after {
   content: '';
   position: fixed;
@@ -44,15 +70,17 @@ body::after {
   mix-blend-mode: screen;
 }
 
-/* NAV */
-nav {
+/* ══ NAV PRINCIPAL ════════════════════════════════════════════════════════
+   :not([class]) é obrigatório: sem ele a regra também fixaria no topo o
+   <nav class="article-nav"> (anterior/próximo) do fim da página. */
+nav:not([class]) {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: .9rem 2rem;
+  padding: .85rem 2rem;
   background: rgba(30,46,34,.94);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--green-border);
@@ -68,6 +96,7 @@ nav {
 }
 .logo em { color: var(--ektar-red); font-style: normal; }
 
+/* centro do nav: "← contact sheet" + número do frame (some em telas menores) */
 .nav-center {
   display: flex;
   align-items: center;
@@ -76,8 +105,8 @@ nav {
 
 .nav-back {
   font-family: var(--mono);
-  font-size: .72rem;
-  letter-spacing: .16em;
+  font-size: .8rem;
+  letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--cream-dim);
   text-decoration: none;
@@ -87,14 +116,13 @@ nav {
   transition: color .2s;
 }
 .nav-back:hover { color: var(--cream); }
-.nav-back::before { content: '←'; font-size: .8rem; }
+.nav-back::before { content: '←'; font-size: .85rem; }
 
 .nav-frame {
   font-family: var(--mono);
-  font-size: .65rem;
-  letter-spacing: .15em;
+  font-size: .75rem;
+  letter-spacing: .12em;
   color: var(--ektar-amber);
-  opacity: .8;
 }
 
 .nav-right {
@@ -104,19 +132,23 @@ nav {
 }
 .nav-right a {
   font-family: var(--mono);
-  font-size: .72rem;
-  letter-spacing: .18em;
+  font-size: .8rem;
+  letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--cream-dim);
   text-decoration: none;
   transition: color .2s;
 }
 .nav-right a:hover { color: var(--cream); }
+
+/* links externos (Substack / Instagram) em formato de etiqueta */
 .nav-pill {
   border: 1px solid var(--ektar-red);
   padding: .22rem .7rem;
-  color: var(--ektar-red) !important;
+  color: var(--ektar-red-text) !important;
 }
+
+/* botão hambúrguer — só aparece no breakpoint mobile (ver @media) */
 .nav-hamburger {
   display: none;
   flex-direction: column;
@@ -125,7 +157,9 @@ nav {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  /* padding grande + margem negativa: área de toque de ~44px sem aumentar o nav */
+  padding: 14px 11px;
+  margin: -10px -7px;
   z-index: 101;
 }
 .nav-hamburger span {
@@ -134,16 +168,19 @@ nav {
   display: block;
   transition: transform .25s, opacity .2s;
 }
+/* estado aberto: as três barras viram um X */
 .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .nav-hamburger.open span:nth-child(2) { opacity: 0; }
 .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* HERO */
+/* ══ CAPA (tira de filme) ═════════════════════════════════════════════════ */
 .article-hero {
-  padding-top: 52px;
+  padding-top: 52px; /* altura do nav fixo */
   position: relative;
 }
 
+/* faixas de perfuração acima e abaixo da foto; os furos (.perf) são
+   gerados por JS conforme a largura da janela */
 .hero-film-strip {
   background: #100c07;
   height: 28px;
@@ -167,7 +204,7 @@ nav {
 .hero-img-wrap {
   position: relative;
   width: 100%;
-  aspect-ratio: 21/9;
+  aspect-ratio: 21/9; /* panorâmico no desktop; vira 4/3 no mobile */
   overflow: hidden;
   background: var(--bg-deeper);
 }
@@ -179,12 +216,13 @@ nav {
   display: block;
 }
 
+/* carimbo laranja estilo "data back" de câmera analógica */
 .hero-stamp {
   position: absolute;
   bottom: 14px;
   right: 18px;
   font-family: var(--mono);
-  font-size: clamp(.75rem, 1.1vw, .95rem);
+  font-size: clamp(.8rem, 1.1vw, .95rem);
   color: #ff7800;
   letter-spacing: .14em;
   text-shadow: 0 0 6px rgba(255,120,0,.9), 0 0 14px rgba(255,80,0,.5);
@@ -192,14 +230,16 @@ nav {
   text-align: right;
 }
 
+/* número do frame no canto superior esquerdo da capa */
 .hero-frame-n {
   position: absolute;
   top: 10px;
   left: 14px;
   font-family: var(--mono);
-  font-size: .58rem;
-  color: rgba(255,140,0,.5);
+  font-size: .75rem;
+  color: #ff9a2e;
   letter-spacing: .12em;
+  text-shadow: 0 0 5px rgba(0,0,0,.9);
 }
 
 .hero-film-strip-bot {
@@ -211,7 +251,7 @@ nav {
   overflow: hidden;
 }
 
-/* ENSAIO HEADER */
+/* ══ CABEÇALHO DO ENSAIO ══════════════════════════════════════════════════ */
 .ensaio-wrap {
   max-width: 1100px;
   margin: 0 auto;
@@ -224,19 +264,20 @@ nav {
   border-bottom: 1px solid var(--green-border);
 }
 
+/* linha "ensaio · mês ano" acima do título */
 .ensaio-eyebrow {
   font-family: var(--mono);
-  font-size: .6rem;
-  letter-spacing: .22em;
+  font-size: .78rem;
+  letter-spacing: .18em;
   text-transform: uppercase;
-  color: var(--ektar-red);
+  color: var(--ektar-red-text);
   margin-bottom: 1.2rem;
 }
 
 .ensaio-title {
   font-family: var(--serif);
   font-size: clamp(2rem, 4vw, 3.4rem);
-  line-height: 1.08;
+  line-height: 1.1;
   font-style: italic;
   font-weight: 400;
   color: var(--cream);
@@ -245,23 +286,24 @@ nav {
 
 .ensaio-lead {
   font-family: var(--serif);
-  font-size: 1.1rem;
-  line-height: 1.8;
+  font-size: 1.2rem;
+  line-height: 1.7;
   color: var(--cream-dim);
   font-style: italic;
   max-width: 58ch;
 }
 
+/* ficha resumida: câmera · filme · local */
 .ensaio-meta {
   margin-top: 1.2rem;
   display: flex;
-  gap: 1.6rem;
+  gap: .6rem 1.6rem;
   flex-wrap: wrap;
 }
 
 .ensaio-meta-item {
   font-family: var(--mono);
-  font-size: .58rem;
+  font-size: .75rem;
   letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--cream-ghost);
@@ -272,7 +314,8 @@ nav {
   margin-left: .4rem;
 }
 
-/* GRADE DE FOTOS */
+/* ══ GRADE DE FOTOS ═══════════════════════════════════════════════════════
+   3 colunas no desktop → 2 em tablet → 1 no celular (ver @media). */
 .ensaio-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -280,6 +323,7 @@ nav {
   margin-bottom: 4rem;
 }
 
+/* card = moldura da foto + legenda; o card inteiro é clicável */
 .foto-card {
   cursor: pointer;
   display: flex;
@@ -307,7 +351,7 @@ nav {
   transform: scale(1.02);
 }
 
-/* perf decorativa no canto */
+/* furo decorativo no canto superior direito da moldura */
 .foto-frame::before {
   content: '';
   position: absolute;
@@ -322,33 +366,35 @@ nav {
   pointer-events: none;
 }
 
+/* número da foto dentro do ensaio (01, 02, …) */
 .foto-num {
   position: absolute;
   bottom: 8px;
   left: 8px;
   font-family: var(--mono);
-  font-size: .52rem;
+  font-size: .72rem;
   color: var(--ektar-amber);
   letter-spacing: .1em;
-  text-shadow: 0 0 4px rgba(0,0,0,.8);
+  text-shadow: 0 0 4px rgba(0,0,0,.9);
   pointer-events: none;
 }
 
+/* legenda — a faixa aparece mesmo vazia, para manter os cards alinhados */
 .foto-caption {
   background: #100c07;
   border: 3px solid #100c07;
   border-top: none;
   padding: .4rem .6rem;
   font-family: var(--mono);
-  font-size: .52rem;
-  letter-spacing: .12em;
+  font-size: .75rem;
+  letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--ektar-orange);
+  color: var(--ektar-orange-text);
   min-height: 1.8rem;
   line-height: 1.5;
 }
 
-/* NAV ENTRE TEXTOS */
+/* ══ NAVEGAÇÃO ENTRE TEXTOS (anterior / próximo) ══════════════════════════ */
 .article-nav {
   margin-top: 4rem;
   padding-top: 2rem;
@@ -375,22 +421,22 @@ nav {
 
 .anl-dir {
   font-family: var(--mono);
-  font-size: .52rem;
-  letter-spacing: .18em;
+  font-size: .72rem;
+  letter-spacing: .16em;
   text-transform: uppercase;
-  color: var(--ektar-red);
+  color: var(--ektar-red-text);
   margin-bottom: .4rem;
 }
 
 .anl-title {
   font-family: var(--serif);
-  font-size: .88rem;
+  font-size: 1rem;
   font-style: italic;
   color: var(--cream-dim);
-  line-height: 1.3;
+  line-height: 1.35;
 }
 
-/* FOOTER */
+/* ══ RODAPÉ ═══════════════════════════════════════════════════════════════ */
 footer {
   border-top: 1px solid var(--green-border);
   padding: 2rem;
@@ -401,7 +447,7 @@ footer {
 
 .footer-logo {
   font-family: var(--mono);
-  font-size: .82rem;
+  font-size: .85rem;
   letter-spacing: .15em;
   color: var(--cream);
 }
@@ -410,8 +456,8 @@ footer {
 .footer-links { display: flex; gap: 1.5rem; }
 .footer-links a {
   font-family: var(--mono);
-  font-size: .58rem;
-  letter-spacing: .14em;
+  font-size: .75rem;
+  letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--cream-ghost);
   text-decoration: none;
@@ -419,7 +465,9 @@ footer {
 }
 .footer-links a:hover { color: var(--cream); }
 
-/* LIGHTBOX */
+/* ══ LIGHTBOX ═════════════════════════════════════════════════════════════
+   Tela cheia sobre a página (z-index acima do grão de filme).
+   Fica oculto até receber a classe .open via JS. */
 .lightbox {
   display: none;
   position: fixed;
@@ -442,6 +490,7 @@ footer {
   justify-content: center;
 }
 
+/* a foto nunca é cortada: encolhe para caber em 90% × 80% da tela */
 .lightbox-img-wrap img {
   max-width: 90vw;
   max-height: 80vh;
@@ -465,6 +514,7 @@ footer {
 }
 .lightbox-close:hover { color: var(--cream); }
 
+/* setas ‹ › nas laterais, centralizadas na vertical */
 .lightbox-nav {
   position: fixed;
   top: 50%;
@@ -488,27 +538,37 @@ footer {
   text-align: center;
 }
 
+/* contador "3 / 7" */
 .lightbox-num {
   font-family: var(--mono);
-  font-size: .58rem;
-  letter-spacing: .18em;
+  font-size: .8rem;
+  letter-spacing: .16em;
   color: var(--ektar-amber);
   margin-bottom: .3rem;
 }
 
 .lightbox-caption {
   font-family: var(--mono);
-  font-size: .6rem;
-  letter-spacing: .12em;
+  font-size: .8rem;
+  letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--cream-ghost);
+  color: var(--cream-dim);
   min-height: 1rem;
 }
 
-@media (max-width: 800px) {
-  nav { padding: .8rem 1.2rem; }
+/* ══ RESPONSIVO ═══════════════════════════════════════════════════════════
+   ≤ 1000px: o nav perde o bloco central (não cabe ao lado dos links).
+   ≤ 800px : menu hambúrguer, grade de 2 colunas.
+   ≤ 480px : grade de 1 coluna. */
+@media (max-width: 1000px) {
   .nav-center { display: none; }
+}
+
+@media (max-width: 800px) {
+  nav:not([class]) { padding: .8rem 1.2rem; }
   .nav-hamburger { display: flex; }
+
+  /* menu vira painel suspenso logo abaixo do nav (49px = altura do nav mobile) */
   .nav-right {
     display: none;
     position: fixed;
@@ -522,20 +582,35 @@ footer {
     z-index: 102;
   }
   .nav-right.open { display: flex; }
-  .nav-right a { font-size: .9rem; letter-spacing: .14em; }
+  .nav-right a { font-size: 1rem; letter-spacing: .14em; }
+
+  .hero-img-wrap { aspect-ratio: 4/3; }
   .ensaio-wrap { padding: 2.5rem 1.2rem 4rem; }
   .ensaio-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
   footer { flex-direction: column; gap: 1rem; text-align: center; }
-  .lightbox-nav { font-size: 1.2rem; padding: .6rem; }
+
+  /* setas menores e coladas na borda, para não cobrir a foto */
+  .lightbox-nav { font-size: 1.4rem; padding: .8rem .5rem; }
+  .lightbox-prev { left: 0; }
+  .lightbox-next { right: 0; }
 }
 
 @media (max-width: 480px) {
   .ensaio-grid { grid-template-columns: 1fr; }
 }
+
+/* telas muito estreitas: anterior/próximo empilhados */
+@media (max-width: 420px) {
+  .article-nav { grid-template-columns: 1fr; }
+  .article-nav-link.next { text-align: left; }
+}
 </style>
 </head>
 <body>
 
+{# ── NAV ─────────────────────────────────────────────────────────────────
+   Mesma versão do article.njk (não usa nav.njk) por causa do bloco
+   central com "voltar" e número do frame. #}
 <nav aria-label="Navegação principal">
   <a href="{{ '/' | url }}" class="logo" aria-label="br.trombin — página inicial">br<em>.</em>trombin</a>
   <div class="nav-center">
@@ -553,6 +628,8 @@ footer {
   </button>
 </nav>
 
+{# ── CAPA ────────────────────────────────────────────────────────────────
+   Foto de capa entre duas faixas de perfuração preenchidas por JS. #}
 <div class="article-hero">
   <div class="hero-film-strip" id="perfs-top"></div>
   <div class="hero-img-wrap">
@@ -560,6 +637,7 @@ footer {
     <img src="{{ hero_image | url }}" alt="{{ title }}">
     {% endif %}
     <span class="hero-frame-n">{{ frameNumber }}</span>
+    {# carimbo: local / data / filme — cada linha só aparece se o dado existir #}
     <div class="hero-stamp">
       {% if location %}{{ location }}<br>{% endif %}
       {{ date | dateStamp }}{% if film %}<br>{{ film }}{% endif %}
@@ -570,6 +648,7 @@ footer {
 
 <div class="ensaio-wrap">
 
+  {# ── CABEÇALHO ─────────────────────────────────────────────────────── #}
   <header class="ensaio-header">
     <p class="ensaio-eyebrow">ensaio &middot; {{ date | dateLong }}</p>
     <h1 class="ensaio-title">{{ title }}</h1>
@@ -585,12 +664,16 @@ footer {
     {% endif %}
   </header>
 
+  {# ── GRADE DE FOTOS ────────────────────────────────────────────────────
+     Cada card funciona como botão (role + tabindex) e abre o lightbox na
+     foto correspondente; data-index é a posição da foto na lista. #}
   {% if images %}
   <div class="ensaio-grid" id="ensaio-grid">
     {% for img in images %}
     <div class="foto-card" data-index="{{ loop.index0 }}" role="button" tabindex="0" aria-label="abrir foto {{ loop.index }}">
       <div class="foto-frame">
         <img src="{{ img.src | url }}" alt="{{ img.caption or (title + ' — foto ' + loop.index) }}" loading="lazy">
+        {# numeração com zero à esquerda: 01, 02, … #}
         <span class="foto-num">{% if loop.index < 10 %}0{{ loop.index }}{% else %}{{ loop.index }}{% endif %}</span>
       </div>
       <div class="foto-caption">{% if img.caption %}{{ img.caption }}{% endif %}</div>
@@ -599,7 +682,9 @@ footer {
   </div>
   {% endif %}
 
-  <nav class="article-nav">
+  {# prev = publicação mais antiga, next = mais recente (definidos no .eleventy.js).
+     O <div> vazio mantém "próximo" na coluna da direita quando não há anterior. #}
+  <nav class="article-nav" aria-label="Outros textos">
     {% if prevArticle %}
     <a href="{{ prevArticle.url }}" class="article-nav-link prev">
       <p class="anl-dir">← anterior</p>
@@ -618,7 +703,8 @@ footer {
 
 </div>
 
-<!-- LIGHTBOX -->
+{# ── LIGHTBOX ────────────────────────────────────────────────────────────
+   Um único visualizador para todas as fotos; o JS troca src/legenda. #}
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Visualizador de fotos">
   <button class="lightbox-close" id="lb-close" aria-label="fechar">✕</button>
   <button class="lightbox-nav lightbox-prev" id="lb-prev" aria-label="foto anterior">‹</button>
@@ -636,13 +722,15 @@ footer {
   <span class="footer-logo">br<em>.</em>trombin</span>
   <div class="footer-links">
     <a href="{{ '/' | url }}">contact sheet</a>
-    <a href="https://naocabe.substack.com" target="_blank">Substack</a>
-    <a href="https://www.instagram.com/brtrombin" target="_blank">Instagram</a>
+    <a href="https://naocabe.substack.com" target="_blank" rel="noopener">Substack</a>
+    <a href="https://www.instagram.com/brtrombin" target="_blank" rel="noopener">Instagram</a>
   </div>
 </footer>
 
 <script>
-// PERFS
+// ── Perfurações da tira de filme ─────────────────────────────────────────
+// Preenche a faixa com furos suficientes para a largura atual da janela
+// (cada furo ocupa 32px: 14 de largura + 18 de margem).
 function makePerfs(id) {
   var el = document.getElementById(id);
   if (!el) return;
@@ -653,16 +741,20 @@ makePerfs('perfs-top');
 makePerfs('perfs-bot');
 window.addEventListener('resize', function() { makePerfs('perfs-top'); makePerfs('perfs-bot'); });
 
-// NAV HAMBURGER
+// ── Menu hambúrguer (mobile) ─────────────────────────────────────────────
 (function() {
   var toggle = document.getElementById("nav-toggle");
   var menu   = document.getElementById("nav-menu");
   if (!toggle || !menu) return;
+
+  // abre/fecha ao tocar no botão
   toggle.addEventListener("click", function() {
     var open = menu.classList.toggle("open");
     toggle.classList.toggle("open", open);
     toggle.setAttribute("aria-expanded", String(open));
   });
+
+  // fecha ao tocar fora do menu
   document.addEventListener("click", function(e) {
     if (!menu.contains(e.target) && !toggle.contains(e.target)) {
       menu.classList.remove("open");
@@ -670,6 +762,8 @@ window.addEventListener('resize', function() { makePerfs('perfs-top'); makePerfs
       toggle.setAttribute("aria-expanded", "false");
     }
   });
+
+  // fecha ao escolher um link
   menu.querySelectorAll("a").forEach(function(a) {
     a.addEventListener("click", function() {
       menu.classList.remove("open");
@@ -679,17 +773,17 @@ window.addEventListener('resize', function() { makePerfs('perfs-top'); makePerfs
   });
 })();
 
-// LIGHTBOX
+// ── Lightbox ─────────────────────────────────────────────────────────────
 (function() {
-  var images = [];
-  var current = 0;
+  var images = [];   // { src, alt, caption } de cada foto da grade
+  var current = 0;   // índice da foto aberta
   var lb      = document.getElementById("lightbox");
   var lbImg   = document.getElementById("lb-img");
   var lbNum   = document.getElementById("lb-num");
   var lbCap   = document.getElementById("lb-caption");
 
-  // Coleta dados das fotos
-  document.querySelectorAll(".foto-card").forEach(function(card, i) {
+  // Lê os dados das fotos direto do HTML da grade
+  document.querySelectorAll(".foto-card").forEach(function(card) {
     var img = card.querySelector("img");
     var cap = card.querySelector(".foto-caption");
     images.push({
@@ -699,6 +793,8 @@ window.addEventListener('resize', function() { makePerfs('perfs-top'); makePerfs
     });
   });
 
+  // Abre a foto idx; o módulo faz a navegação dar a volta
+  // (antes da primeira → última, depois da última → primeira)
   function open(idx) {
     current = (idx + images.length) % images.length;
     lbImg.src = images[current].src;
@@ -706,7 +802,7 @@ window.addEventListener('resize', function() { makePerfs('perfs-top'); makePerfs
     lbNum.textContent = (current + 1) + " / " + images.length;
     lbCap.textContent = images[current].caption;
     lb.classList.add("open");
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = "hidden"; // trava a rolagem da página atrás
   }
 
   function close() {
@@ -715,7 +811,7 @@ window.addEventListener('resize', function() { makePerfs('perfs-top'); makePerfs
     document.body.style.overflow = "";
   }
 
-  // Clique nos cards
+  // Abrir: clique no card, ou Enter/Espaço com o card em foco
   document.querySelectorAll(".foto-card").forEach(function(card, i) {
     card.addEventListener("click", function() { open(i); });
     card.addEventListener("keydown", function(e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(i); } });
@@ -725,10 +821,12 @@ window.addEventListener('resize', function() { makePerfs('perfs-top'); makePerfs
   document.getElementById("lb-prev").addEventListener("click", function() { open(current - 1); });
   document.getElementById("lb-next").addEventListener("click", function() { open(current + 1); });
 
+  // Fechar ao clicar no fundo escuro (fora da foto e dos botões)
   lb.addEventListener("click", function(e) {
     if (e.target === lb) close();
   });
 
+  // Teclado: Esc fecha, setas navegam
   document.addEventListener("keydown", function(e) {
     if (!lb.classList.contains("open")) return;
     if (e.key === "Escape")     close();

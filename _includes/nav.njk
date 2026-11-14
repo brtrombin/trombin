@@ -1,6 +1,11 @@
 {#
-  Nav compartilhado — igual em todas as páginas.
-  Variável opcional: navActive ("sobre" | "galeria" | "")
+  Nav compartilhado — usado pela home, galeria e sobre.
+  (article.njk e ensaio.njk têm uma versão própria, com o bloco central
+  "contact sheet / frame N".)
+
+  Variável opcional: navActive ("sobre" | "galeria" | "") — marca a página atual.
+  O CSS e o JS do menu hambúrguer ficam em cada página que inclui este arquivo;
+  os ids nav-menu e nav-toggle são usados por esse JS.
 #}
 <nav aria-label="Navegação principal">
   <a href="{{ '/' | url }}" class="logo" aria-label="br.trombin — página inicial">br<em>.</em>trombin</a>

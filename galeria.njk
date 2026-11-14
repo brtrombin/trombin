@@ -1,6 +1,17 @@
 ---
 permalink: /galeria.html
 ---
+{#
+  Galeria fotográfica.
+
+  Diferente das outras páginas, o conteúdo é montado no navegador:
+    1. o Eleventy escreve a lista de fotos como JSON dentro do <script>
+       (capas dos textos + fotos avulsas de _data/gallery.json)
+    2. o JS monta a barra de filtros, o rolo de filme e o lightbox
+
+  Aceita ?theme=nome na URL para já abrir filtrada (links de temas da home
+  e dos artigos).
+#}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -9,22 +20,30 @@ permalink: /galeria.html
 <title>galeria — br.trombin</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <style>
+/* ══ TOKENS ═══════════════════════════════════════════════════════════════
+   Mesma paleta dos artigos. As cores "-text" são versões mais claras dos
+   acentos, usadas só em texto pequeno para atingir contraste AA. */
 :root {
   --bg: #1e2e22;
   --bg-dark: #162318;
   --bg-deeper: #0f1a12;
   --green-border: #2e4a32;
   --green-mid: #243a28;
-  --ektar-red: #c8341a;
+
+  --ektar-red: #c8341a;        /* botões, bordas, detalhes decorativos */
+  --ektar-red-text: #f07050;   /* rótulos em vermelho */
   --ektar-orange: #d4621e;
   --ektar-amber: #e8a830;
-  --cream: #f0e8d0;
-  --cream-dim: #b8a880;
-  --cream-ghost: #6a5a40;
+
+  --cream: #f0e8d0;            /* títulos */
+  --cream-dim: #b8a880;        /* texto secundário */
+  --cream-ghost: #a09070;      /* texto terciário — mínimo legível */
+
   --mono: 'Share Tech Mono', monospace;
   --serif: 'Playfair Display', serif;
 }
 
+/* ══ RESET + BASE ═════════════════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
@@ -36,6 +55,7 @@ body {
   overflow-x: hidden;
 }
 
+/* Grão de filme: ruído SVG fixo por cima de tudo, sem capturar cliques */
 body::after {
   content: '';
   position: fixed;
@@ -47,7 +67,7 @@ body::after {
   mix-blend-mode: screen;
 }
 
-/* NAV */
+/* ══ NAV (markup em _includes/nav.njk) ════════════════════════════════════ */
 nav {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -55,7 +75,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: .9rem 2rem;
+  padding: .85rem 2rem;
   background: rgba(30,46,34,.94);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--green-border);
@@ -73,20 +93,24 @@ nav {
 .nav-right { display: flex; align-items: center; gap: 1.4rem; }
 .nav-right a {
   font-family: var(--mono);
-  font-size: .72rem;
-  letter-spacing: .18em;
+  font-size: .8rem;
+  letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--cream-dim);
   text-decoration: none;
   transition: color .2s;
 }
 .nav-right a:hover { color: var(--cream); }
-.nav-right a.active { color: var(--ektar-red); }
+.nav-right a.active { color: var(--ektar-red-text); } /* página atual */
+
+/* links externos (Substack / Instagram) em formato de etiqueta */
 .nav-pill {
   border: 1px solid var(--ektar-red);
   padding: .22rem .7rem;
-  color: var(--ektar-red) !important;
+  color: var(--ektar-red-text) !important;
 }
+
+/* botão hambúrguer — visível só em mobile (ver @media) */
 .nav-hamburger {
   display: none;
   flex-direction: column;
@@ -95,7 +119,9 @@ nav {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  /* padding grande + margem negativa: área de toque de ~44px sem aumentar o nav */
+  padding: 14px 11px;
+  margin: -10px -7px;
   z-index: 101;
 }
 .nav-hamburger span {
@@ -104,17 +130,20 @@ nav {
   display: block;
   transition: transform .25s, opacity .2s;
 }
+/* estado aberto: as três barras viram um X */
 .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .nav-hamburger.open span:nth-child(2) { opacity: 0; }
 .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* HEADER */
+/* ══ CABEÇALHO DA PÁGINA ══════════════════════════════════════════════════
+   Faixa de perfurações + título/contagem + barra de filtros. */
 .page-header {
-  padding: 90px 2rem 0;
+  padding: 90px 2rem 0; /* 90px: espaço do nav fixo + respiro */
   background: var(--bg-deeper);
   border-bottom: 1px solid var(--green-border);
 }
 
+/* faixa decorativa; os furos (.perf) são gerados por JS */
 .film-strip {
   height: 24px;
   display: flex;
@@ -138,25 +167,28 @@ nav {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
+  gap: 1rem;
 }
 
 .page-title {
   font-family: var(--mono);
-  font-size: .65rem;
-  letter-spacing: .25em;
+  font-size: .82rem;
+  letter-spacing: .22em;
   text-transform: uppercase;
-  color: var(--ektar-red);
+  color: var(--ektar-red-text);
 }
 
+/* "41 frames" — atualizado pelo JS a cada filtro */
 .page-count {
   font-family: var(--mono);
-  font-size: .58rem;
-  letter-spacing: .15em;
+  font-size: .75rem;
+  letter-spacing: .14em;
   color: var(--cream-ghost);
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
-/* FILTER BAR */
+/* ══ BARRA DE FILTROS (botões criados por JS, um por tema) ════════════════ */
 .filter-bar {
   display: flex;
   gap: .5rem;
@@ -166,14 +198,15 @@ nav {
 
 .filter-btn {
   font-family: var(--mono);
-  font-size: .65rem;
-  letter-spacing: .14em;
+  font-size: .75rem;
+  letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--cream-dim);
   background: transparent;
   border: 1px solid var(--green-border);
-  padding: .28rem .7rem;
+  padding: .4rem .8rem;
   cursor: pointer;
+  white-space: nowrap;
   transition: color .2s, border-color .2s;
 }
 
@@ -183,16 +216,18 @@ nav {
 }
 
 .filter-btn.active {
-  color: var(--ektar-red);
+  color: var(--ektar-red-text);
   border-color: var(--ektar-red);
 }
 
-/* GRID */
+/* ══ ROLO DE FILME ════════════════════════════════════════════════════════
+   .film-roll   → todas as tiras
+   .roll-strip  → uma tira: perfurações + frames + perfurações
+   .roll-frames → os frames da tira (4 no desktop, 2 no mobile) */
 .gallery-wrap {
   padding: 2rem;
 }
 
-/* FILM ROLL: faixas de perfuração + frames */
 .film-roll {
   display: flex;
   flex-direction: column;
@@ -240,10 +275,11 @@ nav {
 .frame-card {
   display: flex;
   flex-direction: column;
+  min-width: 0;
   cursor: pointer;
 }
 
-/* FRAME CELL */
+/* frame = área da foto, proporção 3:2 */
 .frame-cell {
   position: relative;
   aspect-ratio: 3/2;
@@ -260,13 +296,13 @@ nav {
   transition: filter .35s, transform .35s;
 }
 
-/* sempre visível: metadados no canto */
+/* sempre visível: data + câmera no canto inferior */
 .frame-meta {
   position: absolute;
   bottom: 6px;
   left: 7px;
   font-family: var(--mono);
-  font-size: clamp(.6rem, .8vw, .8rem);
+  font-size: clamp(.7rem, .8vw, .8rem);
   color: #ff7800;
   letter-spacing: .1em;
   line-height: 1.5;
@@ -275,14 +311,16 @@ nav {
   z-index: 2;
 }
 
+/* número do frame no canto superior */
 .frame-idx {
   position: absolute;
   top: 6px;
   left: 7px;
   font-family: var(--mono);
-  font-size: .48rem;
-  color: rgba(255,140,0,.45);
+  font-size: .7rem;
+  color: #ff9a2e;
   letter-spacing: .08em;
+  text-shadow: 0 0 4px #000, 0 0 2px #000;
   pointer-events: none;
   z-index: 2;
 }
@@ -293,25 +331,28 @@ nav {
   transform: scale(1.03);
 }
 
-/* título sempre visível abaixo do frame — estilo rebate */
+/* título sempre visível abaixo do frame — estilo rebate (borda do filme) */
 .frame-caption {
   font-family: var(--mono);
-  font-size: clamp(.42rem, .6vw, .58rem);
-  letter-spacing: .06em;
-  line-height: 1.35;
-  color: rgba(200,100,28,.82);
+  font-size: clamp(.75rem, .9vw, .85rem);
+  letter-spacing: .04em;
+  line-height: 1.4;
+  color: #e08a3c;
   background: #160e04;
   border-top: 1px solid #0c0703;
-  padding: .22rem .45rem .2rem;
+  padding: .35rem .5rem .3rem;
+  /* corta o título em no máximo 2 linhas, com reticências */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   transition: color .2s;
 }
-.frame-card:hover .frame-caption { color: #ff8c00; }
+.frame-card:hover .frame-caption { color: #ffb060; }
 
-/* LIGHTBOX */
+/* ══ LIGHTBOX ═════════════════════════════════════════════════════════════
+   Painel sobre a página: foto à esquerda, ficha à direita.
+   Fica invisível (opacity 0, sem cliques) até receber .open via JS. */
 .lightbox {
   position: fixed;
   inset: 0;
@@ -332,7 +373,7 @@ nav {
 
 .lb-inner {
   display: grid;
-  grid-template-columns: 1fr 320px;
+  grid-template-columns: 1fr 340px;
   max-width: 1100px;
   width: 95vw;
   max-height: 90vh;
@@ -357,12 +398,13 @@ nav {
   filter: contrast(1.1) saturate(1.2);
 }
 
+/* carimbo laranja (local / data / exposição) sobre a foto */
 .lb-stamp {
   position: absolute;
   bottom: 12px;
   right: 14px;
   font-family: var(--mono);
-  font-size: clamp(.75rem, 1.1vw, .95rem);
+  font-size: clamp(.8rem, 1.1vw, .95rem);
   color: #ff7800;
   letter-spacing: .14em;
   text-shadow: 0 0 6px rgba(255,120,0,.9), 0 0 14px rgba(255,80,0,.5);
@@ -377,13 +419,15 @@ nav {
   top: 10px;
   left: 12px;
   font-family: var(--mono);
-  font-size: .55rem;
-  color: rgba(255,140,0,.5);
+  font-size: .75rem;
+  color: #ff9a2e;
   letter-spacing: .1em;
+  text-shadow: 0 0 4px #000, 0 0 2px #000;
   pointer-events: none;
   z-index: 2;
 }
 
+/* coluna de informações (rola sozinha se o conteúdo for longo) */
 .lb-info {
   padding: 2rem 1.5rem;
   display: flex;
@@ -394,31 +438,31 @@ nav {
 
 .lb-eyebrow {
   font-family: var(--mono);
-  font-size: .55rem;
-  letter-spacing: .2em;
+  font-size: .75rem;
+  letter-spacing: .18em;
   text-transform: uppercase;
-  color: var(--ektar-red);
+  color: var(--ektar-red-text);
   margin-bottom: 1rem;
 }
 
 .lb-title {
   font-family: var(--serif);
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-style: italic;
   color: var(--cream);
-  line-height: 1.2;
+  line-height: 1.25;
   margin-bottom: 1rem;
   font-weight: 400;
 }
 
 .lb-caption {
   font-family: var(--serif);
-  font-size: .85rem;
-  line-height: 1.75;
+  font-size: 1rem;
+  line-height: 1.7;
   color: var(--cream-dim);
   font-style: italic;
   margin-bottom: 1.5rem;
-  flex: 1;
+  flex: 1; /* empurra a ficha e o botão para o fim da coluna */
 }
 
 .lb-meta {
@@ -427,34 +471,39 @@ nav {
   margin-bottom: 1.5rem;
 }
 
+/* linha "chave ........ valor" */
 .lb-meta-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: .4rem;
+  gap: 1rem;
+  margin-bottom: .5rem;
 }
 
 .lb-meta-key {
-  font-size: .52rem;
+  font-size: .75rem;
   letter-spacing: .1em;
   color: var(--cream-ghost);
   text-transform: uppercase;
+  flex-shrink: 0;
 }
 
 .lb-meta-val {
-  font-size: .54rem;
-  letter-spacing: .08em;
+  font-size: .8rem;
+  letter-spacing: .06em;
   color: var(--cream-dim);
+  text-align: right;
 }
 
+/* botão "ler texto →" (só aparece em fotos ligadas a um texto) */
 .lb-text-link {
   display: block;
   font-family: var(--mono);
-  font-size: .58rem;
+  font-size: .82rem;
   letter-spacing: .15em;
   text-transform: uppercase;
-  color: var(--cream);
+  color: #fffaf0; /* quase branco sobre vermelho: 5:1 */
   background: var(--ektar-red);
-  padding: .65rem 1rem;
+  padding: .8rem 1rem;
   text-decoration: none;
   text-align: center;
   transition: background .2s;
@@ -465,12 +514,12 @@ nav {
   position: absolute;
   top: 12px;
   right: 12px;
-  width: 32px;
-  height: 32px;
-  background: transparent;
+  width: 40px;
+  height: 40px;
+  background: rgba(15,26,18,.8);
   border: 1px solid var(--green-border);
   color: var(--cream-dim);
-  font-size: 1rem;
+  font-size: 1.2rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -481,30 +530,33 @@ nav {
 }
 .lb-close:hover { border-color: var(--cream); color: var(--cream); }
 
+/* setas ← → no canto inferior esquerdo da foto */
 .lb-nav {
   position: absolute;
   bottom: 12px;
   left: 12px;
   display: flex;
   gap: .4rem;
+  z-index: 3;
 }
 
 .lb-nav-btn {
-  width: 30px;
-  height: 30px;
-  background: rgba(30,46,34,.8);
+  width: 38px;
+  height: 38px;
+  background: rgba(30,46,34,.85);
   border: 1px solid var(--green-border);
-  color: var(--cream-dim);
+  color: var(--cream);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--mono);
-  font-size: .8rem;
+  font-size: .95rem;
   transition: all .2s;
 }
-.lb-nav-btn:hover { border-color: var(--cream-ghost); color: var(--cream); }
+.lb-nav-btn:hover { border-color: var(--cream-ghost); }
 
+/* ══ RODAPÉ ═══════════════════════════════════════════════════════════════ */
 footer {
   border-top: 1px solid var(--green-border);
   padding: 2rem;
@@ -512,21 +564,27 @@ footer {
   justify-content: space-between;
   align-items: center;
 }
-.footer-logo { font-family: var(--mono); font-size: .82rem; letter-spacing: .15em; color: var(--cream); }
+.footer-logo { font-family: var(--mono); font-size: .85rem; letter-spacing: .15em; color: var(--cream); }
 .footer-logo em { color: var(--ektar-red); font-style: normal; }
 .footer-links { display: flex; gap: 1.5rem; }
-.footer-links a { font-family: var(--mono); font-size: .58rem; letter-spacing: .14em; text-transform: uppercase; color: var(--cream-ghost); text-decoration: none; transition: color .2s; }
+.footer-links a { font-family: var(--mono); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--cream-ghost); text-decoration: none; transition: color .2s; }
 .footer-links a:hover { color: var(--cream); }
 
+/* ══ RESPONSIVO ═══════════════════════════════════════════════════════════
+   ≤ 900px: lightbox em uma coluna (foto em cima, ficha embaixo).
+   ≤ 768px: menu hambúrguer.
+   ≤ 600px: tiras com rolagem horizontal e filtros em uma linha só. */
 @media (max-width: 900px) {
   .lb-inner { grid-template-columns: 1fr; max-height: 95vh; overflow-y: auto; }
   .lb-photo { min-height: 50vw; }
   .lb-info { border-left: none; border-top: 1px solid var(--green-border); }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   nav { padding: .8rem 1.2rem; }
   .nav-hamburger { display: flex; }
+
+  /* menu vira painel suspenso logo abaixo do nav (49px = altura do nav mobile) */
   .nav-right {
     display: none;
     position: fixed;
@@ -540,22 +598,49 @@ footer {
     z-index: 102;
   }
   .nav-right.open { display: flex; }
-  .nav-right a { font-size: .9rem; letter-spacing: .14em; }
-  .nav-right a { font-size: .58rem; letter-spacing: .1em; }
+  .nav-right a { font-size: 1rem; letter-spacing: .14em; }
+
+  footer { flex-direction: column; gap: 1rem; text-align: center; }
+}
+
+@media (max-width: 600px) {
   .gallery-wrap { padding: 1rem 0; }
   .page-header { padding: 80px 1rem 0; }
-  footer { flex-direction: column; gap: 1rem; text-align: center; }
+
+  /* filtros: uma única linha que rola para o lado, em vez de dezenas de
+     botões empilhados ocupando a primeira tela inteira. As margens
+     negativas fazem a linha encostar nas bordas da tela. */
+  .filter-bar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin: 0 -1rem;
+    padding: 0 1rem 1.2rem;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-btn { flex-shrink: 0; }
+
+  /* cada tira rola na horizontal. Grid com coluna max-content: a tira fica
+     da largura dos frames e as faixas de perfuração acompanham (com flex
+     elas parariam na largura da tela). */
   .roll-strip {
+    display: grid;
+    grid-template-columns: max-content;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
   .roll-strip::-webkit-scrollbar { display: none; }
+
+  /* 2 frames por tira (ver getColumns no JS), cada um com 70% da tela —
+     o segundo fica aparecendo pela metade, convidando a arrastar */
   .roll-frames {
-    grid-template-columns: repeat(4, 70vw);
+    grid-template-columns: repeat(2, 70vw);
     gap: 4px;
     padding: 4px;
   }
+  .frame-caption { font-size: .8rem; }
   .roll-perfs-h::before {
     background: repeating-linear-gradient(
       to right,
@@ -569,20 +654,24 @@ footer {
 </head>
 <body>
 
+{# navActive marca o link "galeria" como página atual dentro do nav.njk #}
 {% set navActive = "galeria" %}
 {% include "nav.njk" %}
 
+{# ── CABEÇALHO: perfurações, título, contagem e filtros ────────────────── #}
 <div class="page-header">
   <div class="film-strip" id="perfs"></div>
   <div class="page-title-row">
     <span class="page-title">galeria fotográfica</span>
     <span class="page-count" id="count-label">— frames</span>
   </div>
+  {# os demais botões são criados por buildFilterBar() #}
   <div class="filter-bar" id="filter-bar">
     <button class="filter-btn active" data-filter="all">todos</button>
   </div>
 </div>
 
+{# ── ROLO: preenchido por renderRoll() ─────────────────────────────────── #}
 <div class="gallery-wrap">
   <div class="film-roll" id="roll"></div>
 </div>
@@ -591,20 +680,20 @@ footer {
   <span class="footer-logo">br<em>.</em>trombin</span>
   <div class="footer-links">
     <a href="{{ '/' | url }}">contact sheet</a>
-    <a href="https://naocabe.substack.com" target="_blank">Substack</a>
-    <a href="https://www.instagram.com/brtrombin" target="_blank">Instagram</a>
+    <a href="https://naocabe.substack.com" target="_blank" rel="noopener">Substack</a>
+    <a href="https://www.instagram.com/brtrombin" target="_blank" rel="noopener">Instagram</a>
   </div>
 </footer>
 
-<!-- LIGHTBOX -->
+{# ── LIGHTBOX: um único painel, preenchido por openLightbox() ──────────── #}
 <div class="lightbox" id="lightbox">
   <div class="lb-inner">
     <div class="lb-photo" id="lb-photo">
       <span class="lb-frame-n" id="lb-fn"></span>
       <div class="lb-stamp" id="lb-stamp"></div>
       <div class="lb-nav">
-        <button class="lb-nav-btn" id="lb-prev">&#8592;</button>
-        <button class="lb-nav-btn" id="lb-next">&#8594;</button>
+        <button class="lb-nav-btn" id="lb-prev" aria-label="foto anterior">&#8592;</button>
+        <button class="lb-nav-btn" id="lb-next" aria-label="próxima foto">&#8594;</button>
       </div>
     </div>
     <div class="lb-info">
@@ -615,7 +704,7 @@ footer {
       <a href="#" class="lb-text-link" id="lb-link">ler texto →</a>
     </div>
   </div>
-  <button class="lb-close" id="lb-close">&#215;</button>
+  <button class="lb-close" id="lb-close" aria-label="fechar">&#215;</button>
 </div>
 
 <script>
@@ -623,6 +712,8 @@ footer {
 const BASE = "{{ siteBase }}";
 
 // ── Fonte 1: artigos (automático via Eleventy) ───────────────────────────────
+// Cada texto com hero_image vira uma foto da galeria. O filtro "dump"
+// converte o valor em JSON, com aspas e escapes corretos para o JS.
 const fromArticles = [
   {% for article in collections.articles %}{% if article.data.hero_image %}
   {
@@ -662,15 +753,18 @@ const photos = _all.map((p, i) => ({
 }));
 
 // ── Estado ───────────────────────────────────────────────────────────────────
-let current = 0;
-let filtered = [...photos];
+let current = 0;            // índice (dentro de "filtered") da foto aberta no lightbox
+let filtered = [...photos]; // fotos visíveis com o filtro atual
 
 const roll = document.getElementById('roll');
 const lightbox = document.getElementById('lightbox');
 
 // ── Utilitários ──────────────────────────────────────────────────────────────
+
+// Frames por tira: 2 no celular, 4 no resto (acompanha o @media de 600px do CSS)
 function getColumns() { return window.innerWidth <= 600 ? 2 : 4; }
 
+// Divide um array em grupos de "size" itens
 function chunk(arr, size) {
   const out = [];
   for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
@@ -684,18 +778,24 @@ function shortCamera(cam) {
   return cam.split(' ').pop();
 }
 
-// Categorias de um frame para filtrar
+// Categorias de um frame para filtrar: ["theme:viagem", "col:nome-da-coleção", …]
 function buildCat(p) {
   const cats = (p.themes || []).map(t => 'theme:' + t);
   if (p.collection) cats.push('col:' + p.collection);
   return cats;
 }
 
+// Fotos que passam em um filtro ("all", "theme:…" ou "col:…")
+function applyFilter(f) {
+  return f === 'all' ? [...photos] : photos.filter(p => buildCat(p).includes(f));
+}
+
 // ── Filtros dinâmicos por tema ───────────────────────────────────────────────
+// Cria um botão para cada tema e coleção que aparece em alguma foto.
 function buildFilterBar() {
   const bar = document.getElementById('filter-bar');
-  const themeCounts = new Map();
-  const collections = new Map();
+  const themeCounts = new Map();  // tema → quantas fotos
+  const collections = new Map();  // coleção → quantas fotos
 
   photos.forEach(p => {
     (p.themes || []).forEach(t => themeCounts.set(t, (themeCounts.get(t) || 0) + 1));
@@ -713,27 +813,32 @@ function buildFilterBar() {
     bar.innerHTML += `<button class="filter-btn" data-filter="col:${col}">${col}</button>`;
   });
 
+  // clique: marca o botão como ativo e redesenha o rolo só com as fotos do filtro
   bar.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       bar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      const f = btn.dataset.filter;
-      filtered = f === 'all' ? [...photos] : photos.filter(p => buildCat(p).includes(f));
+      filtered = applyFilter(btn.dataset.filter);
       renderRoll(filtered);
     });
   });
 }
 
 // ── Renderizar rolo ──────────────────────────────────────────────────────────
+// Apaga o rolo e redesenha "list" em tiras de N frames (N = getColumns()).
+let renderedColumns = 0; // colunas usadas no último desenho (ver listener de resize)
+
 function renderRoll(list) {
   roll.innerHTML = '';
   const cols = getColumns();
+  renderedColumns = cols;
   const rows = chunk(list, cols);
 
   rows.forEach(row => {
     const strip = document.createElement('div');
     strip.className = 'roll-strip';
 
+    // faixas de perfuração acima e abaixo dos frames
     const topPerfs = document.createElement('div');
     topPerfs.className = 'roll-perfs-h';
     const botPerfs = document.createElement('div');
@@ -743,10 +848,12 @@ function renderRoll(list) {
     frames.className = 'roll-frames';
 
     row.forEach(p => {
-      const globalIdx = list.indexOf(p);
-      const shortDate = p.date ? p.date.slice(0, 7) : '';
+      const globalIdx = list.indexOf(p); // posição na lista filtrada, usada pelo lightbox
+      const shortDate = p.date ? p.date.slice(0, 7) : ''; // "2025 02 10" → "2025 02"
       const camShort = shortCamera(p.camera);
       const metaLine = [shortDate, camShort].filter(Boolean).join(' · ');
+      // selos "coleção" / "texto": ainda não têm CSS, então hoje ficam ocultos
+      // (caem fora da área visível do frame)
       const collectionBadge = p.collection
         ? `<span class="has-text-badge">${p.collection}</span>` : '';
       const textBadge = (!p.collection && p.source === 'article')
@@ -787,10 +894,12 @@ function renderRoll(list) {
 }
 
 // ── Lightbox ─────────────────────────────────────────────────────────────────
+// Abre a foto de índice i da lista e preenche todos os campos do painel.
 function openLightbox(i, list) {
   current = i;
   const p = list[i];
 
+  // troca a imagem: remove a anterior e insere a nova como primeiro filho
   const lbPhoto = document.getElementById('lb-photo');
   const existingImg = lbPhoto.querySelector('img');
   if (existingImg) existingImg.remove();
@@ -801,10 +910,12 @@ function openLightbox(i, list) {
 
   document.getElementById('lb-fn').textContent = p.idx;
 
+  // carimbo: local curto (antes do " · ") / data / abertura + velocidade
   const stampParts = [p.loc ? p.loc.replace(/\s*·\s*.*/, '').trim() : '', p.date];
   if (p.aperture || p.speed) stampParts.push([p.aperture, p.speed].filter(Boolean).join('  '));
   document.getElementById('lb-stamp').innerHTML = stampParts.filter(Boolean).join('<br>');
 
+  // "frame 012 · nome da coleção" ou "frame 012 · filme"
   const eyebrowParts = [`frame ${p.idx}`];
   if (p.collection) eyebrowParts.push(p.collection);
   else if (p.film) eyebrowParts.push(p.film);
@@ -813,6 +924,7 @@ function openLightbox(i, list) {
   document.getElementById('lb-title').textContent = p.title;
   document.getElementById('lb-caption').textContent = p.caption;
 
+  // ficha técnica: só entram as linhas que têm dado
   let metaHTML = '';
   if (p.camera)   metaHTML += `<div class="lb-meta-row"><span class="lb-meta-key">câmera</span><span class="lb-meta-val">${p.camera}</span></div>`;
   if (p.film)     metaHTML += `<div class="lb-meta-row"><span class="lb-meta-key">filme</span><span class="lb-meta-val">${p.film}</span></div>`;
@@ -822,6 +934,7 @@ function openLightbox(i, list) {
   if (p.date)     metaHTML += `<div class="lb-meta-row"><span class="lb-meta-key">data</span><span class="lb-meta-val">${p.date}</span></div>`;
   document.getElementById('lb-meta').innerHTML = metaHTML;
 
+  // botão "ler texto": só para fotos que vieram de um artigo
   const link = document.getElementById('lb-link');
   if (p.textLink) {
     link.href = BASE + p.textLink;
@@ -831,8 +944,9 @@ function openLightbox(i, list) {
   }
 
   lightbox.classList.add('open');
-  document.body.style.overflow = 'hidden';
+  document.body.style.overflow = 'hidden'; // trava a rolagem da página atrás
 
+  // setas: reatribuídas a cada abertura para navegar dentro da lista atual
   document.getElementById('lb-prev').onclick = (e) => {
     e.stopPropagation();
     if (current > 0) openLightbox(current - 1, list);
@@ -848,6 +962,7 @@ function closeLightbox() {
   document.body.style.overflow = '';
 }
 
+// Fechar: botão ×, clique no fundo escuro ou tecla Esc. Setas do teclado navegam.
 document.getElementById('lb-close').addEventListener('click', closeLightbox);
 lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
 document.addEventListener('keydown', (e) => {
@@ -858,6 +973,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ── Perfurações no header ────────────────────────────────────────────────────
+// Preenche a faixa com furos suficientes para a largura da janela (30px por furo).
 function makePerfs() {
   const el = document.getElementById('perfs');
   if (!el) return;
@@ -866,12 +982,13 @@ function makePerfs() {
 }
 makePerfs();
 
+// Ao redimensionar: refaz as perfurações e, só se o número de colunas mudou
+// (ex.: girar o celular), redesenha o rolo. Sem essa checagem o rolo seria
+// redesenhado a cada rolagem no celular — a barra de endereço que aparece e
+// some dispara "resize" — e as tiras voltariam ao início.
 window.addEventListener('resize', () => {
   makePerfs();
-  const f = document.querySelector('.filter-btn.active');
-  const filter = f ? f.dataset.filter : 'all';
-  filtered = filter === 'all' ? [...photos] : photos.filter(p => buildCat(p).includes(filter));
-  renderRoll(filtered);
+  if (getColumns() !== renderedColumns) renderRoll(filtered);
 });
 
 // ── Init ─────────────────────────────────────────────────────────────────────
@@ -885,19 +1002,27 @@ if (_urlTheme) {
     b.classList.toggle('active', b.dataset.filter === 'theme:' + _urlTheme);
   });
   renderRoll(filtered);
+  // no celular a barra de filtros rola para o lado: traz o filtro ativo para a vista
+  const activeBtn = document.querySelector('.filter-btn.active');
+  if (activeBtn) activeBtn.scrollIntoView({ block: 'nearest', inline: 'center' });
 } else {
   renderRoll(photos);
 }
-// NAV HAMBURGER
+
+// ── Menu hambúrguer (mobile) ─────────────────────────────────────────────────
 (function() {
   var toggle = document.getElementById("nav-toggle");
   var menu   = document.getElementById("nav-menu");
   if (!toggle || !menu) return;
+
+  // abre/fecha ao tocar no botão
   toggle.addEventListener("click", function() {
     var open = menu.classList.toggle("open");
     toggle.classList.toggle("open", open);
     toggle.setAttribute("aria-expanded", String(open));
   });
+
+  // fecha ao tocar fora do menu
   document.addEventListener("click", function(e) {
     if (!menu.contains(e.target) && !toggle.contains(e.target)) {
       menu.classList.remove("open");
@@ -905,6 +1030,8 @@ if (_urlTheme) {
       toggle.setAttribute("aria-expanded", "false");
     }
   });
+
+  // fecha ao escolher um link
   menu.querySelectorAll("a").forEach(function(a) {
     a.addEventListener("click", function() {
       menu.classList.remove("open");

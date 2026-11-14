@@ -1,3 +1,18 @@
+{#
+  Layout de artigo (texto) — usado por todo .md em /articles que não declara outro layout.
+
+  Estrutura da página:
+    1. nav fixo no topo (logo · voltar ao contact sheet · links)
+    2. capa em formato de tira de filme (perfurações + foto + carimbo de data)
+    3. duas colunas: texto à esquerda, ficha técnica (sidebar) à direita
+    4. navegação anterior/próximo e rodapé
+
+  Front matter esperado no .md:
+    title, date, lead, type, hero_image | hero_gradient, location, camera, film,
+    aperture, speed, author_note, themes[], substack_url
+  Injetado pelo .eleventy.js (collection "articles"):
+    frameNumber, prevArticle, nextArticle
+#}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,22 +21,33 @@
 <title>{{ title }} — br.trombin</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 <style>
+/* ══ TOKENS ═══════════════════════════════════════════════════════════════
+   Paleta e fontes. As cores "-text" são versões mais claras dos acentos,
+   usadas só em texto pequeno: o vermelho/laranja Ektar puro não atinge
+   contraste 4.5:1 (WCAG AA) sobre o fundo verde-escuro. */
 :root {
   --bg: #1e2e22;
   --bg-dark: #162318;
   --bg-deeper: #0f1a12;
   --green-mid: #243a28;
   --green-border: #2e4a32;
-  --ektar-red: #c8341a;
+
+  --ektar-red: #c8341a;          /* bordas, capitular, detalhes decorativos */
+  --ektar-red-text: #f07050;     /* rótulos em vermelho (contraste 4.9:1) */
   --ektar-orange: #d4621e;
+  --ektar-orange-text: #e88a4a;  /* subtítulos em laranja (contraste 5.6:1) */
   --ektar-amber: #e8a830;
-  --cream: #f0e8d0;
-  --cream-dim: #b8a880;
-  --cream-ghost: #6a5a40;
+
+  --cream: #f0e8d0;              /* títulos */
+  --cream-text: #d8ccb0;         /* corpo do texto (contraste 9:1) */
+  --cream-dim: #b8a880;          /* texto secundário (6:1) */
+  --cream-ghost: #a09070;        /* texto terciário — mínimo legível (4.6:1) */
+
   --mono: 'Share Tech Mono', monospace;
   --serif: 'Playfair Display', serif;
 }
 
+/* ══ RESET + BASE ═════════════════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
@@ -33,6 +59,7 @@ body {
   overflow-x: hidden;
 }
 
+/* Grão de filme: ruído SVG fixo por cima de tudo, sem capturar cliques */
 body::after {
   content: '';
   position: fixed;
@@ -44,15 +71,17 @@ body::after {
   mix-blend-mode: screen;
 }
 
-/* NAV */
-nav {
+/* ══ NAV PRINCIPAL ════════════════════════════════════════════════════════
+   :not([class]) é obrigatório: sem ele a regra também fixaria no topo o
+   <nav class="article-nav"> (anterior/próximo) do fim do texto. */
+nav:not([class]) {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: .9rem 2rem;
+  padding: .85rem 2rem;
   background: rgba(30,46,34,.94);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--green-border);
@@ -68,6 +97,7 @@ nav {
 }
 .logo em { color: var(--ektar-red); font-style: normal; }
 
+/* centro do nav: "← contact sheet" + número do frame (some em telas menores) */
 .nav-center {
   display: flex;
   align-items: center;
@@ -76,8 +106,8 @@ nav {
 
 .nav-back {
   font-family: var(--mono);
-  font-size: .72rem;
-  letter-spacing: .16em;
+  font-size: .8rem;
+  letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--cream-dim);
   text-decoration: none;
@@ -87,14 +117,13 @@ nav {
   transition: color .2s;
 }
 .nav-back:hover { color: var(--cream); }
-.nav-back::before { content: '←'; font-size: .8rem; }
+.nav-back::before { content: '←'; font-size: .85rem; }
 
 .nav-frame {
   font-family: var(--mono);
-  font-size: .65rem;
-  letter-spacing: .15em;
+  font-size: .75rem;
+  letter-spacing: .12em;
   color: var(--ektar-amber);
-  opacity: .8;
 }
 
 .nav-right {
@@ -104,19 +133,23 @@ nav {
 }
 .nav-right a {
   font-family: var(--mono);
-  font-size: .72rem;
-  letter-spacing: .18em;
+  font-size: .8rem;
+  letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--cream-dim);
   text-decoration: none;
   transition: color .2s;
 }
 .nav-right a:hover { color: var(--cream); }
+
+/* links externos (Substack / Instagram) em formato de etiqueta */
 .nav-pill {
   border: 1px solid var(--ektar-red);
   padding: .22rem .7rem;
-  color: var(--ektar-red) !important;
+  color: var(--ektar-red-text) !important;
 }
+
+/* botão hambúrguer — só aparece no breakpoint mobile (ver @media) */
 .nav-hamburger {
   display: none;
   flex-direction: column;
@@ -125,7 +158,9 @@ nav {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  /* padding grande + margem negativa: área de toque de ~44px sem aumentar o nav */
+  padding: 14px 11px;
+  margin: -10px -7px;
   z-index: 101;
 }
 .nav-hamburger span {
@@ -134,16 +169,19 @@ nav {
   display: block;
   transition: transform .25s, opacity .2s;
 }
+/* estado aberto: as três barras viram um X */
 .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .nav-hamburger.open span:nth-child(2) { opacity: 0; }
 .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* HERO */
+/* ══ CAPA (tira de filme) ═════════════════════════════════════════════════ */
 .article-hero {
-  padding-top: 52px;
+  padding-top: 52px; /* altura do nav fixo */
   position: relative;
 }
 
+/* faixas de perfuração acima e abaixo da foto; os furos (.perf) são
+   gerados por JS conforme a largura da janela */
 .hero-film-strip {
   background: #100c07;
   height: 28px;
@@ -168,13 +206,14 @@ nav {
 .hero-img-wrap {
   position: relative;
   width: 100%;
-  aspect-ratio: 21/9;
+  aspect-ratio: 21/9; /* panorâmico no desktop; vira 4/3 no mobile */
   overflow: hidden;
   background: var(--bg-deeper);
   border-top: 3px solid var(--bg-deeper);
   border-bottom: 3px solid var(--bg-deeper);
 }
 
+/* placeholder em degradê quando o artigo não tem hero_image */
 .hero-img-wrap .ph {
   width: 100%;
   height: 100%;
@@ -188,12 +227,13 @@ nav {
   display: block;
 }
 
+/* carimbo laranja estilo "data back" de câmera analógica */
 .hero-stamp {
   position: absolute;
   bottom: 14px;
   right: 18px;
   font-family: var(--mono);
-  font-size: clamp(.75rem, 1.1vw, .95rem);
+  font-size: clamp(.8rem, 1.1vw, .95rem);
   color: #ff7800;
   letter-spacing: .14em;
   text-shadow: 0 0 6px rgba(255,120,0,.9), 0 0 14px rgba(255,80,0,.5);
@@ -201,14 +241,16 @@ nav {
   text-align: right;
 }
 
+/* número do frame no canto superior esquerdo da capa */
 .hero-frame-n {
   position: absolute;
   top: 10px;
   left: 14px;
   font-family: var(--mono);
-  font-size: .58rem;
-  color: rgba(255,140,0,.5);
+  font-size: .75rem;
+  color: #ff9a2e;
   letter-spacing: .12em;
+  text-shadow: 0 0 5px rgba(0,0,0,.9);
 }
 
 .hero-film-strip-bot {
@@ -220,13 +262,15 @@ nav {
   overflow: hidden;
 }
 
-/* ARTICLE — duas colunas */
+/* ══ ARTIGO — grade de duas colunas ═══════════════════════════════════════
+   minmax(0, 1fr) impede que conteúdo largo (imagem, palavra longa)
+   alargue a coluna do texto além da tela. */
 .article-wrap {
-  max-width: 1100px;
+  max-width: 1140px;
   margin: 0 auto;
   padding: 4rem 2rem 6rem;
   display: grid;
-  grid-template-columns: 1fr 220px;
+  grid-template-columns: minmax(0, 1fr) 250px;
   gap: 4rem;
   align-items: start;
 }
@@ -237,19 +281,20 @@ nav {
   border-bottom: 1px solid var(--green-border);
 }
 
+/* linha "leitura · mês ano" acima do título */
 .article-eyebrow {
   font-family: var(--mono);
-  font-size: .6rem;
-  letter-spacing: .22em;
+  font-size: .78rem;
+  letter-spacing: .18em;
   text-transform: uppercase;
-  color: var(--ektar-red);
+  color: var(--ektar-red-text);
   margin-bottom: 1.2rem;
 }
 
 .article-title {
   font-family: var(--serif);
   font-size: clamp(2rem, 4vw, 3.4rem);
-  line-height: 1.08;
+  line-height: 1.1;
   font-style: italic;
   font-weight: 400;
   color: var(--cream);
@@ -258,22 +303,24 @@ nav {
 
 .article-lead {
   font-family: var(--serif);
-  font-size: 1.1rem;
-  line-height: 1.8;
+  font-size: 1.2rem;
+  line-height: 1.7;
   color: var(--cream-dim);
   font-style: italic;
   max-width: 58ch;
 }
 
-/* headings dentro do corpo */
+/* ── Corpo do texto (HTML gerado a partir do markdown) ────────────────── */
+
+/* ## do markdown — intertítulo em mono, laranja */
 .article-body h2 {
   font-family: var(--mono);
-  font-size: .62rem;
-  letter-spacing: .2em;
+  font-size: .9rem;
+  letter-spacing: .16em;
   text-transform: uppercase;
   font-weight: 400;
-  color: var(--ektar-orange);
-  line-height: 1.4;
+  color: var(--ektar-orange-text);
+  line-height: 1.5;
   margin-top: 3.5rem;
   margin-bottom: 1rem;
   max-width: 62ch;
@@ -281,37 +328,82 @@ nav {
 
 .article-body h3 {
   font-family: var(--mono);
-  font-size: .7rem;
-  letter-spacing: .18em;
+  font-size: .85rem;
+  letter-spacing: .16em;
   text-transform: uppercase;
-  color: var(--ektar-red);
-  line-height: 1.4;
+  color: var(--ektar-red-text);
+  line-height: 1.5;
   margin-top: 3rem;
   margin-bottom: .9rem;
   max-width: 62ch;
 }
 
-/* body text */
-.article-body p {
+/* parágrafo: 18px com entrelinha generosa — é o texto principal do site */
+.article-body p,
+.article-body li {
   font-family: var(--serif);
-  font-size: 1rem;
-  line-height: 1.9;
-  color: var(--cream-dim);
-  margin-bottom: 1.6rem;
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: var(--cream-text);
+  max-width: 62ch;
+}
+.article-body p { margin-bottom: 1.6rem; }
+
+.article-body strong { color: var(--cream); }
+
+.article-body a {
+  color: var(--ektar-orange-text);
+  text-underline-offset: 3px;
+}
+.article-body a:hover { color: var(--cream); }
+
+.article-body ul,
+.article-body ol {
+  margin: 0 0 1.6rem 1.4rem;
+}
+.article-body li { margin-bottom: .5rem; }
+
+.article-body blockquote {
+  margin: 2rem 0;
+  padding: .2rem 0 .2rem 1.4rem;
+  border-left: 3px solid var(--ektar-red);
+  max-width: 62ch;
+}
+.article-body blockquote p { font-style: italic; color: var(--cream); }
+.article-body blockquote p:last-child { margin-bottom: 0; }
+
+/* --- do markdown — separador de seção */
+.article-body hr {
+  border: none;
+  border-top: 1px solid var(--green-border);
+  margin: 3rem 0;
   max-width: 62ch;
 }
 
+/* imagens vindas do markdown (ex.: importadas do Substack) nunca passam
+   da largura da coluna */
+.article-body img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* capitular vermelha na primeira letra do texto */
 .article-body p:first-child::first-letter {
-  font-size: 3.5rem;
+  font-size: 3.6rem;
   line-height: .8;
   float: left;
   margin: .05em .12em -.05em 0;
-  color: var(--ektar-red);
+  color: var(--ektar-red-text);
   font-style: italic;
   font-weight: 700;
 }
 
-/* foto intercalada */
+/* ── Foto intercalada (bloco HTML opcional dentro do .md) ───────────────
+   <div class="inline-photo [wide]">
+     <div class="inline-photo-frame"> <img> + .inline-photo-frame-n + .inline-photo-stamp </div>
+     <p class="photo-caption">…</p>
+   </div> */
 .inline-photo {
   margin: 2.5rem 0;
   position: relative;
@@ -337,10 +429,10 @@ nav {
   bottom: 10px;
   right: 10px;
   font-family: var(--mono);
-  font-size: .55rem;
+  font-size: .72rem;
   color: #ff8c00;
   letter-spacing: .1em;
-  text-shadow: 0 0 6px rgba(255,140,0,.5);
+  text-shadow: 0 0 6px rgba(255,140,0,.5), 0 0 4px rgba(0,0,0,.8);
   line-height: 1.5;
   text-align: right;
 }
@@ -350,27 +442,34 @@ nav {
   top: 8px;
   left: 10px;
   font-family: var(--mono);
-  font-size: .52rem;
-  color: rgba(255,140,0,.45);
+  font-size: .72rem;
+  color: #ff9a2e;
   letter-spacing: .1em;
+  text-shadow: 0 0 5px rgba(0,0,0,.9);
 }
 
-.photo-caption {
+/* .photo-caption é um <p> dentro de .article-body, por isso o seletor
+   composto: precisa vencer a regra ".article-body p" */
+.article-body .photo-caption {
   margin-top: .8rem;
+  margin-bottom: 0;
   font-family: var(--mono);
-  font-size: .6rem;
-  letter-spacing: .12em;
+  font-size: .75rem;
+  line-height: 1.5;
+  letter-spacing: .1em;
   color: var(--cream-ghost);
   text-transform: uppercase;
   padding-left: 4px;
 }
 
+/* variante panorâmica: sangra além das margens laterais da coluna */
 .inline-photo.wide {
   margin-left: -2rem;
   margin-right: -2rem;
 }
 
-/* SIDEBAR */
+/* ══ SIDEBAR (ficha técnica) ══════════════════════════════════════════════
+   Acompanha a rolagem no desktop (sticky); no mobile vai para baixo do texto. */
 .article-sidebar {
   position: sticky;
   top: 80px;
@@ -386,58 +485,63 @@ nav {
 
 .sidebar-label {
   font-family: var(--mono);
-  font-size: .55rem;
-  letter-spacing: .22em;
+  font-size: .75rem;
+  letter-spacing: .18em;
   text-transform: uppercase;
-  color: var(--ektar-red);
+  color: var(--ektar-red-text);
   margin-bottom: 1rem;
 }
 
+/* linha "chave ........ valor" */
 .sidebar-meta-row {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: .5rem;
+  gap: 1rem;
+  margin-bottom: .6rem;
 }
 
 .sidebar-meta-key {
   font-family: var(--mono);
-  font-size: .58rem;
+  font-size: .75rem;
   letter-spacing: .1em;
   color: var(--cream-ghost);
   text-transform: uppercase;
+  flex-shrink: 0;
 }
 
 .sidebar-meta-val {
   font-family: var(--mono);
-  font-size: .6rem;
-  letter-spacing: .08em;
+  font-size: .8rem;
+  line-height: 1.5;
+  letter-spacing: .06em;
   color: var(--cream-dim);
   text-align: right;
 }
 
 .sidebar-note {
   font-family: var(--serif);
-  font-size: .82rem;
-  line-height: 1.75;
-  color: var(--cream-ghost);
+  font-size: .95rem;
+  line-height: 1.7;
+  color: var(--cream-dim);
   font-style: italic;
 }
 
 .sidebar-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: .4rem;
+  gap: .5rem;
 }
 
+/* etiqueta de tema — leva para a galeria já filtrada (?theme=…) */
 .tag {
   font-family: var(--mono);
-  font-size: .65rem;
-  letter-spacing: .14em;
+  font-size: .75rem;
+  letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--cream-dim);
   border: 1px solid var(--green-border);
-  padding: .28rem .7rem;
+  padding: .32rem .7rem;
   text-decoration: none;
   cursor: pointer;
   transition: color .2s, border-color .2s;
@@ -447,8 +551,9 @@ nav {
   border-color: var(--cream-dim);
 }
 
+/* o primeiro tema do artigo ganha destaque em vermelho */
 .tag.red {
-  color: var(--ektar-red);
+  color: var(--ektar-red-text);
   border-color: var(--ektar-red);
 }
 .tag.red:hover {
@@ -456,7 +561,18 @@ nav {
   border-color: var(--cream-dim);
 }
 
-/* nav entre textos */
+/* link "também em: Substack" */
+.sidebar-link {
+  font-family: var(--mono);
+  font-size: .75rem;
+  letter-spacing: .1em;
+  color: var(--ektar-red-text);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.sidebar-link:hover { color: var(--cream); }
+
+/* ══ NAVEGAÇÃO ENTRE TEXTOS (anterior / próximo) ══════════════════════════ */
 .article-nav {
   margin-top: 4rem;
   padding-top: 2rem;
@@ -483,21 +599,22 @@ nav {
 
 .anl-dir {
   font-family: var(--mono);
-  font-size: .52rem;
-  letter-spacing: .18em;
+  font-size: .72rem;
+  letter-spacing: .16em;
   text-transform: uppercase;
-  color: var(--ektar-red);
+  color: var(--ektar-red-text);
   margin-bottom: .4rem;
 }
 
 .anl-title {
   font-family: var(--serif);
-  font-size: .88rem;
+  font-size: 1rem;
   font-style: italic;
   color: var(--cream-dim);
-  line-height: 1.3;
+  line-height: 1.35;
 }
 
+/* ══ RODAPÉ ═══════════════════════════════════════════════════════════════ */
 footer {
   border-top: 1px solid var(--green-border);
   padding: 2rem;
@@ -508,7 +625,7 @@ footer {
 
 .footer-logo {
   font-family: var(--mono);
-  font-size: .82rem;
+  font-size: .85rem;
   letter-spacing: .15em;
   color: var(--cream);
 }
@@ -517,8 +634,8 @@ footer {
 .footer-links { display: flex; gap: 1.5rem; }
 .footer-links a {
   font-family: var(--mono);
-  font-size: .58rem;
-  letter-spacing: .14em;
+  font-size: .75rem;
+  letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--cream-ghost);
   text-decoration: none;
@@ -526,10 +643,18 @@ footer {
 }
 .footer-links a:hover { color: var(--cream); }
 
-@media (max-width: 800px) {
-  nav { padding: .8rem 1.2rem; }
+/* ══ RESPONSIVO ═══════════════════════════════════════════════════════════
+   ≤ 1000px: o nav perde o bloco central (não cabe ao lado dos links).
+   ≤ 800px : menu hambúrguer, uma coluna só, sidebar abaixo do texto. */
+@media (max-width: 1000px) {
   .nav-center { display: none; }
+}
+
+@media (max-width: 800px) {
+  nav:not([class]) { padding: .8rem 1.2rem; }
   .nav-hamburger { display: flex; }
+
+  /* menu vira painel suspenso logo abaixo do nav (49px = altura do nav mobile) */
   .nav-right {
     display: none;
     position: fixed;
@@ -543,9 +668,10 @@ footer {
     z-index: 102;
   }
   .nav-right.open { display: flex; }
-  .nav-right a { font-size: .9rem; letter-spacing: .14em; }
+  .nav-right a { font-size: 1rem; letter-spacing: .14em; }
+
   .article-wrap {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 3rem;
     padding: 2.5rem 1.2rem 4rem;
   }
@@ -554,10 +680,19 @@ footer {
   .inline-photo.wide { margin-left: -1.2rem; margin-right: -1.2rem; }
   footer { flex-direction: column; gap: 1rem; text-align: center; }
 }
+
+/* telas muito estreitas: anterior/próximo empilhados */
+@media (max-width: 420px) {
+  .article-nav { grid-template-columns: 1fr; }
+  .article-nav-link.next { text-align: left; }
+}
 </style>
 </head>
 <body>
 
+{# ── NAV ─────────────────────────────────────────────────────────────────
+   Versão própria do artigo (não usa nav.njk) por causa do bloco central
+   com "voltar" e número do frame. #}
 <nav aria-label="Navegação principal">
   <a href="{{ '/' | url }}" class="logo" aria-label="br.trombin — página inicial">br<em>.</em>trombin</a>
   <div class="nav-center">
@@ -575,6 +710,9 @@ footer {
   </button>
 </nav>
 
+{# ── CAPA ────────────────────────────────────────────────────────────────
+   Foto de capa (ou degradê, se não houver hero_image) entre duas faixas
+   de perfuração preenchidas por JS. #}
 <div class="article-hero">
   <div class="hero-film-strip" id="perfs-top"></div>
   <div class="hero-img-wrap">
@@ -584,6 +722,7 @@ footer {
     <div class="ph" style="background:{{ hero_gradient | default('linear-gradient(160deg,#1a3a5c 0%,#2e6a9e 30%,#6a8a5a 60%,#c8621e 85%,#c8341a 100%)') }}"></div>
     {% endif %}
     <span class="hero-frame-n">{{ frameNumber }}</span>
+    {# carimbo: local / data / abertura + velocidade — cada linha só aparece se o dado existir #}
     <div class="hero-stamp">
       {% if location %}{{ location }}<br>{% endif %}
       {{ date | dateStamp }}{% if aperture or speed %}<br>{{ aperture }}{% if aperture and speed %}&nbsp;&nbsp;{% endif %}{{ speed }}{% endif %}
@@ -593,6 +732,8 @@ footer {
 </div>
 
 <div class="article-wrap">
+
+  {# ── COLUNA PRINCIPAL: cabeçalho, texto e anterior/próximo ───────────── #}
   <main class="article-main">
 
     <header class="article-header">
@@ -603,11 +744,14 @@ footer {
       {% endif %}
     </header>
 
+    {# conteúdo do .md já convertido em HTML #}
     <div class="article-body">
       {{ content | safe }}
     </div>
 
-    <nav class="article-nav">
+    {# prev = texto mais antigo, next = mais recente (definidos no .eleventy.js).
+       O <div> vazio mantém "próximo" na coluna da direita quando não há anterior. #}
+    <nav class="article-nav" aria-label="Outros textos">
       {% if prevArticle %}
       <a href="{{ prevArticle.url }}" class="article-nav-link prev">
         <p class="anl-dir">← anterior</p>
@@ -626,8 +770,10 @@ footer {
 
   </main>
 
+  {# ── SIDEBAR: ficha técnica da foto, nota, temas e link do Substack ──── #}
   <aside class="article-sidebar">
 
+    {# exposição — cada linha só aparece se o campo existir no front matter #}
     <div class="sidebar-block">
       <p class="sidebar-label">exposição</p>
       {% if camera %}
@@ -673,6 +819,7 @@ footer {
     </div>
     {% endif %}
 
+    {# temas — cada etiqueta abre a galeria filtrada por aquele tema #}
     {% if themes %}
     <div class="sidebar-block">
       <p class="sidebar-label">temas</p>
@@ -688,7 +835,7 @@ footer {
     <div class="sidebar-block">
       <p class="sidebar-label">também em</p>
       <div class="sidebar-meta-row">
-        <a href="{{ substack_url }}" target="_blank" style="font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;color:var(--ektar-red);text-decoration:none;text-transform:uppercase">Não Cabia · Substack ↗</a>
+        <a href="{{ substack_url }}" target="_blank" rel="noopener" class="sidebar-link">Não Cabia · Substack ↗</a>
       </div>
     </div>
     {% endif %}
@@ -700,12 +847,15 @@ footer {
   <span class="footer-logo">br<em>.</em>trombin</span>
   <div class="footer-links">
     <a href="{{ '/' | url }}">contact sheet</a>
-    <a href="https://naocabe.substack.com" target="_blank">Substack</a>
-    <a href="https://www.instagram.com/brtrombin" target="_blank">Instagram</a>
+    <a href="https://naocabe.substack.com" target="_blank" rel="noopener">Substack</a>
+    <a href="https://www.instagram.com/brtrombin" target="_blank" rel="noopener">Instagram</a>
   </div>
 </footer>
 
 <script>
+// ── Perfurações da tira de filme ─────────────────────────────────────────
+// Preenche a faixa com furos suficientes para a largura atual da janela
+// (cada furo ocupa 32px: 14 de largura + 18 de margem).
 function makePerfs(id) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -715,16 +865,21 @@ function makePerfs(id) {
 makePerfs('perfs-top');
 makePerfs('perfs-bot');
 window.addEventListener('resize', () => { makePerfs('perfs-top'); makePerfs('perfs-bot'); });
-// NAV HAMBURGER
+
+// ── Menu hambúrguer (mobile) ─────────────────────────────────────────────
 (function() {
   var toggle = document.getElementById("nav-toggle");
   var menu   = document.getElementById("nav-menu");
   if (!toggle || !menu) return;
+
+  // abre/fecha ao tocar no botão
   toggle.addEventListener("click", function() {
     var open = menu.classList.toggle("open");
     toggle.classList.toggle("open", open);
     toggle.setAttribute("aria-expanded", String(open));
   });
+
+  // fecha ao tocar fora do menu
   document.addEventListener("click", function(e) {
     if (!menu.contains(e.target) && !toggle.contains(e.target)) {
       menu.classList.remove("open");
@@ -732,6 +887,8 @@ window.addEventListener('resize', () => { makePerfs('perfs-top'); makePerfs('per
       toggle.setAttribute("aria-expanded", "false");
     }
   });
+
+  // fecha ao escolher um link
   menu.querySelectorAll("a").forEach(function(a) {
     a.addEventListener("click", function() {
       menu.classList.remove("open");

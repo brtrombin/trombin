@@ -3,7 +3,7 @@
 #
 # Agendamento diário pausado: o Substack responde HTTP 403 (desafio anti-bot
 # da Cloudflare) aos servidores do GitHub, então a execução falha aqui.
-# O script funciona rodando localmente: python scripts/sync-substack.py
+# O sync roda localmente: npm run sync (scripts/sync-local.sh)
 # Para reativar, devolver ao bloco "on":
 #   schedule:
 #     - cron: "0 7 * * *"   # diariamente às 07:00 UTC (04:00 BRT)

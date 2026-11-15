@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "build": "eleventy",
-    "serve": "eleventy --serve"
+    "serve": "eleventy --serve",
+    "sync": "bash scripts/sync-local.sh"
   },
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1"

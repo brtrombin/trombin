@@ -12,7 +12,8 @@ Fluxo, para cada post do feed:
   4. converte o HTML do post em markdown
   5. grava o .md com o front matter que os layouts do site esperam
 
-Uso local: pip install -r requirements-sync.txt && python scripts/sync-substack.py
+Uso: npm run sync — scripts/sync-local.sh prepara o ambiente Python, roda este
+script e faz commit e push dos posts novos.
 """
 
 import html
